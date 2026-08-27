@@ -113,7 +113,11 @@
      already rescales the whole collage to its narrower column, so it
      needs no per-prop breakpoint handling here. */
   .cmp-rail { display: none; }
-  .cmp-panels { grid-template-columns: 1fr; gap: 40px; }
+  /* minmax(0, 1fr) — see comparison.css's .cmp-panels comment. Bare 1fr's
+     auto-minimum meant this single column was sized to whichever panel's
+     min-content was wider (the WITHOUT collage), stretching the WITH card
+     off the right edge of the viewport at phone widths. */
+  .cmp-panels { grid-template-columns: minmax(0, 1fr); gap: 40px; }
   .video-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 0; }
   .video-stats li:nth-child(3) { border-left: 0; }
   /* padding stays keyed to --trust-edge (see trust.css) so the head never
@@ -291,6 +295,27 @@
   .video-stats strong { font-size: 30px; }
   .mod-footer-grid { grid-template-columns: 1fr; gap: 28px; }
   .mod-footer-bottom { flex-direction: column; align-items: flex-start; }
+  /* comparison, WITH card: the stepper's 4 nowrap labels + 34px side padding
+     need ~290px to avoid colliding — right at the edge of a 390px phone once
+     .container (24px) and .cmp-dark (24px) padding are subtracted, and
+     already short of it at 320-360px, where the card's content column is
+     only 224px. Measured (real render, not estimated): the labels' own
+     min-content sum exactly equals the available width at that column, so
+     `justify-content: space-between` has zero space left to distribute and
+     the words render with no gap between them ("DispatchedDelivered").
+     Padding to 0, a smaller font *and* an explicit minimum `gap` (which
+     space-between adds to, not instead of) leaves real breathing room
+     rather than landing on another exact-fit edge case. */
+  .cmp-stepper { padding: 0; gap: 6px; }
+  .cmp-stepper::before { left: 0; right: 0; }
+  .cmp-stepper li { font-size: 9px; }
+  /* row label is a fixed 100px column — fine on desktop's wide card, but at
+     320-390px it leaves too little room for the detail string, which then
+     wraps inside the row's fixed height and gets clipped. Let the row grow
+     instead of clipping, and narrow the label column to give detail more
+     room to stay on one line. */
+  .cmp-dark-row { height: auto; min-height: 38px; padding: 8px 14px; }
+  .cmp-dark-row-label { width: 76px; }
 }
 /* Single column (a narrow desktop window): the card is already full-bleed, so
    drop the growth *and* the reveal — with nothing to grow into, hiding the
