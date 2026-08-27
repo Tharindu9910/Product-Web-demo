@@ -52,16 +52,20 @@ import { withBase } from "@/lib/base";
         </div>
       </div>
 
-      <!-- hero image -->
+      <!--
+      2026-08-27: replaced by the decorative dashboard mock below. Kept here
+      commented out in case the hero-image.png photo needs to come back —
+      see @/assets/hero-image.png and Hero.astro's frontmatter.
+
       <div class="hero-visual" aria-hidden="true">
-        <!-- `sizes` starts at 1px on purpose, and that bound is exactly
-             responsive.css's `.hero-visual { display: none }` breakpoint.
-             Below 1024px this image is never shown — but a hidden <img> is
-             still fetched, so every phone was downloading ~160 KB of a
-             picture it would never paint. Asking for 1px makes the browser
-             pick the smallest candidate in the srcset instead. Above the
-             breakpoint it is a real half-width hero image and an LCP
-             candidate, hence eager + high priority. -->
+        `sizes` starts at 1px on purpose, and that bound is exactly
+        responsive.css's `.hero-visual { display: none }` breakpoint.
+        Below 1024px this image is never shown — but a hidden <img> is
+        still fetched, so every phone was downloading ~160 KB of a
+        picture it would never paint. Asking for 1px makes the browser
+        pick the smallest candidate in the srcset instead. Above the
+        breakpoint it is a real half-width hero image and an LCP
+        candidate, hence eager + high priority.
         <Image
           src={heroImage}
           alt=""
@@ -76,11 +80,7 @@ import { withBase } from "@/lib/base";
           decoding="async"
         />
       </div>
-
-      <!--
-      2026-08-26: replaced by the hero-image.png import above. Kept here
-      commented out in case the decorative dashboard mock needs to come
-      back — see @/assets/hero-image.png and Hero.astro's frontmatter.
+      -->
 
       <div class="hero-visual" aria-hidden="true" data-anim="fade-up">
         <div class="hero-stack">
@@ -198,7 +198,6 @@ import { withBase } from "@/lib/base";
           </div>
         </div>
       </div>
-      -->
     </div>
   </div>
   <div class="hero-scroll" aria-hidden="true">
