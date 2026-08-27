@@ -38,11 +38,15 @@ function initMarquee(): void {
  * scrub and hero entrance are all still there, because none of them needs
  * one any more.
  *
- * The desktop case fires early rather than at idle, because the hero
- * scramble is an *entrance* — arriving two seconds late would mean
- * scrambling a headline the reader has already finished reading. The
- * scramble's own `document.fonts.ready` race (lib/animations.ts) keeps it
- * bounded from there.
+ * The hero case fires early rather than at idle, because the scramble is
+ * an *entrance* — arriving two seconds late would mean scrambling a
+ * headline the reader has already finished reading. The scramble's own
+ * `document.fonts.ready` race (lib/animations.ts) keeps it bounded from
+ * there. This applies on every width now (2026-08-27: buildHero() used to
+ * be desktop-only, so this check required a >=768px match too) — the
+ * `isLiteDevice()` guard above is what keeps a phone on a slow connection
+ * or weak hardware from fetching GSAP at all, which is the actual cost
+ * control for mobile, not a width check.
  */
 function initEnhancements(): void {
   if (prefersReducedMotion() || isLiteDevice()) return;
@@ -59,10 +63,8 @@ function initEnhancements(): void {
   // Only fetch the engine if this page actually has something for it to do.
   // Without this check every page loaded 68 KB of GSAP at idle — including
   // /about, /contact, /why-us and all six module pages, none of which has a
-  // comparison canvas, and none of which scrambles anything on a phone.
-  const heroScramble =
-    document.querySelector(".hero-title .h-line") !== null &&
-    window.matchMedia("(min-width: 768px)").matches;
+  // comparison canvas, and none of which scrambles anything.
+  const heroScramble = document.querySelector(".hero-title .h-line") !== null;
   const hasComparison = document.querySelector(".cmp-canvas") !== null;
 
   if (!heroScramble && !hasComparison) return;

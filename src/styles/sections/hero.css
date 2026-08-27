@@ -110,17 +110,21 @@
 .hero-title .hero-title-accent { color: var(--orange); }
 
 /* ScrambleText entrance (animations.ts buildHero()) — only while a line is
-   actively resolving. white-space:nowrap is the actual layout-shift fix:
-   ScrambleText re-randomises the glyph arrangement every frame, not just
-   the final string, so a mid-tween frame can render wider than the settled
-   text even with a matched character pool (poolFrom) — nowrap means that
-   can never push the line to a second row and shove the rest of the hero
-   down. Only active above the 768px breakpoint that actually scrambles
-   (buildHero()'s narrow branch never adds this class), so it never fights
-   the natural mobile wrap. font-kerning/text-rendering stop per-pair width
-   jitter as glyphs swap. */
+   actively resolving. font-kerning/text-rendering stop per-pair width
+   jitter as glyphs swap, on every width the tween runs at (2026-08-27:
+   buildHero() now runs on mobile too). white-space:nowrap is an additional
+   layout-shift guard, but only above 768px: on desktop/tablet each .h-line
+   is meant to render as exactly one row, so nowrap stops a mid-tween frame
+   from spilling to a second row that the settled text never uses. Below
+   768px .h-line now wraps normally at rest (responsive.css, same date) —
+   forcing nowrap here would fight that and snap from a clipped one-row
+   tween to a wrapped two-row rest state the instant the animation ends.
+   The title's own locked min-height (buildHero()) is what keeps the page
+   from jumping either way. */
+@media (min-width: 768px) {
+  .h-line.is-scrambling { white-space: nowrap; }
+}
 .h-line.is-scrambling {
-  white-space: nowrap;
   font-kerning: none;
   text-rendering: optimizeSpeed;
 }

@@ -65,10 +65,21 @@
   color: var(--navy);
   transition: color 300ms var(--ease), transform 200ms var(--ease);
 }
-.nav-item.has-dropdown:hover .nav-dropdown-toggle,
 .nav-item.has-dropdown.is-open .nav-dropdown-toggle {
   color: var(--orange);
   transform: rotate(180deg);
+}
+/* Gated to real hover devices only — ungated, this :hover rule stuck on
+   mobile: tapping the "ERP Modules" LINK (not the chevron) leaves iOS/
+   touch browsers' simulated :hover active on the whole .nav-item, which
+   flips the chevron orange/rotated as if the dropdown were open while
+   .is-open (and the actual panel) stayed closed — "the button acts
+   strangely" (user report, 2026-08-27). */
+@media (hover: hover) and (pointer: fine) {
+  .nav-item.has-dropdown:hover .nav-dropdown-toggle {
+    color: var(--orange);
+    transform: rotate(180deg);
+  }
 }
 
 /* .nav-dropdown-hitbox is the thing that's actually positioned/shown or

@@ -13,7 +13,16 @@
   .platform-tile-media { height: auto; }
 }
 @media (max-width: 1023px) {
-  .hero-visual { display: none; }
+  /* Tablet only. This used to be an unqualified `.hero-visual { display: none }`
+     for the whole <=1023 range, i.e. the dashboard mock was invisible to every
+     phone — and rule 9 says most traffic is a WhatsApp link opened on one, so
+     the site's only product visual was hidden from most of its visitors.
+     Phones now get it back as a scaled overlay (see the <=767 block below);
+     768-1023 keeps the copy-only hero, because at that width the copy column
+     is full-bleed and the headline leaves no ragged-right gap to sit in. */
+  @media (min-width: 768px) {
+    .hero-visual { display: none; }
+  }
   .hero-grid { grid-template-columns: 1fr; }
   /* copy-only hero: let it size to content instead of forcing a full viewport */
   .hero { min-height: 0; padding: 64px 0 88px; }
@@ -156,10 +165,22 @@
      legacy line rather than editing it, so the ported value stays visible. */
   .hero { padding: 28px 0 56px; }
   .hero-eyebrow-market { margin-top: 0; margin-bottom: 12px; }
-  /* .display-h1's clamp floors at 2.75rem, so the headline never scales
-     below 44px — 4 lines at 390px, 5 at 320px, ~240px of the fold spent on
-     three short sentences. */
-  .display-h1 { font-size: min(2.125rem, var(--h1-max, 1000px)); line-height: 1.12; }
+  /* 2026-08-27, user-directed reversal of the same date's earlier "H1 never
+     re-wraps" fix: that fix capped mobile font-size against --h1-max so
+     "One connected flow." always fit one row, at the cost of the headline
+     reading small (33px, same clamp() floor logic that used to force 4-5
+     lines is what's undoing itself here) against the rest of the mobile
+     page — .section-title is 26px, .closing-cta-title is 30px, so a 33px H1
+     barely read as the largest thing on the screen. Requested explicitly:
+     bigger and bolder, wrap allowed. Dropping var(--h1-max) here (the
+     container-query cap still exists for desktop/tablet, where the grid
+     column makes one-line still make sense) and letting .h-line wrap
+     (below) frees the size back up to the same 2.75rem/44px floor the
+     unconstrained desktop clamp always had — "One connected flow." wraps to
+     two rows at that size in the ~270-340px column, "From order" and "to
+     delivery." stay one row each since they're shorter strings. */
+  .display-h1 { font-size: clamp(2.25rem, 9vw, 2.75rem); line-height: 1.1; }
+  .hero-title .h-line { white-space: normal; }
   .hero-lede { margin-top: 16px; font-size: 16px; line-height: 1.6; }
   /* the two CTAs wrap to a ragged two-row stack at their intrinsic widths;
      full-bleed and equal is the only arrangement that reads deliberate */
@@ -174,6 +195,63 @@
   /* rotated 19px strip pinned 5px off the screen edge — reads as an
      accident at this width, and scroll needs no affordance on touch */
   .hero-scroll { display: none; }
+
+  /* --- hero dashboard mock on phones (2026-08-27, user-directed) ---
+     Reference: the mock shrunk to ~36% of the viewport, bleeding off the right
+     edge, sitting in the ragged-right whitespace beside "flow." / "From order".
+
+     Absolutely positioned against .hero-grid so it contributes ZERO height.
+     That is the whole safety property here: the 2026-08-26 log entry reverted an
+     entire fix chain because growing .hero-visual's height re-centred
+     .hero-grid's align-items:center row and pushed the CTAs below the fold. An
+     out-of-flow overlay cannot do that — the copy column's rhythm is untouched.
+
+     Scaled as one composition rather than restyled internally, so every
+     proportion (rail width, 30px metric, 3 stat columns, 4 table rows, the
+     receipt's -6deg) stays exactly the desktop render, just smaller. */
+  .hero-visual {
+    display: block;
+    position: absolute;
+    /* % of .hero-grid, not a fixed offset: the H1 wraps to a different number
+       of rows across 320-767, so a px `top` would drift off the headline. */
+    top: 30%;
+    /* cancels .container's 24px gutter above — the composition bleeds to the
+       true viewport edge, and .hero { overflow: hidden } clips it there. */
+    right: -24px;
+    /* the box the mock is authored against; --hero-mock-scale does the sizing */
+    width: 420px;
+    height: 300px;
+    transform: scale(var(--hero-mock-scale, 0.42));
+    transform-origin: top right;
+    /* flat, not the desktop 3D tilt — the reference card reads straight-on,
+       and an 8deg rotateY on a 160px-wide card just smears the type */
+    perspective: none;
+    /* under .hero-copy. Both z-indexes are load-bearing: .hero-copy already
+       establishes a stacking context (container-type: inline-size implies
+       contain: layout) and comes FIRST in the DOM, so without these the later
+       .hero-visual paints on top of the headline. */
+    z-index: 0;
+    pointer-events: none;
+  }
+  .hero-copy { position: relative; z-index: 2; }
+  .hero-stack {
+    width: 100%;
+    height: 100%;
+    transform: translateY(-50%);
+    /* the fade goes HERE, not on .hero-visual, whose opacity is already driven
+       by two systems that would fight a declared value — hero.css's
+       @keyframes hero-enter (forwards fill) and animation.css's
+       .js-ready [data-anim="fade-up"].is-in { opacity: 1 }. Nothing animates
+       .hero-stack's opacity, so this is the one stable place to put it.
+       0.9 is the concession for <=360px, where the headline's longer lines
+       genuinely cross the card and have to stay the readable layer. */
+    opacity: 0.9;
+  }
+  /* scale()'s argument must be unitless, and there is no way to derive a number
+     from vw in calc() — so the fluid-across-the-range version of this doesn't
+     exist in CSS. Three bands, matching how the rest of this file works. */
+  @media (max-width: 359px) { .hero-visual { --hero-mock-scale: 0.34; } }
+  @media (min-width: 360px) and (max-width: 413px) { .hero-visual { --hero-mock-scale: 0.38; } }
   .section-title { font-size: 26px; }
   .platform-grid { grid-template-columns: 1fr; }
   .platform-tile-media { height: 160px; }

@@ -62,18 +62,20 @@ const EASE = "power3.out";
  * Layout-shift guard: a scrambled run isn't a fixed anagram of the source
  * string — ScrambleText re-randomises the *arrangement* every frame, so
  * even with a character pool matched to the source (poolFrom) a mid-tween
- * frame can render fractionally wider and wrap a `.h-line` to a second
- * row, shoving the rest of the hero down and back. `.is-scrambling` forces
- * `white-space: nowrap` (hero.css) for exactly the tween's duration so a
- * line can never change row count while scrambling; the `.hero-title`
- * min-height lock below is a second, redundant guard against the same
- * failure mode, not the fix on its own.
+ * frame can render fractionally wider than the settled text. Above 768px
+ * `.is-scrambling` forces `white-space: nowrap` (hero.css) for exactly the
+ * tween's duration so a line can never change row count while scrambling;
+ * below 768px `.h-line` wraps normally both during and after the tween
+ * (2026-08-27, bigger/bolder mobile H1), so there's nothing to lock there
+ * beyond row count. Either way the `.hero-title` min-height lock below is
+ * what actually prevents the rest of the hero from shifting.
+ *
+ * Runs on mobile as of 2026-08-27 (previously desktop-only, back when the
+ * mobile H1 was small and CSS-only). Cost is still gated centrally —
+ * boot.ts only fetches this module at all when `isLiteDevice()` says the
+ * device/connection can afford it, on every width.
  */
 function buildHero(): void {
-  // Desktop only, and only where motion is welcome. Matches the old
-  // matchMedia branches: below 768px the hero entrance is CSS and the
-  // headline never scrambled anyway.
-  if (!window.matchMedia("(min-width: 768px)").matches) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   const title = document.querySelector<HTMLElement>(".hero-title");

@@ -8,7 +8,14 @@ body {
   color: var(--ink);
   background: var(--canvas);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  /* `clip`, not `hidden` — WebKit/Safari (so every iOS browser, since they're
+     all WebKit under the hood) can break `position: sticky` for any element
+     whose containing block is the viewport when body/html carries a
+     non-`visible` overflow. `clip` swallows the same horizontal overhang
+     (see CLAUDE.md's mistake log — several bleeding elements rely on this)
+     without turning body into a scroll container, so #site-nav's sticky
+     positioning and its is-scrolled background keep working on mobile. */
+  overflow-x: clip;
 }
 ::selection { background: var(--orange); color: var(--white); }
 
