@@ -1,0 +1,10 @@
+[
+  { "id": "chicking", "name": "Chicking", "country": "Maldives", "logo": "/assets/chicking-150x150.png" },
+  { "id": "highland-flies", "name": "Highland Flies", "logo": "/assets/highland-flies-150x150.png" },
+  { "id": "squalltec", "name": "Squalltec", "logo": "/assets/Squallltec-150x150.png" },
+  { "id": "the-sub-company", "name": "The Sub Company", "logo": "/assets/1logo-150x150.png" },
+  { "id": "coffee-lab", "name": "Coffee Lab", "logo": "/assets/l3-150x150.png" },
+  { "id": "just-for-maakin", "name": "Just For Maakin", "logo": "/assets/l4-150x150.png" },
+  { "id": "m-group", "name": "M Group", "logo": "/assets/l5-150x150.png" },
+  { "id": "an-associates", "name": "AN Associates", "logo": "/assets/an-associate-150x150.png" }
+]

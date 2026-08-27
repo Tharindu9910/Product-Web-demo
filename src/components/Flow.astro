@@ -1,0 +1,76 @@
+---
+// legacy/index.html:2823. The rail-lighting JS (is-lit classes + segment
+// fill/glow/head, driven by scroll position) is animations.ts's
+// buildFlowScroll(), wired centrally by initAnimations() off .flow-stage —
+// nothing to import here. Icons are per-node, hardcoded here rather than in
+// flow-stages.json (content.config.ts's own comment: no per-node copy
+// exists in legacy beyond the label, same precedent as Nav/Footer icons).
+import { getCollection } from "astro:content";
+import Section from "@/components/Section.astro";
+
+const stages = (await getCollection("flowStages")).sort((a, b) => a.data.order - b.data.order);
+
+const icon: Record<string, string> = {
+  "sales-order": '<path d="M6 3h12v18l-3-1.8-3 1.8-3-1.8L6 21Z"/><path d="M10 8.5h4"/><path d="M9.5 12.5h5"/>',
+  inventory: '<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M3.5 9h17"/><path d="M10.25 13h3.5"/>',
+  warehouse:
+    '<path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.6 9.4V19a1.5 1.5 0 0 0 1.5 1.5h9.8a1.5 1.5 0 0 0 1.5-1.5V9.4"/><path d="M9.75 20.5v-5h4.5v5"/>',
+  // deliberately not a vehicle, so it isn't confused with Transport two steps later
+  dispatch:
+    '<path d="M13.4 4.2H5.6A1.9 1.9 0 0 0 3.7 6.1v11.8a1.9 1.9 0 0 0 1.9 1.9h7.8"/><path d="M3.7 9.4h9.7"/><path d="M9.6 12h10.7"/><path d="m17 8.7 3.3 3.3L17 15.3"/>',
+  transport:
+    '<rect x="1.6" y="7" width="12.9" height="9.6" rx="1.5"/><path d="M14.5 11h3.2a2 2 0 0 1 1.6.8l2.1 2.7v2.1h-6.9z"/><circle cx="6.4" cy="18.6" r="1.6"/><circle cx="17.6" cy="18.6" r="1.6"/>',
+  delivery:
+    '<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/><path d="m7.5 4.3 9 5.15"/>',
+  billing: '<path d="M14.5 2.5H7A2 2 0 0 0 5 4.5v15a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"/><path d="M14.5 2.5V7H19"/><path d="M9 12h6"/><path d="M9 16h4"/>',
+  dashboard: '<rect x="3.2" y="3.2" width="17.6" height="17.6" rx="2.6"/><path d="M8 16.2v-3.6"/><path d="M12 16.2V7.8"/><path d="M16 16.2v-5.6"/>',
+};
+---
+
+<Section name="flow">
+  <div class="flow-head">
+    <span class="eyebrow">THE NEXONE DIFFERENCE</span>
+    <h2 class="section-title">One connected flow. From order to delivery.</h2>
+    <p class="lede">
+      Most systems handle one piece and hand the rest to a spreadsheet. NexOne carries a single order through every
+      stage without re-entry.
+    </p>
+  </div>
+
+  <div class="flow-diagram">
+    <div class="flow-stage">
+      <!-- 7 connector segments, one per gap. seg[k] joins node[k] to node[k+1]. -->
+      <div class="flow-rail" aria-hidden="true">
+        {stages.slice(1).map(() => (
+          <span class="flow-seg"><i class="flow-seg-track"></i><i class="flow-seg-glow"></i><i class="flow-seg-fill"></i><i class="flow-seg-head"></i></span>
+        ))}
+      </div>
+
+      <ol
+        class="flow-node-list"
+        aria-label="How an order moves through NexOne, from sales order to dashboard"
+        data-anim="stagger"
+        data-anim-stagger="0.06"
+      >
+        {stages.map(({ data }) => (
+          <li class="flow-node">
+            <span class="flow-node-mark">
+              <span class="flow-node-aura"></span><span class="flow-node-halo"></span>
+              <span class="flow-node-ring">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon[data.id]} />
+              </span>
+            </span>
+            <span class="flow-node-label">{data.stage}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+
+  <div>
+    <p class="flow-caption">
+      One record · no re-entry · no reconciliation, because it's one database across every department — that's what
+      makes NexOne an ERP, not a set of tools.
+    </p>
+  </div>
+</Section>

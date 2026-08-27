@@ -1,0 +1,144 @@
+/* ============================================================
+   ANIMATION — scroll-reveal states.
+
+   These reveals are CSS transitions, not GSAP tweens. `lib/reveal.ts`
+   (zero dependencies, ~1 KB) only toggles `.is-in` from one shared
+   IntersectionObserver; every bit of the motion itself is below. That
+   is what lets ~90 reveals per page work before — or entirely without
+   — the GSAP bundle, which now loads lazily and only for the handful
+   of signature moments that genuinely need an engine (lib/animations.ts).
+
+   Two deliberate choices, both perf:
+
+   1. NO `will-change`. It used to sit on every [data-anim] element
+      unconditionally. That pinned a permanent compositor layer per
+      element — ~60 on the homepage — and never released them, since
+      the tween finishing doesn't clear the property. It was the main
+      source of scroll jank on phones. A plain opacity/translate
+      transition is promoted for its own duration and dropped again
+      automatically, which is what we actually want.
+
+   2. `translate`/`scale` as INDIVIDUAL properties, never `transform`.
+      They compose with whatever `transform` a section already authored
+      (`.cmp-note`'s `rotate(var(--r))`, `.hero-stack`'s tilt) instead of
+      overwriting it. A browser too old to know them ignores the
+      pre-state entirely and the element simply fades — a clean
+      degradation rather than a broken layout.
+
+   Still the same contract as before: these prevent a flash of the
+   finished layout before JS runs, and are inert if JS never loads
+   (`.js-ready` is set by Base.astro's inline head script).
+   ============================================================ */
+
+:root {
+  /* GSAP's power3.out as a bezier — both are a quartic ease-out. */
+  --anim-ease: cubic-bezier(0.25, 1, 0.5, 1);
+  --anim-duration: 900ms;
+  --anim-delay: 0ms;
+  --anim-stagger: 80ms;
+}
+
+/* --- pre-animation state ---------------------------------- */
+
+.js-ready [data-anim="fade-up"],
+.js-ready [data-anim="fade-in"],
+.js-ready [data-anim="scale-in"],
+.js-ready [data-anim="clip"],
+.js-ready [data-anim="stagger"] > * {
+  opacity: 0;
+  transition-property: opacity, translate, scale;
+  transition-duration: var(--anim-duration);
+  transition-timing-function: var(--anim-ease);
+  transition-delay: var(--anim-delay);
+}
+
+.js-ready [data-anim="fade-up"] { translate: 0 32px; }
+.js-ready [data-anim="scale-in"] { scale: 0.96; }
+.js-ready [data-anim="stagger"] > * { translate: 0 24px; }
+
+/* `clip` is currently used by no markup. If it ever is again, read the
+   2026-08-26 mistake-log entry first: a finished clip-path — even at
+   `inset(0% ...)` — keeps clipping to the border box, which silently
+   re-crops any child that deliberately bleeds past its parent. */
+.js-ready [data-anim="clip"] {
+  clip-path: inset(100% 0 0 0);
+  transition-property: opacity, clip-path;
+}
+
+/* --- revealed state --------------------------------------- */
+
+.js-ready [data-anim="fade-up"].is-in,
+.js-ready [data-anim="fade-in"].is-in,
+.js-ready [data-anim="scale-in"].is-in,
+.js-ready [data-anim="clip"].is-in,
+.js-ready [data-anim="stagger"].is-in > * {
+  opacity: 1;
+  translate: none;
+  scale: none;
+}
+
+.js-ready [data-anim="clip"].is-in { clip-path: inset(0% 0 0 0); }
+
+/* --- stagger: per-child delay ------------------------------
+   `--anim-stagger` comes from the container's data-anim-stagger
+   (reveal.ts writes it as a custom property so it inherits down).
+   Legacy stopped at :nth-child(10); the platform grid runs to 12,
+   and anything past that shares the last step rather than trailing
+   off into a visibly late reveal. */
+
+.js-ready [data-anim="stagger"] > *:nth-child(1) { transition-delay: var(--anim-delay); }
+.js-ready [data-anim="stagger"] > *:nth-child(2) { transition-delay: calc(var(--anim-delay) + var(--anim-stagger)); }
+.js-ready [data-anim="stagger"] > *:nth-child(3) { transition-delay: calc(var(--anim-delay) + var(--anim-stagger) * 2); }
+.js-ready [data-anim="stagger"] > *:nth-child(4) { transition-delay: calc(var(--anim-delay) + var(--anim-stagger) * 3); }
+.js-ready [data-anim="stagger"] > *:nth-child(5) { transition-delay: calc(var(--anim-delay) + var(--anim-stagger) * 4); }
+.js-ready [data-anim="stagger"] > *:nth-child(6) { transition-delay: calc(var(--anim-delay) + var(--anim-stagger) * 5); }
+.js-ready [data-anim="stagger"] > *:nth-child(7) { transition-delay: calc(var(--anim-delay) + var(--anim-stagger) * 6); }
+.js-ready [data-anim="stagger"] > *:nth-child(8) { transition-delay: calc(var(--anim-delay) + var(--anim-stagger) * 7); }
+.js-ready [data-anim="stagger"] > *:nth-child(9) { transition-delay: calc(var(--anim-delay) + var(--anim-stagger) * 8); }
+.js-ready [data-anim="stagger"] > *:nth-child(10) { transition-delay: calc(var(--anim-delay) + var(--anim-stagger) * 9); }
+.js-ready [data-anim="stagger"] > *:nth-child(11) { transition-delay: calc(var(--anim-delay) + var(--anim-stagger) * 10); }
+.js-ready [data-anim="stagger"] > *:nth-child(n + 12) { transition-delay: calc(var(--anim-delay) + var(--anim-stagger) * 11); }
+
+/* --- draw: SVG stroke ------------------------------------
+   reveal.ts measures getTotalLength() once, at idle, and writes it to
+   `--draw-length`; the dash offset then transitions to 0 like anything
+   else. Linear, matching the old tween's `ease: "none"`. */
+
+.js-ready [data-anim="draw"] {
+  stroke-dasharray: var(--draw-length, 0);
+  stroke-dashoffset: var(--draw-length, 0);
+  transition: stroke-dashoffset var(--anim-duration) linear var(--anim-delay);
+}
+.js-ready [data-anim="draw"].is-in { stroke-dashoffset: 0; }
+
+/* --- click-driven reveal (React islands) -------------------
+   `animateReveal()` in lib/motion.ts toggles this. Replaces the old
+   GSAP fromTo so that opening a platform panel or switching an industry
+   tab doesn't have to pull an animation engine into the island bundle. */
+
+@keyframes anim-reveal-rise {
+  from { opacity: 0; translate: 0 8px; }
+}
+.is-revealing { animation: anim-reveal-rise 300ms var(--anim-ease) both; }
+
+/* --- reduced motion ---------------------------------------
+   Belt and braces: Base.astro never adds `.js-ready` under reduced
+   motion, so none of the pre-states above can apply in the first
+   place. The rest of the policy is legacy block 16, in base/motion.css,
+   which imports after this and wins.
+
+   The scaffold's blanket `animation-duration: 0.01ms !important` is NOT
+   carried over: legacy block 16 kills animations by name and deliberately
+   leaves others running, and a blanket rule would override that. */
+@media (prefers-reduced-motion: reduce) {
+  [data-anim],
+  [data-anim="stagger"] > * {
+    opacity: 1 !important;
+    translate: none !important;
+    scale: none !important;
+    clip-path: none !important;
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+  .is-revealing { animation: none; }
+}

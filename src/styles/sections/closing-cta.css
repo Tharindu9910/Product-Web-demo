@@ -1,0 +1,97 @@
+/* ============================================================
+   13. CLOSING CTA — factory photo + black scrim + centred orange glow
+   (was flat var(--canvas); photo band added 2026-08-26 by request)
+   ============================================================ */
+.closing-cta {
+  position: relative;
+  overflow:visible;
+  padding: 96px 0;
+  background: var(--ink);
+  text-align: center;
+}
+
+/* The photo fills the section box and is cropped by it — the section's
+   own padding still sets the height, the image never does. Clipping
+   lives here, on the wrapper, and NOT on .closing-cta: the glow below
+   is a blur that paints outside its box, and overflow/mask on the
+   section would shear it (see hero.css + the 2026-08-26 log entry). */
+.closing-cta-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.closing-cta-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  /* the photo's own machinery is orange and high-key; knocking
+     brightness/saturation back is what keeps the headline legible
+     and the CTA button the only saturated orange in the band. */
+  filter: brightness(0.72) saturate(0.8);
+}
+.closing-cta-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    var(--scrim-strong),
+    var(--scrim-soft) 45%,
+    var(--scrim-strong)
+  );
+  pointer-events: none;
+}
+.closing-cta-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 600px; height: 600px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--orange);
+  opacity: 0.06;
+  filter: blur(64px);
+  pointer-events: none;
+  z-index: 2;
+}
+.closing-cta-inner {
+  position: relative;
+  z-index: 3;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.closing-cta-title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  margin-bottom: 24px;
+}
+.closing-cta-sub {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--on-photo);
+  max-width: 42rem;
+}
+.closing-cta-btn {
+  margin-top: 40px;
+  padding: 20px 40px;
+  border-radius: var(--r-pill);
+  background: var(--orange);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  box-shadow: 0 8px 20px rgba(250, 123, 13, 0.2);
+  transition: background-color 300ms var(--ease), box-shadow 300ms var(--ease), transform 150ms var(--ease);
+}
+.closing-cta-btn:hover { background: var(--orange-hover); box-shadow: var(--shadow-lift); }
+.closing-cta-btn:active { transform: scale(0.98); }
+

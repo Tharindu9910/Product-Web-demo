@@ -1,0 +1,26 @@
+[
+  {
+    "id": "cant-see-stock",
+    "order": 1,
+    "title": "You can't see\nyour stock",
+    "items": ["Stock shortages and overstocking", "No real-time inventory picture", "Multiple warehouses, poor visibility"]
+  },
+  {
+    "id": "orders-too-slow",
+    "order": 2,
+    "title": "Orders move\ntoo slowly",
+    "items": ["Slow order fulfilment", "Difficulty tracking deliveries"]
+  },
+  {
+    "id": "cant-trust-numbers",
+    "order": 3,
+    "title": "You can't trust\nyour numbers",
+    "items": ["Manual Excel-based processes", "Stock discrepancies and losses", "Disconnected sales, warehouse and finance"]
+  },
+  {
+    "id": "deciding-blind",
+    "order": 4,
+    "title": "You're deciding\nblind",
+    "items": ["No management dashboards", "Poor visibility of logistics costs"]
+  }
+]

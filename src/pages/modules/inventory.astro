@@ -1,0 +1,261 @@
+---
+// legacy/inventory.html — the flagship module page (legacy/CLAUDE.md).
+// Tour section stays commented out (no real screenshots supplied — rule 7);
+// .slot CSS ports anyway since it's the reusable pattern for other module
+// pages. FAQ pulled from faqs.json (page: "inventory", 4 entries).
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import Base from "@/layouts/Base.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import { withBase } from "@/lib/base";
+import ClosingCTA from "@/components/ClosingCTA.astro";
+import Eyebrow from "@/components/Eyebrow.astro";
+import FaqItem from "@/components/FaqItem.astro";
+import heroPhoto from "@/assets/inventory-hero.jpg";
+import inventoryCtaPhoto from "@/assets/erp-modules/inventory.jpg";
+import "@/styles/pages/inventory.css";
+
+const faqs = (await getCollection("faqs"))
+  .filter((f) => f.data.page === "inventory")
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title="Inventory | NexOne"
+  description="Know what you have, where it is, and what to reorder — across every location, updated as it moves."
+>
+  <Fragment slot="nav">
+    <Nav variant="page" current="modules" />
+  </Fragment>
+
+  <section class="mod-hero">
+    <div class="container">
+      <p class="mod-breadcrumb">
+        <a href={withBase("/#platform")}>ERP Modules</a>
+        <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+        <span>Inventory</span>
+      </p>
+      <div class="mod-hero-grid">
+        <div data-anim="fade-up">
+          <Eyebrow>Core module</Eyebrow>
+          <h1 class="mod-title">Inventory</h1>
+          <p class="lede mod-lede">Know what you have, where it is, and what to reorder — across every location, updated as it moves.</p>
+          <div class="mod-chips">
+            <span class="mod-chip"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg>Live stock counts</span>
+            <span class="mod-chip"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg>Automatic reordering</span>
+            <span class="mod-chip"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg>Works with your accounts</span>
+          </div>
+          <div class="mod-cta-row">
+            <a class="mod-btn-primary" href={withBase("/contact")}>Request a demo</a>
+          </div>
+        </div>
+
+        <div class="mod-hero-media" data-anim="fade-up" data-anim-delay="0.15">
+          <Image
+            src={heroPhoto}
+            alt="A warehouse supervisor scanning the barcode on a carton of stock with a handheld scanner."
+            width={1200}
+            height={900}
+            widths={[420, 640, 900, 1200]}
+            sizes="(max-width: 1023px) calc(100vw - 48px), 600px"
+            quality={68}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mod-pain section">
+    <div class="container">
+      <div class="section-head" data-anim="fade-up">
+        <Eyebrow>Why it matters</Eyebrow>
+        <h2 class="section-title">Stock goes wrong in three ways.</h2>
+      </div>
+      <div class="pain-grid" data-anim="stagger">
+        <div class="pain-card">
+          <h3>Too much</h3>
+          <p>Cash tied up in lines that aren't selling, ageing on a shelf.</p>
+        </div>
+        <div class="pain-card">
+          <h3>Too little</h3>
+          <p>The customer goes to whoever did have it, and you never see the loss.</p>
+        </div>
+        <div class="pain-card">
+          <h3>Nobody's sure</h3>
+          <p>Every branch has its own number, and none of them agree.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-dark" id="engine">
+    <div class="container">
+      <div class="section-head" data-anim="fade-up">
+        <Eyebrow>Automatic reordering</Eyebrow>
+        <h2 class="section-title">It works out what to reorder. Every night.</h2>
+        <p class="lede">Not a fixed minimum you set once and forget — a level that moves as your demand moves.</p>
+      </div>
+
+      <div class="engine-flow">
+        <p class="flow-label flow-label--in">What it looks at</p>
+        <div class="flow-col flow-col--in" data-anim="stagger">
+          <div class="flow-item">
+            <span class="flow-item-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"></path><path d="M15 7h6v6"></path></svg></span>
+            <strong>Sales history</strong>
+            <span>What actually sold, branch by branch</span>
+          </div>
+          <div class="flow-item">
+            <span class="flow-item-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg></span>
+            <strong>Supplier lead time</strong>
+            <span>How long delivery really takes</span>
+          </div>
+          <div class="flow-item">
+            <span class="flow-item-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg></span>
+            <strong>Seasonal peaks</strong>
+            <span>The times you always get busy</span>
+          </div>
+          <div class="flow-item">
+            <span class="flow-item-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5z"></path><path d="M3 8v8l9 5 9-5V8"></path><path d="M12 13v8"></path></svg></span>
+            <strong>Order limits</strong>
+            <span>Minimum quantity, case and pack size</span>
+          </div>
+        </div>
+
+        <p class="flow-label flow-label--core">Every night</p>
+        <div class="flow-core" data-anim="scale-in" data-anim-delay="0.4">
+          <span class="flow-core-icon">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 11-2.34-5.66"></path><path d="M20 4v4h-4"></path></svg>
+          </span>
+          <strong>Nightly calculation</strong>
+          <span class="flow-core-sub">Every item, at every location</span>
+        </div>
+
+        <p class="flow-label flow-label--out">What it gives you</p>
+        <div class="flow-col flow-col--out" data-anim="stagger" data-anim-delay="0.6">
+          <div class="flow-item">
+            <span class="flow-item-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l5 5v13a1 1 0 01-1 1H6a1 1 0 01-1-1V4a1 1 0 011-1z"></path><path d="M14 3v5h5"></path></svg></span>
+            <strong>Purchase order draft</strong>
+            <span>Grouped by supplier, ready to approve</span>
+          </div>
+          <div class="flow-item">
+            <span class="flow-item-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h13M13 3l4 4-4 4"></path><path d="M20 17H7M11 13l-4 4 4 4"></path></svg></span>
+            <strong>Branch transfer</strong>
+            <span>Move stock before buying more</span>
+          </div>
+          <div class="flow-item">
+            <span class="flow-item-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 16H3l9-16z"></path><path d="M12 9v5M12 17h.01"></path></svg></span>
+            <strong>Excess stock alert</strong>
+            <span>Lines drifting higher than they should</span>
+          </div>
+        </div>
+
+        <svg class="flow-fan flow-fan--in" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 11 L100 50" data-anim="draw" data-anim-delay="0"></path>
+          <path d="M0 37 L100 50" data-anim="draw" data-anim-delay="0.06"></path>
+          <path d="M0 63 L100 50" data-anim="draw" data-anim-delay="0.12"></path>
+          <path d="M0 89 L100 50" data-anim="draw" data-anim-delay="0.18"></path>
+        </svg>
+        <svg class="flow-fan flow-fan--out" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 50 L100 15.5" data-anim="draw" data-anim-delay="0.5"></path>
+          <path d="M0 50 L100 50" data-anim="draw" data-anim-delay="0.56"></path>
+          <path d="M0 50 L100 84.5" data-anim="draw" data-anim-delay="0.62"></path>
+        </svg>
+      </div>
+
+      <p class="engine-note" data-anim="fade-up" data-anim-delay="0.7"><strong>Suggestions, not autopilot.</strong> Nothing is ordered without a person approving it.</p>
+    </div>
+  </section>
+
+  <section class="mod-caps section">
+    <div class="container">
+      <div class="section-head" data-anim="fade-up">
+        <Eyebrow>What you get</Eyebrow>
+        <h2 class="section-title">Everything inventory needs.</h2>
+      </div>
+      <div class="caps-grid" data-anim="stagger">
+        <div class="cap-card">
+          <span class="cap-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3 8 4-16 3 8h4"></path></svg></span>
+          <h3>Live stock counts</h3>
+          <p>Numbers change the moment stock moves — no overnight wait.</p>
+        </div>
+        <div class="cap-card">
+          <span class="cap-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.3 7-11a7 7 0 10-14 0c0 5.7 7 11 7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg></span>
+          <h3>Every location, one number</h3>
+          <p>Warehouses, shops and vans all read from the same ledger.</p>
+        </div>
+        <div class="cap-card">
+          <span class="cap-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l8 4-8 4-8-4 8-4z"></path><path d="M4 12l8 4 8-4M4 16l8 4 8-4"></path></svg></span>
+          <h3>Batches and expiry</h3>
+          <p>Track a batch from goods-in to the customer who received it.</p>
+        </div>
+        <div class="cap-card">
+          <span class="cap-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7v10M8 7v10M12 7v10M16 7v10M20 7v10"></path></svg></span>
+          <h3>Barcode stock counts</h3>
+          <p>Count a section at a time with a scanner or a phone — no shutdown.</p>
+        </div>
+        <div class="cap-card">
+          <span class="cap-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M8 8h6a2.5 2.5 0 010 5H9a2.5 2.5 0 000 5h7"></path></svg></span>
+          <h3>Stock value that matches</h3>
+          <p>What your accountant reports is what the warehouse is holding.</p>
+        </div>
+        <div class="cap-card">
+          <span class="cap-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z"></path><path d="M9 12l2 2 4-4"></path></svg></span>
+          <h3>A full audit trail</h3>
+          <p>Every write-off and adjustment carries a reason and a name.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mod-fit section">
+    <div class="container">
+      <div class="section-head" data-anim="fade-up">
+        <Eyebrow>How it fits</Eyebrow>
+        <h2 class="section-title">You don't have to replace anything.</h2>
+      </div>
+      <div class="fit-grid" data-anim="stagger">
+        <div class="fit-card fit-card--lead">
+          <span class="fit-tag">Most common</span>
+          <h3>Keep your accounting system</h3>
+          <p>NexOne runs the stock and the ordering, and syncs back to the accounts package your finance team already knows.</p>
+        </div>
+        <div class="fit-card">
+          <span class="fit-tag">Full platform</span>
+          <h3>Or run it all in NexOne</h3>
+          <p>Inventory, purchasing and the rest of the modules in one place, with nothing to reconcile at month end.</p>
+        </div>
+        <div class="fit-card">
+          <span class="fit-tag">Delivery</span>
+          <h3>Cloud, nothing to install</h3>
+          <p>No server to maintain, no upgrade projects. Reachable from the office, the warehouse floor or a phone.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq section">
+    <div class="container">
+      <div class="section-head" data-anim="fade-up">
+        <Eyebrow>Common questions</Eyebrow>
+        <h2 class="section-title">Before you ask.</h2>
+      </div>
+      <div class="faq-list" data-anim="stagger">
+        {faqs.map(({ data }) => (
+          <FaqItem question={data.question} answer={data.answer} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <ClosingCTA sub="Bring your product list and we'll show you what it would reorder. Thirty minutes, no slides." image={inventoryCtaPhoto}>
+    <Fragment slot="title">See it run on<br />your own stock.</Fragment>
+  </ClosingCTA>
+
+  <Fragment slot="footer">
+    <Footer />
+  </Fragment>
+</Base>

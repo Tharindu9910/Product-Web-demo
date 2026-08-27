@@ -1,0 +1,35 @@
+---
+// legacy/index.html:2969. No <video>/embed wired up — placeholder screen
+// until the product tour video is supplied, same as legacy. The stats band
+// ports unchanged per Approved content in CLAUDE.md.
+//
+// Not using Section.astro: legacy's id is "tour", not "video" — and
+// base/layout.css's `#tour, #platform { padding-top: var(--section-y-tight) }`
+// (the white-on-white abutment rule) targets that id specifically.
+---
+
+<section class="section video" id="tour" aria-label="See it in action">
+  <div class="container">
+    <div class="video-head">
+      <p class="eyebrow">SEE IT IN ACTION</p>
+      <h2 class="section-title">Watch NexOne run a real business day.</h2>
+      <p class="lede">From the first sale at the counter to the evening stock report. One system, two minutes.</p>
+    </div>
+
+    <div class="video-frame" data-anim="scale-in">
+      <div class="video-screen">
+        <button class="video-play" type="button" aria-label="Play the product tour video">
+          <svg class="icon icon--solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15c0 .8.9 1.3 1.6.9l12-7.5c.6-.4.6-1.4 0-1.8l-12-7.5c-.7-.4-1.6.1-1.6.9z"></path></svg>
+        </button>
+        <span class="video-caption">Product tour &middot; 2 min</span>
+      </div>
+    </div>
+
+    <ul class="video-stats" aria-label="NexOne at a glance">
+      <li><strong>25<em>+</em></strong><span>Years in business</span></li>
+      <li><strong>4</strong><span>Countries served</span></li>
+      <li><strong>6</strong><span>modules &middot; one database</span></li>
+      <li><strong>4.8<em>/5</em></strong><span>Customer rating</span></li>
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,57 @@
+/* ============================================================
+   14. FOOTER
+
+   legacy/index.html's own block 14 was a raw Tailwind-CDN component on a
+   dead Material-3 palette (see legacy/CLAUDE.md's `tailwind.config`); it
+   never had a token-based stylesheet to paste verbatim. What's below is
+   legacy/about.html's `.mod-footer` (already tokenized, already identical
+   content minus one Company link and the FAB) ported instead, per step 3:
+   "rewrite the homepage one against tokens." One design, both Nav.astro
+   variants render it.
+   ============================================================ */
+.mod-footer { background: var(--ink); color: rgba(255, 255, 255, 0.7); padding: 56px 0 24px; position: relative; }
+.mod-footer-grid { display: grid; grid-template-columns: 1.3fr 0.7fr 1fr 1fr; gap: 48px; align-items: start; padding-bottom: 32px; }
+.footer-col h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--white); margin-bottom: 16px; }
+.footer-col ul { display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul a { font-size: 13px; transition: color 200ms var(--ease); }
+.footer-col ul a:hover { color: var(--orange); }
+.footer-col--brand { display: flex; flex-direction: column; gap: 16px; }
+.mod-footer-logo { display: inline-flex; align-items: center; padding: 8px 12px; border-radius: var(--r-pill); background: var(--white); width: fit-content; }
+.mod-footer-logo img { height: 28px; width: auto; }
+.footer-tagline { font-size: 13px; line-height: 1.6; max-width: 280px; color: rgba(255, 255, 255, 0.6); }
+.footer-social { display: flex; gap: 16px; }
+.footer-social a { color: rgba(255, 255, 255, 0.6); transition: color 200ms var(--ease); }
+.footer-social a:hover { color: var(--orange); }
+.mod-footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+}
+.mod-footer-copy { font-size: 13px; }
+.mod-footer-email { font-size: 13px; color: rgba(255, 255, 255, 0.7); transition: color 200ms var(--ease); }
+.mod-footer-email:hover { color: var(--orange); }
+
+/* Homepage-only floating WhatsApp button (legacy/index.html:3872 — a
+   `fixed` Tailwind-CDN element, arbitrary "lg"/"shadow-lg" spacing scale
+   that goes away with the rest of the Material-3 config, rule 1's note
+   in CLAUDE.md step 3). Re-derived at the same visual weight from tokens
+   already used for other floating chips (.mock-chip's shadow). */
+/* Commented out on request (2026-08-27) along with the markup in
+   components/Footer.astro. Restore both together.
+.footer-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 50;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-pill);
+  background: var(--orange);
+  color: var(--white);
+  box-shadow: 0 12px 28px rgba(20, 41, 63, 0.25);
+  transition: transform 200ms var(--ease);
+}
+.footer-fab:hover { transform: scale(1.05); }
+*/

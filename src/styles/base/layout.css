@@ -1,0 +1,44 @@
+/* ============================================================
+   4. LAYOUT — vertical rhythm applied uniformly (4b)
+   ============================================================ */
+.section { padding-block: var(--section-y); }
+/* same-ground boundaries: a colour change already reads as separation, so only
+   white-on-white abutments (Comparison -> Video -> Platform) need the tight value */
+#tour, #platform { padding-top: var(--section-y-tight); }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 40px; }
+
+/* 4c — section index marker */
+.section-index {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: rgba(140, 156, 180, 0.5);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+
+/* 4e — reveal on scroll */
+.reveal-group > .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 500ms var(--ease), transform 500ms var(--ease);
+}
+.reveal-group.is-in > .reveal { opacity: 1; transform: none; }
+.reveal-group > .reveal:nth-child(1)  { transition-delay: 0ms; }
+.reveal-group > .reveal:nth-child(2)  { transition-delay: 60ms; }
+.reveal-group > .reveal:nth-child(3)  { transition-delay: 120ms; }
+.reveal-group > .reveal:nth-child(4)  { transition-delay: 180ms; }
+.reveal-group > .reveal:nth-child(5)  { transition-delay: 240ms; }
+.reveal-group > .reveal:nth-child(6)  { transition-delay: 300ms; }
+.reveal-group > .reveal:nth-child(7)  { transition-delay: 360ms; }
+.reveal-group > .reveal:nth-child(8)  { transition-delay: 420ms; }
+.reveal-group > .reveal:nth-child(9)  { transition-delay: 480ms; }
+.reveal-group > .reveal:nth-child(10) { transition-delay: 540ms; }
+
+/* shared inline icon sizing */
+.icon { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.icon--sm { width: 18px; height: 18px; }
+.icon--xs { width: 14px; height: 14px; stroke-width: 2; }
+.icon--lg { width: 32px; height: 32px; stroke-width: 1.4; }
+.icon--solid { fill: currentColor; stroke: none; }
+

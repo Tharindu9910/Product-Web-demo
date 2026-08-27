@@ -1,0 +1,59 @@
+[
+  {
+    "id": "distribution",
+    "name": "Distribution",
+    "order": 1,
+    "image": "/assets/3d_icons/Distribution.png",
+    "stack": ["Inventory", "Logistics", "Purchasing", "Integrated Finance"],
+    "changes": [
+      "Dispatched orders sync to stock the moment a route closes.",
+      "Multi-warehouse stock visible in real time.",
+      "Supplier purchasing driven by actual demand across warehouses."
+    ],
+    "cta": "SEE A DISTRIBUTION DEMO"
+  },
+  {
+    "id": "wholesale",
+    "name": "Wholesale",
+    "order": 2,
+    "image": "/assets/3d_icons/wholesale.png",
+    "stack": ["Inventory", "Sales Orders", "Purchasing", "Integrated Finance"],
+    "changes": [
+      "Bulk orders sync to stock the moment they're confirmed.",
+      "Credit terms and outstanding balances tracked per customer.",
+      "Reordering triggered by real stock levels, not guesswork."
+    ],
+    "cta": "SEE A WHOLESALE DEMO"
+  },
+  {
+    "id": "retail",
+    "name": "Retail",
+    "order": 3,
+    "image": "/assets/3d_icons/retail.png",
+    "stack": ["POS System", "Inventory", "CRM & Loyalty", "Integrated Finance"],
+    "changes": [
+      "Till sales sync to stock the moment a receipt prints.",
+      "Stock levels visible across every outlet in real time.",
+      "Repeat customers and loyalty points tracked automatically."
+    ],
+    "cta": "SEE A RETAIL DEMO"
+  },
+  {
+    "id": "restaurant",
+    "name": "Restaurant",
+    "order": 4,
+    "image": "/assets/3d_icons/restaurant.png",
+    "stack": ["POS System", "Inventory", "Payroll", "Integrated Finance"],
+    "changes": [
+      "Table orders sync to stock the moment they're placed.",
+      "Wastage tracked per ingredient, not per invoice.",
+      "Staff rosters and payroll in one place."
+    ],
+    "clients": [
+      { "name": "Chicking", "place": "Maldives" },
+      { "name": "Gloria Jeans", "place": "Maldives" },
+      { "name": "Brew & Feast", "place": "Maldives" }
+    ],
+    "cta": "SEE A RESTAURANT DEMO"
+  }
+]

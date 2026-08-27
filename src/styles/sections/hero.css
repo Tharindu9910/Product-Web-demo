@@ -1,0 +1,377 @@
+/* ============================================================
+   6. HERO — var(--canvas) + grid texture (4a)
+   ============================================================ */
+.hero {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--canvas);
+  /* fits one viewport minus the 80px sticky nav; content is vertically
+     centred so the old 160px top gap is gone */
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  padding: 40px 0 88px;
+}
+/* The 48px blueprint grid used to sit on .hero's own background-image, which
+   meant it stopped dead at the section's bottom edge — a hard horizontal line
+   against Trust's ungridded canvas directly below. Trust is a painted brush
+   band now, so any ruled edge under it reads as a seam in the paper.
+
+   On a pseudo-element it can be masked: the grid dissolves into flat canvas
+   over the last 22% of the hero, so by the time the eye reaches the boundary
+   there is nothing left to stop. Fading here rather than repeating the grid
+   on .trust is deliberate — .hero's height is viewport-driven, so the 48px
+   tile would land mid-cycle at the boundary and the two grids would jog. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(140, 156, 180, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(140, 156, 180, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+}
+.hero > .container { width: 100%; }
+.hero-glow {
+  position: absolute;
+  top: 50%;
+  right: -10%;
+  width: 800px;
+  height: 800px;
+  transform: translateY(-50%);
+  background: rgba(250, 123, 13, 0.12);
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  /* NEVER put a mask (or clip-path) on this element. Its whole appearance is
+     the blur spilling OUTSIDE the 800px box — mask-clip is border-box by
+     default, so masking clips that spill away and the circle's own geometry
+     snaps back into a hard visible edge. Tried 2026-08-26 to soften a
+     suspected overflow clip at the hero's bottom; it made the glow read as a
+     literal orange circle. Soften this by moving/resizing it instead. */
+}
+.hero-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  /* legacy: 50% 50%. Widened so the H1 renders at its full design size —
+     "One connected flow." is 10.113em, i.e. 728px at the clamp's 72px
+     ceiling, and half of the 1280 container (570px) cannot hold it, which
+     is what was forcing the --h1-max cap below to shrink the headline on
+     every desktop. 62% of the 1200px inner width is 744px, ~2% clear, so
+     the cap goes inert at every width >=1024 and the type is untouched.
+     The trade is .hero-visual: 600px -> 456px at 1440. Only applies from
+     1024 up — responsive.css collapses this to 1fr below that. */
+  grid-template-columns: 62% 38%;
+  gap: 32px;
+  align-items: center;
+}
+/* overflow-x guards a scrambled .h-line run that's transiently wider than
+   its settled text (see the .is-scrambling rule below) — never legitimately
+   needed otherwise, so it's unconditional rather than scoped to the tween. */
+.hero-copy { display: flex; flex-direction: column; overflow-x: clip; }
+
+/* --- the H1 never re-wraps (2026-08-27, user-directed) ---
+   The three .h-line spans are the hand-authored line breaks; the browser
+   was adding a fourth, splitting "One connected flow." across two rows at
+   every width where the line is wider than its column — 320/360/390 on a
+   phone, and 1024 upward, where .hero-copy is only half the grid (570px at
+   the capped container against 728px of text at 72px).
+   Two halves to the fix, and both are needed:
+   1. white-space: nowrap on .h-line makes the break impossible.
+   2. a width-derived cap on the font size keeps that nowrap from
+      overflowing. .hero-copy becomes an inline-size container so the cap
+      can be expressed against the actual column, one value for every
+      breakpoint, instead of re-deriving the column from 100vw three times.
+      "One connected flow." measures 10.113em in Sora 700 at -0.03em
+      (10.118em in the metric-matched "Sora Fallback", so FOUT can't
+      overflow it either) -> it fits while font-size <= 100cqi / 10.118,
+      i.e. 9.88cqi. 9.7cqi leaves ~2%.
+   max-width goes to 100% because .display-h1's 95% only ever existed to
+   bound the wrap, and nothing wraps here now. */
+.hero-copy { container-type: inline-size; --h1-max: 9.7cqi; }
+.hero-title { max-width: 100%; }
+.hero-eyebrow-brand { display: block; }
+.hero-eyebrow-market {
+  display: block;
+  color: var(--orange);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+.hero-title .h-line { display: block; white-space: nowrap; }
+.hero-title .hero-title-accent { color: var(--orange); }
+
+/* ScrambleText entrance (animations.ts buildHero()) — only while a line is
+   actively resolving. white-space:nowrap is the actual layout-shift fix:
+   ScrambleText re-randomises the glyph arrangement every frame, not just
+   the final string, so a mid-tween frame can render wider than the settled
+   text even with a matched character pool (poolFrom) — nowrap means that
+   can never push the line to a second row and shove the rest of the hero
+   down. Only active above the 768px breakpoint that actually scrambles
+   (buildHero()'s narrow branch never adds this class), so it never fights
+   the natural mobile wrap. font-kerning/text-rendering stop per-pair width
+   jitter as glyphs swap. */
+.h-line.is-scrambling {
+  white-space: nowrap;
+  font-kerning: none;
+  text-rendering: optimizeSpeed;
+}
+.hero-lede { max-width: 32rem; margin-top: 20px; color: var(--navy); }
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 28px; }
+.hero-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--orange);
+  color: var(--white);
+  padding: 16px 32px;
+  border-radius: var(--r-sm);
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 10px 24px rgba(250, 123, 13, 0.2);
+  transition: opacity 200ms var(--ease);
+}
+.hero-btn-primary:hover { opacity: 0.9; }
+.hero-btn-primary .icon { transition: transform 200ms var(--ease); }
+.hero-btn-primary:hover .icon { transform: translateX(4px); }
+.hero-btn-secondary {
+  border: 1.5px solid var(--navy);
+  color: var(--navy);
+  background: var(--white);
+  padding: 16px 32px;
+  border-radius: var(--r-sm);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 200ms var(--ease), color 200ms var(--ease);
+}
+.hero-btn-secondary:hover { background: var(--navy); color: var(--white); }
+
+.hero-proof { display: flex; align-items: center; flex-wrap: wrap; gap: 24px; margin-top: 28px; }
+.hero-rating { display: flex; align-items: center; gap: 12px; }
+.hero-stars { display: flex; color: var(--orange); }
+.hero-stars .icon { width: 20px; height: 20px; }
+.hero-rating-text { font-size: 14px; color: var(--slate); }
+.hero-rating-text strong { color: var(--navy); }
+.hero-proof-divider { width: 1px; height: 24px; background: var(--hairline); }
+.hero-trusted {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(140, 156, 180, 0.6);
+}
+.hero-trusted strong { font-weight: 700; }
+
+/* --- hero image --- */
+.hero-visual { position: relative; height: clamp(360px, 58vh, 580px); perspective: 2500px; }
+.hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* --- hero dashboard mock (decorative, commented out in Hero.astro — see 2026-08-26 note) --- */
+.hero-stack {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 120%;
+  height: 92%;
+  transform: translateY(-50%) rotateY(-8deg) rotateX(2deg);
+  transform-style: preserve-3d;
+}
+.mock-window {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-panel);
+  box-shadow: 0 25px 50px rgba(20, 41, 63, 0.15);
+}
+.mock-bar {
+  height: 40px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: var(--white);
+  border-bottom: 1px solid rgba(140, 156, 180, 0.1);
+}
+.mock-dots { display: flex; gap: 8px; }
+.mock-dots span { width: 12px; height: 12px; border-radius: 50%; background: rgba(140, 156, 180, 0.3); }
+.mock-bar-title { font-size: 12px; font-weight: 500; color: rgba(140, 156, 180, 0.7); }
+.mock-avatars { display: flex; }
+.mock-avatar {
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 1px solid var(--white);
+  background: linear-gradient(140deg, var(--slate), var(--navy));
+}
+.mock-avatar + .mock-avatar { margin-left: -8px; }
+.mock-body { flex: 1; display: flex; background: var(--canvas); overflow: hidden; }
+.mock-rail {
+  width: 64px; flex: none;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 24px; padding: 16px 0;
+  background: var(--white);
+  border-right: 1px solid rgba(140, 156, 180, 0.1);
+  color: rgba(140, 156, 180, 0.4);
+}
+.mock-rail-item.is-active { color: var(--orange); background: rgba(250, 123, 13, 0.1); padding: 8px; border-radius: var(--r-sm); }
+.mock-rail-spacer { margin-top: auto; }
+.mock-main { flex: 1; display: flex; flex-direction: column; gap: 24px; padding: 24px; overflow: hidden; }
+.mock-head { display: flex; justify-content: space-between; align-items: flex-end; }
+.mock-label { font-size: 14px; font-weight: 600; color: var(--slate); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.mock-metric-row { display: flex; align-items: center; gap: 12px; }
+.mock-metric { font-size: 30px; font-weight: 700; color: var(--navy); line-height: 1.1; }
+.mock-delta {
+  display: inline-flex; align-items: center; gap: 2px;
+  padding: 4px 8px; border-radius: var(--r-pill);
+  background: var(--color-status-surface); color: var(--color-status-text);
+  font-size: 12px; font-weight: 700;
+}
+.mock-head-actions { display: flex; gap: 8px; }
+.mock-btn { padding: 6px 12px; border: 1px solid var(--hairline); border-radius: 4px; font-size: 12px; font-weight: 500; color: var(--slate); }
+.mock-btn--solid { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.mock-chart { height: 128px; width: 100%; padding-top: 16px; }
+.mock-chart svg { width: 100%; height: 100%; }
+.mock-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.mock-stat { padding: 16px; background: var(--white); border: 1px solid rgba(140, 156, 180, 0.1); border-radius: var(--r-sm); box-shadow: 0 1px 2px rgba(20, 41, 63, 0.04); }
+.mock-stat-label { font-size: 12px; color: var(--slate); margin-bottom: 4px; }
+.mock-stat-value { font-size: 18px; font-weight: 700; color: var(--navy); }
+.mock-stat--alert { background: rgba(250, 123, 13, 0.05); border-color: rgba(250, 123, 13, 0.3); }
+.mock-stat--alert .mock-stat-label { color: var(--orange); font-weight: 500; }
+.mock-stat--alert .mock-stat-value { color: var(--orange); display: flex; align-items: center; gap: 8px; }
+.mock-table { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--white); border: 1px solid rgba(140, 156, 180, 0.1); border-radius: var(--r-sm); }
+.mock-tr { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 12px 16px; border-bottom: 1px solid rgba(140, 156, 180, 0.08); font-size: 14px; align-items: center; }
+.mock-tr--head { padding: 8px 16px; font-size: 12px; font-weight: 600; color: var(--slate); text-transform: uppercase; background: rgba(140, 156, 180, 0.05); }
+.mock-td--name { font-weight: 500; color: var(--navy); }
+.mock-td--muted { color: var(--slate); }
+.mock-pip { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+.mock-pip--ok { background: var(--color-status-ok); }
+.mock-pip--low { background: var(--color-status-low); }
+.mock-pip--out { background: var(--color-status-out); }
+.mock-receipt {
+  position: absolute; bottom: -32px; left: -48px; width: 256px; z-index: 3;
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 24px;
+  background: var(--white);
+  border: 1px solid rgba(140, 156, 180, 0.1);
+  border-radius: var(--r-sm);
+  box-shadow: 0 20px 40px rgba(36, 67, 107, 0.15);
+  transform: rotate(-6deg);
+  font-family: ui-monospace, monospace;
+  font-size: 14px;
+  color: var(--slate);
+}
+.mock-receipt-head { text-align: center; font-weight: 700; font-size: 18px; color: var(--navy); padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px dashed var(--hairline-2); }
+.mock-receipt-row { display: flex; justify-content: space-between; }
+.mock-receipt-total { display: flex; justify-content: space-between; font-weight: 700; font-size: 16px; color: var(--navy); padding-top: 8px; margin-top: 8px; border-top: 1px dashed var(--hairline-2); }
+.mock-receipt-foot { text-align: center; font-size: 12px; margin-top: 16px; opacity: 0.5; }
+.mock-chip {
+  position: absolute; top: -16px; right: 32px; z-index: 4;
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px;
+  background: var(--navy);
+  color: var(--white);
+  border-radius: var(--r-sm);
+  box-shadow: 0 12px 28px rgba(20, 41, 63, 0.25);
+}
+.mock-chip .icon { color: var(--color-status-ok-bright); }
+.mock-chip-title { font-size: 12px; font-weight: 700; }
+.mock-chip-sub { font-size: 10px; opacity: 0.7; }
+
+.hero-scroll {
+  position: absolute;
+  bottom: 48px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--slate);
+  transform: rotate(-90deg);
+  transform-origin: bottom left;
+  animation: pulse 2s ease-in-out infinite;
+}
+.hero-scroll span { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
+.hero-scroll .icon { transform: rotate(90deg); }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+
+/* ============================================================
+   HERO ENTRANCE — CSS, not GSAP.
+
+   This used to be buildHero()'s gsap.timeline / gsap.matchMedia, which
+   meant the above-the-fold entrance could not start until the whole
+   animation bundle had downloaded and parsed. On a phone on a weak
+   connection that is the worst possible thing to put behind a network
+   request. It is now plain CSS: it starts at first paint, costs nothing,
+   and runs identically whether or not GSAP ever arrives.
+
+   Timings and distances are the ones the old timeline used, kept exactly
+   so the entrance reads the same. `both` fill mode holds the from-state
+   through the delay, so nothing flashes before its turn.
+
+   Only the H1 scramble is still GSAP (lib/animations.ts) — it is the one
+   effect here that genuinely needs an engine, it is desktop-only, and it
+   is skipped outright if the bundle has not arrived in time to be the
+   entrance rather than an interruption.
+
+   `.js-ready` gates all of it: under reduced motion Base.astro never sets
+   that class, so none of these animations exist and the hero is simply
+   there, which is the correct reduced-motion result.
+   ============================================================ */
+
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    translate: 0 var(--hero-rise, 14px);
+  }
+}
+
+.js-ready .hero-eyebrow-market,
+.js-ready .hero-lede,
+.js-ready .hero-actions,
+.js-ready .hero-proof,
+.js-ready .hero-visual {
+  animation: hero-enter var(--hero-dur, 500ms) var(--anim-ease) var(--hero-delay, 0ms) both;
+}
+
+/* Narrow: one plain staggered rise for everything, the H1 included —
+   the scramble never runs below 768px. */
+@media (max-width: 767px) {
+  .js-ready .hero-title {
+    animation: hero-enter var(--hero-dur, 500ms) var(--anim-ease) var(--hero-delay, 0ms) both;
+  }
+  .js-ready .hero-eyebrow-market { --hero-delay: 0ms; }
+  .js-ready .hero-title { --hero-delay: 70ms; }
+  .js-ready .hero-lede { --hero-delay: 140ms; }
+  .js-ready .hero-actions { --hero-delay: 210ms; }
+  .js-ready .hero-proof { --hero-delay: 280ms; }
+  .js-ready .hero-visual { --hero-delay: 350ms; }
+}
+
+/* Wide: the H1 is left alone (static, then scrambled if GSAP makes it),
+   and everything else keeps the old timeline's own offsets. */
+@media (min-width: 768px) {
+  .js-ready .hero-eyebrow-market { --hero-rise: 10px; --hero-dur: 400ms; --hero-delay: 0ms; }
+  .js-ready .hero-visual { --hero-rise: 22px; --hero-dur: 600ms; --hero-delay: 450ms; }
+  .js-ready .hero-lede { --hero-rise: 14px; --hero-dur: 450ms; --hero-delay: 750ms; }
+  .js-ready .hero-actions { --hero-rise: 12px; --hero-dur: 400ms; --hero-delay: 900ms; }
+  .js-ready .hero-proof { --hero-rise: 12px; --hero-dur: 400ms; --hero-delay: 960ms; }
+}

@@ -1,0 +1,404 @@
+/* ============================================================
+   9. PLATFORM — var(--canvas) + 1px top border slate 15% (4a)
+   2026-08-15: restored to the original card.html card at its original
+   size (359px tall, ~224px wide at 5-up) — the one-screen constraint
+   from earlier the same day is dropped; this section scrolls again.
+   2026-08-16: split into two parts per modules-new.html — Core modules
+   get their own head + grid ahead of a Supporting modules & services
+   head + the rest in the original five-across grid. See the CORE
+   VARIANT block further down for the card treatment. The core head+grid
+   sit in the markup *outside* .platform-shell (not in .platform-rail) so
+   STATE 3's expand-to-rail only ever touches the supporting tiles —
+   core modules are plain links to their own pages and stay full-size
+   and visible no matter which supporting-module panel is open.
+   2026-08-26: `core: true` in modules.json now covers six modules
+   (Inventory, Logistics, Finance, Payroll, POS, Custom), not just the
+   original two — the core grid went from two-up to a four-up/2-row
+   layout (4 in row one, the remaining 2 centred in row two) to fit
+   them on larger screens without scrolling. See the CORE VARIANT block.
+   ============================================================ */
+.platform { background: var(--canvas); border-top: 1px solid rgba(140, 156, 180, 0.15); }
+.platform-head { max-width: 48rem; margin: 0 auto 64px; text-align: center; }
+.platform-head .section-title { margin: 16px 0 16px; }
+
+.platform-shell {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  align-items: start;
+  transition: grid-template-columns 340ms var(--ease), gap 340ms var(--ease);
+}
+/* 5 across. The 10% each side a hovered card grows into (see STATE 2)
+   is absorbed by .container's 40px padding, so nothing clips at the edges. */
+.platform-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 20px;
+  /* Consumed by the hover block below (pointer devices only). The rows are
+     pinned to a definite height so that (a) every card in a row is equal and
+     (b) the hovered card's `height: var(--tile-zoom)` has a real box to grow
+     from — a percentage height against an `auto` row resolves to auto. */
+  --tile-h: 359px;
+  --tile-zoom: 112%;
+  transition: grid-template-columns 340ms var(--ease), gap 340ms var(--ease), padding-right 340ms var(--ease),
+    border-color 340ms var(--ease);
+}
+
+.platform-tile[data-module="inventory"],
+.platform-tile[data-module="logistics"] {
+  border-color: rgba(250, 123, 13, 0.4);
+}
+.platform-tile[data-module="inventory"]::after,
+.platform-tile[data-module="logistics"]::after {
+  position: absolute;
+  top: 14px; right: 14px;
+  z-index: 2;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--white);
+  background: var(--orange);
+  padding: 3px 8px;
+  border-radius: var(--r-pill);
+}
+/* STATE 1 — the card (design ported from card.html):
+   photo band on top, copy beneath. */
+.platform-tile {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  width: 100%;
+  text-align: left;
+  background: var(--white);
+  border: 1px solid var(--hairline-2);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 44px rgba(20, 41, 63, 0.07);
+  /* opacity is only ever animated by the STATE 3 rail — never by hover */
+  transition: width 380ms var(--ease), height 380ms var(--ease), box-shadow 380ms var(--ease), opacity 300ms var(--ease);
+}
+/* The tiles are also `.reveal` children, and `.reveal-group > .reveal` (0,2,0)
+   outranks `.platform-tile` (0,1,0) — so the scroll-reveal transition, and its
+   per-index `transition-delay` stagger (0,3,0), would otherwise own hover too:
+   card 10 would sit still for 540ms before it grew. Re-declare the whole
+   transition here at 0,3,0 (and later in the file, so it wins the tie), keeping
+   the stagger on opacity/transform only via --rv-delay. */
+.platform-grid > .platform-tile.reveal {
+  transition-property: opacity, transform, width, height, box-shadow;
+  transition-duration: 500ms, 500ms, 380ms, 380ms, 380ms;
+  transition-timing-function: var(--ease);
+  transition-delay: var(--rv-delay, 0ms), var(--rv-delay, 0ms), 0ms, 0ms, 0ms;
+}
+.platform-grid > .platform-tile:nth-child(1)  { --rv-delay: 0ms; }
+.platform-grid > .platform-tile:nth-child(2)  { --rv-delay: 60ms; }
+.platform-grid > .platform-tile:nth-child(3)  { --rv-delay: 120ms; }
+.platform-grid > .platform-tile:nth-child(4)  { --rv-delay: 180ms; }
+.platform-grid > .platform-tile:nth-child(5)  { --rv-delay: 240ms; }
+.platform-grid > .platform-tile:nth-child(6)  { --rv-delay: 300ms; }
+.platform-grid > .platform-tile:nth-child(7)  { --rv-delay: 360ms; }
+.platform-grid > .platform-tile:nth-child(8)  { --rv-delay: 420ms; }
+.platform-grid > .platform-tile:nth-child(9)  { --rv-delay: 480ms; }
+.platform-grid > .platform-tile:nth-child(10) { --rv-delay: 540ms; }
+.platform-grid > .platform-tile:nth-child(11) { --rv-delay: 600ms; }
+.platform-tile-body {
+  display: flex;
+  flex-direction: column;
+  padding: 22px 20px 24px;
+  min-width: 0;
+}
+.platform-icon {
+  width: 44px; height: 44px;
+  border-radius: 13px;
+  background: var(--peach);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px;
+  color: var(--orange);
+  flex-shrink: 0;
+  transition: background-color 300ms var(--ease), color 300ms var(--ease), width 300ms var(--ease),
+    height 300ms var(--ease), border-radius 300ms var(--ease), box-shadow 300ms var(--ease),
+    margin-bottom 300ms var(--ease);
+}
+.platform-icon .icon { width: 22px; height: 22px; }
+/* the card's subject line — carries the primary weight (see card.html) */
+.platform-tile-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+.platform-tile-title::before {
+  content: "";
+  width: 4px;
+  height: 0.9em;
+  border-radius: 2px;
+  background: var(--orange);
+  flex-shrink: 0;
+}
+.platform-tile-text { font-size: 13px; line-height: 1.55; color: var(--slate); margin-bottom: 20px; }
+.platform-tile-cta {
+  margin-top: auto;          /* equal-height rows: pin the button to the card floor */
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: var(--orange);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 10px 22px rgba(250, 123, 13, 0.28);
+  transition: background-color 220ms var(--ease), box-shadow 220ms var(--ease);
+}
+.platform-tile-cta .icon { width: 16px; height: 16px; transition: transform 220ms var(--ease); }
+
+.platform-tile-media { position: relative; order: -1; height: 132px; overflow: hidden; }
+.platform-tile-media img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+/* Logistics has no supplied photo yet — reuse the site's own PENDING
+   placeholder (see Industry/Testimonials) but stretch it to fill the media
+   band like a real photo would, instead of its normal inline min-height box. */
+.platform-tile-media .ind-placeholder {
+  position: absolute; inset: 0;
+  min-height: 0;
+  border-radius: 0;
+  border-width: 1px;
+}
+/* soft blend into the white card + gentle shade under the photo */
+.platform-tile-media::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 1;
+  background:
+    linear-gradient(0deg, var(--white) 0%, rgba(255, 255, 255, 0) 18%),
+    linear-gradient(180deg, rgba(20, 41, 63, 0) 55%, rgba(20, 41, 63, 0.28) 100%);
+}
+
+/* STATE 2 — hover: the card grows for real (see the hover block below for the
+   width/height growth); the other nine stay at full opacity. */
+.platform-tile:hover, .platform-tile:focus-visible {
+  box-shadow: 0 36px 80px rgba(20, 41, 63, 0.16);
+  z-index: 10;
+}
+.platform-tile:hover .platform-tile-cta,
+.platform-tile:focus-visible .platform-tile-cta {
+  background: var(--orange-hover);
+  box-shadow: 0 16px 32px rgba(250, 123, 13, 0.38);
+}
+.platform-tile:hover .platform-tile-cta .icon,
+.platform-tile:focus-visible .platform-tile-cta .icon { transform: translateX(4px); }
+
+/* STATE 1 ↔ 2 on pointer devices only.
+   Idle: the Explore button is collapsed to zero height, and because the photo
+   sits in the flexible `1fr` row it silently takes that space back — the card
+   never shows an empty floor where the button used to be.
+   Hover: the card's real width and height grow, so the 1px border stays a
+   crisp 1px and the type never magnifies (unlike a transform: scale). The
+   height it gains is exactly the room the button needs, so the photo keeps
+   its size and nothing below it jumps. Growth spills evenly on all four sides
+   into the 20px gutter / .container's 40px padding — the grid never reflows.
+   Touch devices are excluded: with no hover to trigger it, the button stays
+   permanently visible there and the card never grows. */
+@media (hover: hover) and (pointer: fine) {
+  .platform-grid { grid-auto-rows: var(--tile-h); }
+  .platform-tile {
+    /* an explicit width/height opts the item out of the default `stretch`,
+       so centre it and the extra size spreads evenly instead of down-right */
+    justify-self: center;
+    align-self: center;
+    width: 100%;
+    height: 100%;
+    grid-template-rows: 1fr auto;   /* photo flexes, copy takes what it needs */
+  }
+  /* the floor is deliberately low: if a module's copy ever runs long, the
+     photo gives up the height rather than the button getting clipped */
+  .platform-tile-media { height: auto; min-height: 80px; }
+
+  .platform-tile-cta {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(6px);
+    transition: opacity 220ms var(--ease), max-height 340ms var(--ease),
+                padding 340ms var(--ease), transform 260ms var(--ease),
+                background-color 220ms var(--ease), box-shadow 220ms var(--ease);
+  }
+
+  .platform-tile:hover, .platform-tile:focus-visible {
+    width: var(--tile-zoom);
+    height: var(--tile-zoom);
+  }
+  .platform-tile:hover .platform-tile-cta,
+  .platform-tile:focus-visible .platform-tile-cta {
+    max-height: 48px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* CORE VARIANT — the six `core: true` modules get their own grid ahead of
+   the Supporting modules grid (modules-new.html's two-part structure), but
+   the card itself is the unmodified STATE 1/2 .platform-tile design (photo
+   band, icon, title, text, hover-reveal CTA, same --tile-h/--tile-zoom) —
+   only the column count/placement differs, never the card styling. Their
+   tiles are real links to each module's own page, not part of the
+   expand-to-rail system, and this grid lives outside .platform-shell in the
+   markup — so STATE 3 never touches it and these cards stay full-size and
+   visible no matter which supporting module is expanded below.
+   On larger screens (≥900px) it's 4 columns / 2 rows: the first 4 modules
+   fill row one, and the remaining 2 (5th/6th in modules.json order) are
+   pinned to the middle two columns of row two so they read as centred
+   rather than left-aligned against empty trailing cells. */
+.platform-grid.platform-grid--core {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.platform-grid--core { margin-bottom: var(--section-y-tight); }
+.platform-grid--core .platform-tile:nth-child(5) { grid-column: 2; }
+.platform-grid--core .platform-tile:nth-child(6) { grid-column: 3; }
+
+@media (max-width: 899px) {
+  .platform-grid.platform-grid--core { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .platform-grid--core .platform-tile:nth-child(5),
+  .platform-grid--core .platform-tile:nth-child(6) { grid-column: auto; }
+}
+
+@media (max-width: 767px) {
+  .platform-grid.platform-grid--core { grid-template-columns: 1fr; }
+}
+
+/* STATE 3 — expanded: grid compresses into the left icon rail. Only the
+   supporting-modules grid/head (.platform-rail's contents) live inside
+   .platform-shell — .platform-head--core and .platform-grid--core sit above
+   the shell in the markup now, so none of these rules ever touch them: the
+   Inventory/Logistics cards stay full-size and visible no matter which
+   supporting-module panel is open. */
+.platform-shell.is-expanded { grid-template-columns: 80px minmax(0, 1fr); gap: 32px; }
+/* .platform-head--rest has no place in an 80px icon rail — without this it'd
+   render its full eyebrow/title/lede text squeezed into the 80px column on
+   every Explore click. */
+.platform-shell.is-expanded .platform-head { display: none; }
+.platform-shell.is-expanded .platform-grid {
+  grid-template-columns: 1fr;
+  gap: 16px;
+  padding-right: 16px;
+  border-right: 1px solid var(--hairline);
+  grid-auto-rows: auto;            /* the rail measures by its icons, not the grid's fixed row height */
+}
+.platform-shell.is-expanded .platform-tile { grid-column: span 1; }
+.platform-shell.is-expanded .platform-tile {
+  display: block;
+  padding: 0; background: none; border: 0; border-radius: 0;
+  box-shadow: none; overflow: visible; opacity: 0.4;
+  /* undo the card sizing from the hover block */
+  width: auto; height: auto; justify-self: stretch; align-self: start;
+}
+/* no room for the CORE badge in an 80px rail */
+.platform-shell.is-expanded .platform-tile::after { display: none; }
+.platform-shell.is-expanded .platform-tile:hover {
+  box-shadow: none; opacity: 1;
+  width: auto; height: auto;
+}
+.platform-shell.is-expanded .platform-tile[aria-expanded="true"] { opacity: 1; }
+.platform-shell.is-expanded .platform-tile-body { display: block; padding: 0; }
+.platform-shell.is-expanded .platform-icon {
+  width: 48px; height: 48px; border-radius: 50%;
+  margin-bottom: 0;
+  background: var(--wash-navy); color: var(--navy);
+}
+.platform-shell.is-expanded .platform-tile[aria-expanded="true"] .platform-icon {
+  background: rgba(250, 123, 13, 0.1); color: var(--orange); box-shadow: 0 1px 2px rgba(20, 41, 63, 0.08);
+}
+.platform-shell.is-expanded .platform-tile-title,
+.platform-shell.is-expanded .platform-tile-text,
+.platform-shell.is-expanded .platform-tile-cta,
+.platform-shell.is-expanded .platform-tile-media { display: none; }
+
+.platform-rail { min-width: 0; }
+.platform-stage { min-width: 0; }
+.platform-panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: 32px;
+  align-items: center;
+  padding: 48px;
+  background: var(--white);
+  border: 1px solid var(--hairline-2);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-soft);
+}
+.platform-panel-head { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+.platform-panel-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(250, 123, 13, 0.1); color: var(--orange);
+}
+.platform-panel-title { font-size: 32px; line-height: 1.2; letter-spacing: -0.02em; font-weight: 600; color: var(--ink); }
+.platform-panel-text { max-width: 36rem; color: var(--slate); }
+.platform-benefits { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+.platform-benefits li { display: flex; align-items: flex-start; gap: 12px; }
+.platform-benefits .icon { color: var(--orange); margin-top: 5px; }
+.platform-benefits span { font-size: 1rem; font-weight: 500; color: var(--ink); }
+.platform-demo {
+  margin-top: 32px;
+  background: var(--orange);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 16px 32px;
+  border-radius: var(--r-pill);
+  box-shadow: 0 1px 2px rgba(20, 41, 63, 0.08);
+  transition: background-color 300ms var(--ease);
+}
+.platform-demo:hover { background: var(--orange-hover); }
+.platform-preview {
+  position: relative;
+  overflow: hidden;
+  min-height: 300px;
+  height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--warm-tint);
+  border: 1px solid rgba(140, 156, 180, 0.1);
+  border-radius: var(--r-panel);
+}
+.platform-preview-mark {
+  position: absolute; right: -40px; bottom: -40px;
+  width: 120px; height: 120px;
+  color: rgba(250, 123, 13, 0.2);
+  stroke-width: 1;
+}
+.platform-preview-label { position: relative; font-size: 14px; font-weight: 500; color: var(--slate); text-align: center; padding: 0 24px; }
+.platform-preview-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* Sits half-off the panel's top-right corner as its own floating badge —
+   with the preview now a real photo (not a plain-colour placeholder), a
+   button merely absolutely-positioned at top:20px/right:20px would land
+   directly on top of the image with no guaranteed contrast. Pulling it
+   outside the panel bounds onto the border, with its own white chip and
+   shadow, keeps it legible and unmistakably a standalone control instead
+   of competing with either column's content. */
+.platform-close {
+  position: absolute; top: -16px; right: -16px; z-index: 3;
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--slate);
+  border: 1px solid var(--hairline-2);
+  box-shadow: var(--shadow-soft);
+  transition: background-color 200ms var(--ease), color 200ms var(--ease), box-shadow 200ms var(--ease);
+}
+.platform-close:hover { background: var(--wash-slate); color: var(--ink); box-shadow: var(--shadow-lift); }
+

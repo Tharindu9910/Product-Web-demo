@@ -1,0 +1,41 @@
+---
+// legacy/index.html:3404 + 4213 ("INDUSTRY — tabs with arrow-key
+// navigation"). ARIA tabs, roving tabindex and click/arrow-key switching
+// are all IndustryTabs.tsx; this component only resolves each industry's
+// image (astro:assets needs a real .astro/.Image call, which a React
+// island can't make) and passes plain data across.
+// "SEE A ... DEMO" was a dead <button type="button"> in legacy; real href
+// here per rule 6 (industry.css's `.ind-cta button` selector updated to
+// `.ind-cta a` to match).
+import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
+import { assetMap } from "@/lib/asset-map";
+import IndustryTabs, { type Industry } from "@/islands/IndustryTabs";
+
+const industries = (await getCollection("industries")).sort((a, b) => a.data.order - b.data.order);
+
+const tabsData: Industry[] = await Promise.all(
+  industries.map(async ({ data }) => {
+    const image = await getImage({ src: assetMap[data.image], width: 440, quality: 66 });
+    return {
+      id: data.id,
+      name: data.name,
+      image: { src: image.src, width: image.attributes.width, height: image.attributes.height },
+      stack: data.stack,
+      changes: data.changes,
+      clients: data.clients,
+      cta: data.cta,
+    };
+  })
+);
+---
+
+<section class="section industry" id="industry">
+  <div class="container">
+    <div class="industry-head" data-anim="fade-up">
+      <h2 class="section-title">Built for how you actually operate.</h2>
+    </div>
+
+    <IndustryTabs client:visible industries={tabsData} />
+  </div>
+</section>

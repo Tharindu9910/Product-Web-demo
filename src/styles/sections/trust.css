@@ -1,0 +1,332 @@
+/* ============================================================
+   7. TRUST — client logo cloud (structure from clients.html,
+   palette from this page)
+
+   The navy is a PAINTED BAND, not a full-bleed fill: .trust-band
+   carries the navy + its two radial gradients + the grid + the
+   grain, and is painted through a brush-stroke mask, so all four
+   share one torn, bristled edge against the page's own ground.
+   .trust itself is --canvas, like Hero and Pain either side of
+   it. Everything *on* the band was re-themed onto
+   the page's own system,
+   following .architecture — the page's other dark section:
+     mockup gold accent  -> var(--orange), as .hero-title-accent
+     mockup ice caption  -> var(--orange)
+     mockup ink-dim body -> var(--mist), the rgba(147,176,222,.7)
+                            .architecture .eyebrow already uses
+     Archivo/Inter       -> --font-display / --font-body
+   The head uses the page's .eyebrow + .section-title classes and
+   only overrides colour for the dark ground, exactly the way
+   `.architecture .eyebrow` does.
+
+   HEIGHT BUDGET. The strip this replaced measured ~532px
+   (160+160 .section padding + 62 eyebrow + 150 logo row) and
+   that envelope was the brief, so the port is compressed. The
+   brush edges then bought their own room back: the padding is
+   now --trust-edge + 40 / + 28 rather than a flat 88 / 72, so
+   nothing lands in the fray zone. At 1440px that is 126 + 114,
+   ~80px more than the figures below — a deliberate overrun, the
+   band cannot be shorter than its own two edges plus the head.
+     126 + 114 padding ............... 240   (was 88 + 72 = 160)
+     .trust-eyebrow + margin ..........  42
+     .trust-title (2 balanced lines) ..  73
+     .trust-stage margin-top ..........  36
+     .trust-marquee ................... 177  = 90 * 1.7 + 24
+     .trust-caption ...................  30
+                                       ----
+                                        598  (518 on the old padding)
+   The head is centred, so nothing can share a row with the copy
+   — and with .trust-lede and .trust-stats commented out of the
+   markup, the freed height goes back into the padding and the
+   logos rather than leaving a short, sparse band. Re-enable
+   either of those and ~120px has to come back out of
+   --trust-logo/--trust-zoom and the padding. (Their CSS is kept
+   below for exactly that reason.) The mockup's under-logo
+   reflections stay dropped — at this --trust-logo a reflection
+   would hang ~65px past the marquee box, onto the caption.
+   ============================================================ */
+.trust {
+  --trust-logo: 90px;                 /* resting diameter */
+  --trust-zoom: 1.7;                  /* JS scales the centred logo to this */
+  --trust-gap: 46px;
+  /* Height of the two ragged brush edges — legacy/files/brush-band-demo.html's
+     own `--edge`, kept at its value so the bristle grain reads at the density
+     the demo was tuned at. The head and the marquee have to clear it: the
+     2026-08-26 log entry records a fray zone landing on top of the eyebrow. */
+  --trust-edge: clamp(28px, 6vw, 96px);
+  position: relative;
+  padding: calc(var(--trust-edge) + 40px) 0 calc(var(--trust-edge) + 28px);
+  overflow: hidden;
+  isolation: isolate;
+  /* The section's own ground is the page's, same as Hero above and Pain
+     below — the navy now lives on .trust-band, which is painted through a
+     brush mask, so the band's torn edges read against this. */
+  background: var(--canvas);
+}
+/* The painted band. Everything that used to sit on .trust's own background
+   moved here so the mask takes all of it — a mask clips descendants too, so
+   the grid and grain below fray with the navy instead of running square to
+   the section edge.
+
+   METHOD A, from legacy/files/brush-band-demo.html: three stacked mask layers
+   — top edge PNG, a solid middle, bottom edge PNG. Only the middle stretches,
+   so the two edges keep their true pixel height and the bristle texture never
+   smears however tall the band gets. (The demo's Method B — one PNG stretched
+   to 100% 100% — is what the previous stand-in mask did, and it distorts the
+   grain vertically as the section grows.) The +2px on the middle layer closes
+   the hairline seam that rounding leaves between the three layers.
+
+   Horizontal stretch is left alone: the stroke's bristles already run
+   horizontally, so widening it doesn't read as distortion. */
+.trust-band {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(1100px 420px at 50% -20%, var(--navy-glow) 0%, transparent 62%),
+    radial-gradient(900px 380px at 50% 120%, var(--ink) 0%, transparent 60%),
+    var(--navy);
+  /* Lossless WebP, not PNG: these two masks shipped as 79 KB + 85 KB of
+     raw PNG on every page that renders Trust, and mask-image reads nothing
+     but the alpha channel (mask-mode: match-source on a raster image — see
+     the 2026-08-26 log entry about a greyscale mask being a silent no-op).
+     Lossless re-encoding leaves that alpha byte-for-byte identical while
+     cutting the pair from 164 KB to 95 KB. Verified with sharp by comparing
+     the extracted alpha channels of the PNG and the WebP directly.
+     Do NOT switch these to lossy WebP without re-checking the fray edge. */
+  -webkit-mask-image:
+    url("../../assets/brush-edge-top.webp"),
+    linear-gradient(#000, #000),
+    url("../../assets/brush-edge-bottom.webp");
+  mask-image:
+    url("../../assets/brush-edge-top.webp"),
+    linear-gradient(#000, #000),
+    url("../../assets/brush-edge-bottom.webp");
+  -webkit-mask-repeat: no-repeat, no-repeat, no-repeat;
+  mask-repeat: no-repeat, no-repeat, no-repeat;
+  -webkit-mask-position: top center, center, bottom center;
+  mask-position: top center, center, bottom center;
+  -webkit-mask-size:
+    100% var(--trust-edge),
+    100% calc(100% - (var(--trust-edge) * 2) + 2px),
+    100% var(--trust-edge);
+  mask-size:
+    100% var(--trust-edge),
+    100% calc(100% - (var(--trust-edge) * 2) + 2px),
+    100% var(--trust-edge);
+}
+/* faint blueprint grid, masked to the middle */
+.trust-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;                /* .architecture::before's pitch */
+  -webkit-mask-image: radial-gradient(70% 60% at 50% 42%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(70% 60% at 50% 42%, #000 30%, transparent 100%);
+}
+/* film grain */
+.trust-band::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* --- head: centred stack, matching .video-head / .platform-head --- */
+.trust-head { text-align: center; }
+/* the base .eyebrow carries the page's size/tracking/weight; only the colour
+   changes for the dark ground, same override .architecture .eyebrow makes */
+.trust-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: var(--mist);
+}
+.trust-eyebrow .trust-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--orange);
+  animation: pulse 2s ease-in-out infinite;
+}
+/* size/weight/tracking come from .section-title in the markup, as they do in
+   .video-head and .platform-head; only the measure and the dark-ground colour
+   are set here. 24ch is narrow enough that the 41-char headline always breaks
+   into the two balanced lines the budget above assumes, instead of teetering
+   between one line and two as the viewport changes. */
+.trust-title {
+  max-width: 24ch;
+  margin: 0 auto;
+  color: var(--white);
+  text-wrap: balance;
+}
+/* same accent treatment as .hero-title .hero-title-accent */
+.trust-title .trust-shine { color: var(--orange); }
+.trust-lede {
+  margin: 16px auto 0;
+  max-width: 52ch;
+  color: var(--mist);
+}
+.trust-stats {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px clamp(28px, 5vw, 72px);
+  margin-top: 22px;
+}
+.trust-stat { min-width: 96px; }
+/* same figure/label pairing as .video-stats */
+.trust-stat b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.15;
+  font-weight: 600;
+  color: var(--white);
+}
+.trust-stat b em { font-style: normal; color: var(--orange); }
+.trust-stat span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mist);
+}
+
+/* --- stage: spotlight + marquee + live caption --- */
+.trust-stage { position: relative; margin-top: 36px; }
+.trust-spotlight {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(420px, 70vw);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, var(--glow-orange), var(--glow-fade) 70%);
+  filter: blur(2px);
+  pointer-events: none;
+}
+/* The 40s spinning dashed ring is off: it appears nowhere in the approved
+   design, and at this diameter its top and bottom arcs clear the logo row and
+   would show. Kept (rather than deleted) so re-enabling it is one line — and
+   motion.css still names it in the reduced-motion block. */
+.trust-spotlight::after {
+  content: "";
+  display: none;
+  position: absolute;
+  inset: 18%;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  animation: trust-spin 40s linear infinite;
+}
+@keyframes trust-spin { to { transform: rotate(360deg); } }
+
+.trust-marquee {
+  position: relative;
+  height: calc(var(--trust-logo) * var(--trust-zoom) + 24px);
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+/* Edge fades: solid --navy overlays rather than a mask, because a mask on the
+   border box would also clip the centred logo's halo where it overflows.
+   z-index has to clear the 10..110 the marquee JS writes onto each .trust-logo,
+   or the logos ride over the fade and pop in at the edges. */
+.trust-marquee::before,
+.trust-marquee::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 16%;
+  z-index: 200;
+  pointer-events: none;
+}
+.trust-marquee::before { left: 0; background: linear-gradient(to right, var(--navy) 12%, transparent); }
+.trust-marquee::after { right: 0; background: linear-gradient(to left, var(--navy) 12%, transparent); }
+
+.trust-track {
+  display: flex;
+  align-items: center;
+  gap: var(--trust-gap);
+  will-change: transform;
+}
+.trust-logo {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--trust-logo);
+  height: var(--trust-logo);
+  border-radius: 50%;
+  cursor: default;
+}
+/* No rim of any kind on the disc — the mockup's spinning conic-gradient ring
+   and its inset top highlight were both removed on request. Only the drop
+   shadow stays, and that reads as depth rather than as a border. */
+.trust-disc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--white);
+  box-shadow: 0 10px 30px rgba(20, 41, 63, 0.45);
+}
+.trust-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* soft halo behind the centred logo, driven by the --t proximity value the
+   marquee JS writes — it sits well outside the disc, so it isn't a rim */
+.trust-logo::after {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  z-index: -2;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(250, 123, 13, 0.35), var(--glow-fade) 70%);
+  opacity: var(--t, 0);
+  pointer-events: none;
+}
+/* The featured brand's name — an .eyebrow in all but the accent colour —
+   flanked by two orange rules.
+
+   The rules HAVE to be pseudo-elements. marquee() sets caption.textContent
+   on every change of featured logo, which would delete any real child
+   element the first time the centred logo changes; ::before/::after are not
+   in the DOM and survive it. */
+.trust-caption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin-top: 10px;
+  height: 20px;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+  transition: opacity 0.25s;
+}
+.trust-caption::before,
+.trust-caption::after {
+  content: "";
+  flex: none;
+  width: clamp(56px, 7vw, 104px);
+  height: 1px;
+  background: var(--orange);
+}
+

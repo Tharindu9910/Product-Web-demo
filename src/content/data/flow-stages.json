@@ -1,0 +1,10 @@
+[
+  { "id": "sales-order", "order": 1, "stage": "Sales Order" },
+  { "id": "inventory", "order": 2, "stage": "Inventory" },
+  { "id": "warehouse", "order": 3, "stage": "Warehouse" },
+  { "id": "dispatch", "order": 4, "stage": "Dispatch" },
+  { "id": "transport", "order": 5, "stage": "Transport" },
+  { "id": "delivery", "order": 6, "stage": "Delivery" },
+  { "id": "billing", "order": 7, "stage": "Billing" },
+  { "id": "dashboard", "order": 8, "stage": "Dashboard" }
+]

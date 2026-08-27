@@ -1,0 +1,80 @@
+/* ============================================================
+   @THEME — colours, fonts and spacing only.
+   Tailwind 4 generates utilities from every name in here:
+   --color-navy -> bg-navy / text-navy / border-navy.
+
+   Shadows, radii, hairlines, washes, glows and easings are NOT
+   in here — they generate utilities nobody asked for. They live
+   as plain custom properties in base/tokens.css.
+
+   Legacy block 2 mapped its brand palette onto short names
+   (--navy, --orange, ...). Those names still exist, aliased to
+   these in base/tokens.css, so the pasted section CSS keeps
+   working off one source of truth.
+   ============================================================ */
+
+@theme {
+  /* Brand palette — the seven tokens legacy block 2 called
+     "the single source of truth". */
+  --color-canvas:      #FAFAFA;
+  --color-navy:        #14293F;
+  --color-orange:      #FA7B0D;
+  --color-slate:       #8C9CB4;
+  --color-ink:         #14293F;
+  --color-warm-tint:   #FFF4EA;
+  --color-white:       #FFFFFF;
+
+  /* Orange TYPE on light grounds. #FA7B0D on #FAFAFA is 2.55:1 and
+     fails AA; this is 4.67:1 and passes. Fills, icons and borders
+     keep --color-orange. */
+  --color-orange-text: #B05A00;
+
+  /* Derived solids, not new brand colours (legacy block 2). */
+  --color-orange-hover: #e06d0b;  /* platform demo button hover */
+  --color-peach:        #FDEADB;  /* icon-tile wash, tint of orange */
+  --color-error:        #ba1a1a;
+  --color-ok:           #10B981;  /* sync-dot green */
+  --color-navy-glow:    #33578A;  /* dark-band lift of navy */
+
+  /* Body copy. Legacy sets body colour to --ink; this is kept for
+     the utility only. */
+  --color-body:        #43474E;
+
+  /* Hero dashboard mock (decorative, hero.css) — six raw values,
+     not five: the three pips (ok/low/out), the delta badge's
+     surface/text pair, and a brighter on-navy variant of "ok" for
+     the sync chip icon, which sits on --color-navy and needs more
+     contrast than the pip's shade gives it. */
+  --color-status-ok:        #22C55E;  /* .mock-pip--ok */
+  --color-status-ok-bright: #4ADE80;  /* .mock-chip .icon, on --color-navy */
+  --color-status-low:       #EAB308;  /* .mock-pip--low */
+  --color-status-out:       #EF4444;  /* .mock-pip--out */
+  --color-status-surface:   #DCFCE7;  /* .mock-delta background */
+  --color-status-text:      #15803D;  /* .mock-delta text */
+
+  /* Type */
+  --font-display: "Sora", "Sora Fallback", system-ui, sans-serif;
+  --font-body:    "Hanken Grotesk", "Hanken Fallback", system-ui, sans-serif;
+
+  --text-display: clamp(2.75rem, 6vw, 5.5rem);
+  --text-display--line-height: 1.02;
+  --text-headline: 2rem;
+  --text-headline--line-height: 1.2;
+  --text-body-md: 1.125rem;
+  --text-body-md--line-height: 1.7;
+  --text-eyebrow: 0.75rem;
+
+  /* Vertical rhythm (legacy block 2). Aliased back to the bare
+     --section-y / --head-gap / --stack-* names in tokens.css. */
+  --spacing-section-y:       clamp(48px, 6.5vh, 88px);  /* standard band padding */
+  --spacing-section-y-tight: clamp(32px, 4.5vh, 56px);  /* two same-ground sections abut */
+  --spacing-head-gap:        clamp(20px, 2.6vh, 32px);  /* section head -> content */
+  --spacing-stack-6:         24px;
+  --spacing-stack-4:         16px;
+  --spacing-stack-3:         12px;
+
+  /* Container. Values are legacy's (.container in base/layout.css),
+     not the scaffold placeholder's 1440/120 — rule 1. */
+  --container-site: 1280px;
+  --spacing-gutter: 40px;
+}

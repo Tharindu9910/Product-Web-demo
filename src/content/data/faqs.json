@@ -1,0 +1,86 @@
+[
+  {
+    "id": "why-us-heard-before",
+    "page": "why-us",
+    "order": 1,
+    "question": "Why haven't I heard of NexOne before?",
+    "answer": "We've spent 25+ years building for distributors, wholesalers and multi-outlet retailers in the Maldives and Sri Lanka rather than marketing nationally — our growth has come from client referrals, not brand advertising."
+  },
+  {
+    "id": "why-us-startup",
+    "page": "why-us",
+    "order": 2,
+    "question": "Are you a startup?",
+    "answer": "No. Nexone World was established in 2000. NexOne is the ERP platform that two decades of operational experience produced — not a first product."
+  },
+  {
+    "id": "why-us-enterprise-scale",
+    "page": "why-us",
+    "order": 3,
+    "question": "Can you handle enterprise-scale requirements?",
+    "answer": "Yes. NexOne already runs live across multiple countries, handling high-volume transaction environments for distributors and multi-outlet retailers."
+  },
+  {
+    "id": "why-us-out-of-business",
+    "page": "why-us",
+    "order": 4,
+    "question": "What if you go out of business?",
+    "answer": "We've operated continuously for 25+ years. Your data stays exportable at every stage, and we build contractual continuity into every implementation."
+  },
+  {
+    "id": "why-us-trust",
+    "page": "why-us",
+    "order": 5,
+    "question": "Why should I trust you over established vendors?",
+    "answer": "Because we were the operators before we were the vendor. Every module is shaped by feedback from the people actually using it — warehouse leads, cashiers, finance teams — not a generic feature checklist."
+  },
+  {
+    "id": "why-us-compete-generic",
+    "page": "why-us",
+    "order": 6,
+    "question": "Do you compete with large, generic operations suites?",
+    "answer": "We focus specifically on distributors, wholesalers and multi-outlet retailers rather than trying to serve every industry — that focus is what lets one connected system handle sales, stock, dispatch and finance without workarounds."
+  },
+  {
+    "id": "why-us-growth-plan",
+    "page": "why-us",
+    "order": 7,
+    "question": "What's your growth plan?",
+    "answer": "We grow the way we always have — one well-served client relationship at a time, expanding modules and markets as our clients' operations grow."
+  },
+  {
+    "id": "why-us-support",
+    "page": "why-us",
+    "order": 8,
+    "question": "How flexible is your support?",
+    "answer": "Our team is based where our clients operate, not in a support queue in another time zone — you get direct access, not a ticket number."
+  },
+  {
+    "id": "inventory-replace-accounting",
+    "page": "inventory",
+    "order": 1,
+    "question": "We already have an accounting system. Do we have to replace it?",
+    "answer": "No. Most clients keep it. NexOne handles the stock and the ordering and syncs the figures across."
+  },
+  {
+    "id": "inventory-timeline",
+    "page": "inventory",
+    "order": 2,
+    "question": "How long does it take to get running?",
+    "answer": "We load your item list and current stock, set up your locations, and train your team. We'll give you a realistic timeline for your setup after the demo, once we've seen the data you have."
+  },
+  {
+    "id": "inventory-hardware",
+    "page": "inventory",
+    "order": 3,
+    "question": "Do we need new hardware?",
+    "answer": "It runs in a browser on the computers you already have, and works with standard barcode scanners. Staff can also count stock from a phone."
+  },
+  {
+    "id": "inventory-messy-stock",
+    "page": "inventory",
+    "order": 4,
+    "question": "What if our stock counts are a mess right now?",
+    "answer": "That's normal, and it's usually the reason people call. We start with a full count to set an accurate opening position, then cycle counts keep it accurate without closing the business."
+  }
+]

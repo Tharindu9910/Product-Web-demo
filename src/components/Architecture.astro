@@ -1,0 +1,89 @@
+---
+// legacy/index.html:3652. The "CHECK COMPATIBILITY" input+button is a plain
+// div, not a <form> (CLAUDE.md: "exactly one <form> in the whole build, in
+// contact.html") — no backend exists for this yet, so it stays inert like
+// legacy, same category as the video-tour play button.
+import Section from "@/components/Section.astro";
+import Eyebrow from "@/components/Eyebrow.astro";
+---
+
+<Section name="architecture">
+  <div class="arch-top">
+    <div class="arch-copy-col">
+      <Eyebrow>NexOne ARCHITECTURE</Eyebrow>
+      <h2 class="arch-statement">NexOne can be integrated with any system.</h2>
+      <p class="arch-copy">
+        With the solid foundation that is NexOne architecture, the ERP supports all future business expansions of
+        our clients with minimal changes to the system.
+      </p>
+    </div>
+
+    <div class="arch-diagram" aria-hidden="true" data-anim="parallax" data-speed="0.1">
+      <div class="arch-diagram-frame">
+        <div class="arch-node-center">NexOne</div>
+        <svg class="arch-diagram-lines" viewBox="0 0 360 360">
+          <line x1="180" y1="180" x2="70" y2="70" data-anim="draw"></line>
+          <line x1="180" y1="180" x2="290" y2="70" data-anim="draw" data-anim-delay="0.05"></line>
+          <line x1="180" y1="180" x2="330" y2="180" data-anim="draw" data-anim-delay="0.1"></line>
+          <circle cx="255" cy="180" r="2.5"></circle>
+          <line x1="180" y1="180" x2="290" y2="290" data-anim="draw" data-anim-delay="0.15"></line>
+          <line x1="180" y1="180" x2="70" y2="290" data-anim="draw" data-anim-delay="0.2"></line>
+          <circle cx="125" cy="235" r="2.5"></circle>
+          <line x1="180" y1="180" x2="30" y2="180" data-anim="draw" data-anim-delay="0.25"></line>
+          <circle cx="105" cy="180" r="2.5"></circle>
+        </svg>
+
+        <div class="arch-node arch-node--tl">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5L12 4l9 5.5"></path><path d="M5.5 10v8M10 10v8M14 10v8M18.5 10v8M3 20h18"></path></svg>
+          <span>Your<br />accounting</span>
+        </div>
+        <div class="arch-node arch-node--tr">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="10" width="18" height="10" rx="1.5"></rect><path d="M6 10V5h12v5M8.5 14.5h7"></path></svg>
+          <span>Your<br />POS</span>
+        </div>
+        <div class="arch-node arch-node--r">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="1.5"></rect><path d="M3 7l2-4h14l2 4M9.5 12h5"></path></svg>
+          <span>Your stock<br />system</span>
+        </div>
+        <div class="arch-node arch-node--br">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"></rect><path d="M3 10h18M7 15h4"></path></svg>
+          <span>Your bank<br />feed</span>
+        </div>
+        <div class="arch-node arch-node--bl">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"></path><path d="M9 8h6M9 12h6"></path></svg>
+          <span>Your<br />invoicing</span>
+        </div>
+        <div class="arch-node arch-node--l">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="16" height="10" rx="1.5"></rect><circle cx="10" cy="11" r="2.5"></circle><path d="M22 9v9a1 1 0 0 1-1 1H6"></path></svg>
+          <span>Your<br />payroll</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arch-principles">
+    <div class="arch-principle">
+      <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M9 4v3M15 4v3M9 17v3M15 17v3M4 9h3M4 15h3M17 9h3M17 15h3"></path></svg>
+      <h3>Build to change instead of build to last</h3>
+      <p>Add a branch, a currency, or a product line without a rebuild.</p>
+    </div>
+    <div class="arch-principle">
+      <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><circle cx="18" cy="17" r="3"></circle><path d="M20.2 19.2L22 21"></path></svg>
+      <h3>Understand the end user needs and the domain before designing components</h3>
+      <p>We map your process first. You don't change how you work to suit the software.</p>
+    </div>
+    <div class="arch-principle">
+      <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"></path><path d="M18 4v4h-4M6 20v-4h4"></path></svg>
+      <h3>Use of incremental and iterative approaches to designing the architecture</h3>
+      <p>Go live one module at a time. Nothing stops while we switch over.</p>
+    </div>
+  </div>
+
+  <div class="arch-cta">
+    <h3>Running something else? Tell us what.</h3>
+    <div class="arch-cta-form">
+      <input type="text" placeholder="e.g. QuickBooks, Tally, Xero, SAP" aria-label="Your current system" />
+      <button type="button">CHECK COMPATIBILITY</button>
+    </div>
+  </div>
+</Section>

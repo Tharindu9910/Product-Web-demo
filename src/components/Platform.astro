@@ -1,0 +1,83 @@
+---
+// legacy/index.html:3001 + 4156 ("PLATFORM — one grid, three states").
+// STATE 2 hover-growth and STATE 3 expand-to-rail are pure CSS, already
+// shipped (platform.css/responsive.css). Core modules (Inventory/Logistics)
+// are plain links, rendered statically here — legacy: "no panel here —
+// they're core modules", never part of the expand-to-rail system. The nine
+// supporting modules' grid + detail panels are PlatformExplorer.tsx (the
+// STATE 3 state machine: click to expand, outside-click/Escape/focus
+// return); panel copy (title/text/5 benefits per module, from legacy
+// index.html:3163-3396) lives in modules.json's panelText/benefits fields.
+import { getCollection } from "astro:content";
+import { Image, getImage } from "astro:assets";
+import { moduleIcon } from "@/lib/module-icons";
+import { assetMap } from "@/lib/asset-map";
+import { withBase } from "@/lib/base";
+import PlatformExplorer, { type PlatformModule } from "@/islands/PlatformExplorer";
+
+const modules = (await getCollection("modules")).sort((a, b) => a.data.order - b.data.order);
+const core = modules.filter((m) => m.data.core);
+const rest = modules.filter((m) => !m.data.core);
+
+const explorerModules: PlatformModule[] = await Promise.all(
+  rest.map(async ({ data }) => {
+    const source = assetMap[data.photo];
+    const [tile, preview] = await Promise.all([
+      getImage({ src: source, width: 448, quality: 66 }),
+      getImage({ src: source, width: 700, quality: 66 }),
+    ]);
+    return {
+      id: data.id,
+      name: data.name,
+      blurb: data.blurb,
+      panelText: data.panelText!,
+      benefits: data.benefits!,
+      icon: moduleIcon[data.name],
+      tile: { src: tile.src, width: tile.attributes.width, height: tile.attributes.height },
+      preview: { src: preview.src, width: preview.attributes.width, height: preview.attributes.height },
+    };
+  })
+);
+---
+
+<section class="section platform" id="platform">
+  <div class="container">
+    <!-- CORE MODULES — outside .platform-shell, so they never collapse into
+         the icon rail: always full card size regardless of which panel below is open. -->
+    <div class="platform-head platform-head--core">
+      <p class="eyebrow">ERP Modules</p>
+      <h2 class="section-title">Six modules. One database. One record.</h2>
+      <p class="lede">
+        Inventory and logistics run deepest: one record follows your goods from 
+        warehouse to customer. Finance, payroll, POS and custom modules sit on the same 
+        database, so what happens on the floor is already in the accounts. Start with what you need.
+      </p>
+    </div>
+
+    <div class="platform-grid platform-grid--core" data-anim="stagger" data-anim-stagger="0.06">
+      {core.map(({ data }) => (
+        <a class="platform-tile" data-module={data.id} href={withBase(data.href)}>
+          <span class="platform-tile-body">
+            <span class="platform-icon">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" set:html={moduleIcon[data.name]} />
+            </span>
+            <span class="platform-tile-title">{data.name}</span>
+            <span class="platform-tile-text">{data.blurb}</span>
+            <span class="platform-tile-cta">Explore<svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></span>
+          </span>
+          <span class="platform-tile-media"><Image src={assetMap[data.photo]} alt="" width={448} loading="lazy" /></span>
+        </a>
+      ))}
+    </div>
+
+    <div class="platform-head platform-head--rest" id="platform-explorer">
+      <p class="eyebrow">Supporting modules &amp; services</p>
+      <h2 class="section-title">The work around the system.</h2>
+      <p class="lede">
+        Most ERP vendors hand you the software and leave. We stay, closing your books,
+  keeping your site up, filling your pipeline. One contract, one team, one number to call.
+      </p>
+    </div>
+    <PlatformExplorer client:visible modules={explorerModules} />
+  </div>
+</section>

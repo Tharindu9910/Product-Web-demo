@@ -1,0 +1,281 @@
+---
+// legacy/why-us.html. FAQ pulled from faqs.json (page: "why-us", 8 entries,
+// already matches this page's questions exactly). The Clients quote-strip
+// section stays commented out in legacy (only one approved testimonial
+// exists — see Approved content — and it's already the homepage's
+// Testimonials feature; two more PENDING slots here would duplicate that
+// gap rather than adding anything).
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import Base from "@/layouts/Base.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import { withBase } from "@/lib/base";
+import ClosingCTA from "@/components/ClosingCTA.astro";
+import Eyebrow from "@/components/Eyebrow.astro";
+import FaqItem from "@/components/FaqItem.astro";
+import whyUsPhoto from "@/assets/whyus.jpeg";
+import "@/styles/pages/why-us.css";
+
+const faqs = (await getCollection("faqs"))
+  .filter((f) => f.data.page === "why-us")
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title="Why NexOne | NexOne"
+  description="We didn't start as technologists learning business. We started as operators who learned technology because the existing solutions didn't work."
+>
+  <Fragment slot="nav">
+    <Nav variant="page" current="why-us" />
+  </Fragment>
+
+  <section class="page-hero">
+    <div class="container page-hero-inner">
+      <div class="page-hero-copy" data-anim="fade-up">
+        <Eyebrow>Why NexOne World</Eyebrow>
+        <h1 class="page-hero-title">Built by operators.<br />Refined by technology.</h1>
+        <p class="lede page-hero-lede">
+          We didn't start as technologists learning business. We started as operators who learned technology because
+          the existing solutions didn't work. We understand your challenges because we've lived them.
+        </p>
+      </div>
+    </div>
+    <div class="page-hero-media" data-anim="fade-up" data-anim-delay="0.15">
+      <Image
+        src={whyUsPhoto}
+        alt="A glowing question mark on a podium, surrounded by badges for proven expertise, reliable and secure, scalable growth, tailored solutions, 24/7 support and global presence."
+        width={1376}
+        height={768}
+        widths={[480, 768, 1100, 1376]}
+        sizes="(max-width: 1023px) 100vw, 55vw"
+        quality={68}
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </div>
+  </section>
+
+  <section class="section band-dark" id="advantage">
+    <div class="container">
+      <div class="section-head" data-anim="fade-up">
+        <Eyebrow>Operational expertise</Eyebrow>
+        <h2 class="section-title">The fundamental difference</h2>
+        <p class="lede">
+          Most software is built by technologists who learn business as they go. NexOne was built by professionals
+          who spent decades in the trenches before writing a single line of code.
+        </p>
+      </div>
+      <p class="kicker">Universal operational challenges we solve</p>
+      <div class="challenge-grid" data-anim="stagger">
+        <div class="challenge-card">
+          <span class="challenge-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z"></path><path d="M9 12l2 2 4-4"></path></svg></span>
+          <h3>Data Accuracy</h3>
+          <p>Reliability under high transaction volume</p>
+        </div>
+        <div class="challenge-card">
+          <span class="challenge-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l8 4-8 4-8-4 8-4z"></path><path d="M4 12l8 4 8-4"></path><path d="M4 16l8 4 8-4"></path></svg></span>
+          <h3>Workflow Clarity</h3>
+          <p>Alignment across multiple stakeholders</p>
+        </div>
+        <div class="challenge-card">
+          <span class="challenge-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16l5-5 4 4 7-8"></path><path d="M15 7h5v5"></path></svg></span>
+          <h3>Margin Control</h3>
+          <p>Real-time financial visibility</p>
+        </div>
+        <div class="challenge-card">
+          <span class="challenge-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 005.66 0l2-2a4 4 0 00-5.66-5.66l-1 1"></path><path d="M14 10a4 4 0 00-5.66 0l-2 2a4 4 0 005.66 5.66l1-1"></path></svg></span>
+          <h3>Integration Reliability</h3>
+          <p>Connecting disconnected systems</p>
+        </div>
+        <div class="challenge-card">
+          <span class="challenge-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"></path><path d="M9 5a2 2 0 012-2h2a2 2 0 012 2 2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path><path d="M9 14l2 2 4-4"></path></svg></span>
+          <h3>Accountability</h3>
+          <p>Comprehensive audit trails</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head" data-anim="fade-up">
+        <Eyebrow>How we build</Eyebrow>
+        <h2 class="section-title">Technology for reality</h2>
+        <p class="lede">We don't build technology for the sake of technology. We build it to serve operations in demanding, real-world environments.</p>
+      </div>
+      <div class="tech-grid" data-anim="stagger">
+        <div class="tech-card">
+          <span class="tech-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 8l-4 4 4 4"></path><path d="M15 8l4 4-4 4"></path></svg></span>
+          <h3>API-First Design</h3>
+          <p>Every function accessible programmatically for seamless integration and automation.</p>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3 8 4-16 3 8h4"></path></svg></span>
+          <h3>Real-Time Data Flow</h3>
+          <p>Information updates immediately across systems, not in overnight batches.</p>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4z"></path><path d="M14 4h6v6h-6z"></path><path d="M4 14h6v6H4z"></path><path d="M14 14h6v6h-6z"></path></svg></span>
+          <h3>Modular &amp; Extensible</h3>
+          <p>Add capabilities without rewriting the core platform as your business grows.</p>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z"></path></svg></span>
+          <h3>Secure &amp; Scalable</h3>
+          <p>Enterprise-grade security and performance designed to grow with your demands.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-dark">
+    <div class="container">
+      <div class="section-head" data-anim="fade-up">
+        <Eyebrow>Proven at scale</Eyebrow>
+        <h2 class="section-title">Not a promise — a proven reality</h2>
+        <p class="lede">Our technology isn't a pitch deck claim. It's currently powering live operations across the Maldives and Sri Lanka.</p>
+      </div>
+      <div class="proven-stats" data-anim="stagger">
+        <div class="proven-tile"><strong>Millions</strong><span>Transactions</span><em>Recorded without error rate</em></div>
+        <div class="proven-tile"><strong>99.9%</strong><span>Uptime</span><em>Guaranteed over 12+ months</em></div>
+        <div class="proven-tile"><strong>&lt;30ms</strong><span>API Speed</span><em>Response times under load</em></div>
+        <div class="proven-tile"><strong>Zero</strong><span>Deployments</span><em>Downtime during updates</em></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section partnership" id="approach">
+    <div class="container">
+      <div class="section-head" data-anim="fade-up">
+        <Eyebrow>Our approach</Eyebrow>
+        <h2 class="section-title">A different kind of partnership</h2>
+        <p class="lede">Our commitment to professional excellence and transparency.</p>
+      </div>
+      <div class="duo-grid" data-anim="stagger">
+        <div class="duo-panel duo-panel--yes">
+          <h3>What you can expect</h3>
+          <ul class="duo-list">
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12l2 2 4-4"></path><circle cx="12" cy="12" r="9"></circle></svg><span><strong>Honest assessments</strong> — if we're not the right fit, we say so early.</span></li>
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12l2 2 4-4"></path><circle cx="12" cy="12" r="9"></circle></svg><span><strong>Clear timelines</strong> — realistic schedules we actually meet.</span></li>
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12l2 2 4-4"></path><circle cx="12" cy="12" r="9"></circle></svg><span><strong>Transparent pricing</strong> — no hidden costs or surprise fees.</span></li>
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12l2 2 4-4"></path><circle cx="12" cy="12" r="9"></circle></svg><span><strong>Direct access</strong> — talk to decision-makers, not account managers.</span></li>
+          </ul>
+        </div>
+        <div class="duo-panel duo-panel--no">
+          <h3>What we don't do</h3>
+          <ul class="duo-list">
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg><span>Over-promise capabilities or timelines.</span></li>
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg><span>Disappear after implementation.</span></li>
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg><span>Force unnecessary complexity.</span></li>
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg><span>Sell one-size-fits-all solutions.</span></li>
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg><span>Choose features that don't serve operations.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section fit">
+    <div class="container">
+      <div class="section-head" data-anim="fade-up">
+        <Eyebrow>Fit check</Eyebrow>
+        <h2 class="section-title">Is NexOne right for you?</h2>
+        <p class="lede">We're not the right partner for everyone. We work best with organizations that value long-term stability over short-term shortcuts.</p>
+      </div>
+      <div class="duo-grid" data-anim="stagger">
+        <div class="duo-panel duo-panel--yes">
+          <h3>You're a good fit if:</h3>
+          <ul class="duo-list">
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12l2 2 4-4"></path><circle cx="12" cy="12" r="9"></circle></svg><span>You value operational clarity over feature checklists.</span></li>
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12l2 2 4-4"></path><circle cx="12" cy="12" r="9"></circle></svg><span>You need systems that integrate cleanly.</span></li>
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12l2 2 4-4"></path><circle cx="12" cy="12" r="9"></circle></svg><span>You want flexibility without chaos.</span></li>
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12l2 2 4-4"></path><circle cx="12" cy="12" r="9"></circle></svg><span>You prefer long-term stability over short-term shortcuts.</span></li>
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12l2 2 4-4"></path><circle cx="12" cy="12" r="9"></circle></svg><span>You treat technology as a strategic asset.</span></li>
+          </ul>
+        </div>
+        <div class="duo-panel duo-panel--no">
+          <h3>We're likely not a fit if:</h3>
+          <ul class="duo-list">
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg><span>Price alone is the deciding factor.</span></li>
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg><span>You expect one-size-fits-all solutions.</span></li>
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg><span>You need something operational tomorrow.</span></li>
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg><span>You prefer disconnected systems.</span></li>
+            <li><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg><span>You're not ready to commit to a partnership.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section results">
+    <div class="container">
+      <div class="section-head" data-anim="fade-up">
+        <Eyebrow>What it adds up to</Eyebrow>
+        <h2 class="section-title">The expected results</h2>
+      </div>
+      <div class="results-grid" data-anim="stagger">
+        <div class="result-card">
+          <h3>Operational Clarity</h3>
+          <p>Eliminate the "fog" of disconnected data and manual workarounds.</p>
+        </div>
+        <div class="result-card">
+          <h3>Reduced Risk</h3>
+          <p>Battle-tested systems that don't fail when transaction volume peaks.</p>
+        </div>
+        <div class="result-card">
+          <h3>Strategic Agility</h3>
+          <p>Technology that supports growth instead of creating bottlenecks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section path">
+    <div class="container">
+      <div class="section-head" data-anim="fade-up">
+        <Eyebrow>Getting started</Eyebrow>
+        <h2 class="section-title">Your path to excellence</h2>
+      </div>
+      <div class="path-grid" data-anim="stagger">
+        <div class="path-card">
+          <span class="path-num">1</span>
+          <h3>Discovery Conversation</h3>
+          <p>A 30&ndash;60 minute deep dive into your operations, pain points, and success metrics.</p>
+        </div>
+        <div class="path-card">
+          <span class="path-num">2</span>
+          <h3>Honest Assessment</h3>
+          <p>We determine if we're a fit and recommend the right approach and investment range.</p>
+        </div>
+        <div class="path-card">
+          <span class="path-num">3</span>
+          <h3>Detailed Proposal</h3>
+          <p>A comprehensive technical approach, timeline, and clear deliverables.</p>
+        </div>
+      </div>
+      <a class="btn btn--primary" href={withBase("/contact")}>Start the Conversation</a>
+    </div>
+  </section>
+
+  <section class="section faq">
+    <div class="container">
+      <div class="section-head" data-anim="fade-up">
+        <Eyebrow>Common questions</Eyebrow>
+        <h2 class="section-title">Why NexOne FAQ</h2>
+      </div>
+      <div class="faq-list" data-anim="stagger">
+        {faqs.map(({ data }) => (
+          <FaqItem question={data.question} answer={data.answer} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- <ClosingCTA /> -->
+
+  <Fragment slot="footer">
+    <Footer />
+  </Fragment>
+</Base>

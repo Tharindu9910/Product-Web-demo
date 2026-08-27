@@ -1,0 +1,45 @@
+---
+// legacy/index.html:3737. Only the client-approved quote renders (schema:
+// "anything not client-approved must not render in production"). The two
+// story slots are genuine PENDING placeholders per Approved content in
+// CLAUDE.md — .testi-trust-bar and the closing link stay commented out in
+// legacy too (uncertified claims / dead href="#"), so they're omitted here.
+import { getCollection } from "astro:content";
+import Section from "@/components/Section.astro";
+import Slot from "@/components/Slot.astro";
+
+const testimonial = (await getCollection("testimonials")).find((t) => t.data.status === "client-approved");
+---
+
+<Section name="testimonials">
+  <div class="testi-head">
+    <h2 class="section-title">It works in the field, not just the demo.</h2>
+  </div>
+
+  <div class="testi-grid" data-anim="fade-up">
+    {testimonial && (
+      <div class="testi-featured">
+        <p class="testi-context">Monthly stock reconciliation, three outlets</p>
+        <blockquote class="testi-quote">{testimonial.data.quote}</blockquote>
+        <div class="testi-attribution">
+          <div class="testi-avatar" aria-hidden="true">LOGO</div>
+          <div>
+            <p class="testi-name">{testimonial.data.author}</p>
+            <p class="testi-role">{testimonial.data.role}, {testimonial.data.company}</p>
+          </div>
+        </div>
+      </div>
+    )}
+
+    <div class="testi-stories">
+      <div class="testi-story">
+        <p class="testi-story-label">Client story</p>
+        <Slot />
+      </div>
+      <div class="testi-story">
+        <p class="testi-story-label">Client story</p>
+        <Slot />
+      </div>
+    </div>
+  </div>
+</Section>

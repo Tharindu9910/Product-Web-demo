@@ -1,0 +1,76 @@
+/* ============================================================
+   12. TESTIMONIALS — var(--canvas) + 1px top border slate 15% (4a)
+   ============================================================ */
+.testimonials { background: var(--canvas); border-top: 1px solid rgba(140, 156, 180, 0.15); }
+.testi-head { max-width: 42rem; margin: 0 auto 64px; text-align: center; }
+.testi-head .section-title { margin: 16px 0 16px; }
+
+.testi-grid { display: flex; gap: 32px; margin-bottom: 64px; }
+.testi-featured {
+  flex: 0 0 60%;
+  display: flex;
+  flex-direction: column;
+  padding: 48px;
+  background: var(--white);
+  border: 1px solid var(--hairline-2);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-soft);
+}
+.testi-context {
+  padding: 20px 24px;
+  margin-bottom: 32px;
+  background: var(--warm-tint);
+  border-radius: var(--r-panel);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--slate);
+}
+.testi-quote { font-size: 1.125rem; line-height: 1.6; color: var(--navy); flex: 1; }
+.testi-attribution { display: flex; align-items: center; gap: 16px; margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--hairline); }
+.testi-avatar {
+  flex: none;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px dashed rgba(140, 156, 180, 0.4);
+  background: var(--canvas);
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.06em; color: var(--slate);
+}
+.testi-name { font-size: 1rem; font-weight: 700; color: var(--navy); }
+.testi-role { font-size: 14px; color: var(--slate); }
+
+.testi-stories { flex: 1; display: flex; flex-direction: column; gap: 32px; }
+.testi-story {
+  flex: 1;
+  padding: 32px;
+  background: var(--white);
+  border: 1px solid var(--hairline-2);
+  border-radius: var(--r-card);
+}
+.testi-story-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin-bottom: 16px; }
+
+.testi-trust-bar {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px;
+  padding-top: 40px;
+  margin-bottom: 32px;
+  border-top: 1px solid var(--hairline);
+}
+.testi-trust-title { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin-bottom: 8px; }
+.testi-trust-text { font-size: 14px; color: var(--slate); }
+.testi-badges { display: flex; gap: 16px; }
+.testi-badge {
+  width: 64px; height: 64px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--r-panel);
+  background: var(--wash-orange);
+  color: var(--orange);
+}
+
+.testi-closing { text-align: center; }
+.testi-closing-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 700; color: var(--orange);
+  transition: opacity 300ms var(--ease);
+}
+.testi-closing-link:hover { opacity: 0.8; }
+

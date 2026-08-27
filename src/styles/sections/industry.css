@@ -1,0 +1,93 @@
+/* ============================================================
+   10. INDUSTRY — var(--warm-tint) (4a)
+   ============================================================ */
+.industry { background: var(--warm-tint); }
+.industry-head { text-align: center; margin-bottom: 48px; }
+.ind-tablist { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-bottom: 48px; }
+.ind-tab {
+  padding: 12px 24px;
+  border-radius: var(--r-pill);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--navy);
+  background: transparent;
+  border: 1px solid rgba(140, 156, 180, 0.5);
+  transition: background-color 300ms var(--ease), color 300ms var(--ease), border-color 300ms var(--ease);
+}
+.ind-tab:hover { border-color: var(--navy); }
+.ind-tab[aria-selected="true"] { background: var(--orange); color: var(--white); border-color: var(--orange); }
+.ind-panel {
+  position: relative;
+  padding: 48px;
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-card);
+  box-shadow: 0 1px 2px rgba(20, 41, 63, 0.05);
+}
+/* restaurant-panel corner art: "who already runs this" is the shortest of
+   the three ind-cols and grid's default align-items: stretch pads its column
+   out to match "recommended stack" anyway, so this sits in that already-empty
+   pocket under the client list rather than adding any new height, and peeks
+   slightly past the card's bottom-right corner. */
+.ind-panel-art {
+  position: absolute;
+  bottom: 10px;
+  right: 24px;
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+.ind-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px; }
+.ind-col-title { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--navy); margin-bottom: 24px; }
+.ind-stack { display: flex; flex-direction: column; gap: 12px; }
+.ind-module {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px;
+  background: var(--canvas);
+  border: 1px solid var(--hairline-2);
+  border-radius: var(--r-sm);
+  font-size: 14px; font-weight: 500; color: var(--navy);
+}
+.ind-module .icon { color: var(--slate); }
+.ind-changes { display: flex; flex-direction: column; gap: 24px; }
+.ind-changes li { display: flex; align-items: flex-start; gap: 16px; }
+.ind-changes .icon { color: var(--orange); margin-top: 6px; }
+.ind-changes span { color: var(--color-body); }
+.ind-clients { display: flex; flex-direction: column; gap: 16px; }
+.ind-client { display: flex; align-items: center; gap: 16px; }
+.ind-client-logo {
+  width: 48px; height: 48px; flex: none;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--canvas);
+  border: 2px dashed rgba(140, 156, 180, 0.4);
+  border-radius: 4px;
+  font-size: 0.75rem; letter-spacing: 0.12em; font-weight: 600; color: var(--slate);
+}
+.ind-client-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+.ind-client-place { font-size: 0.75rem; letter-spacing: 0.12em; font-weight: 600; color: var(--slate); }
+.ind-cta { display: flex; justify-content: center; margin-top: 48px; padding-top: 32px; border-top: 1px solid rgba(140, 156, 180, 0.1); }
+/* was `.ind-cta button` in legacy — a dead <button type="button"> with no
+   handler. Rule 6 needs a real destination, so this renders as an <a> now. */
+.ind-cta a {
+  display: inline-block;
+  padding: 16px 32px;
+  background: var(--orange);
+  color: var(--white);
+  border-radius: 4px;
+  font-size: 14px; font-weight: 700; letter-spacing: 0.04em;
+  box-shadow: 0 1px 2px rgba(20, 41, 63, 0.08);
+  transition: opacity 300ms var(--ease);
+}
+.ind-cta a:hover { opacity: 0.9; }
+.ind-placeholder {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 96px;
+  border: 2px dashed rgba(140, 156, 180, 0.4);
+  border-radius: var(--r-sm);
+  background: var(--canvas);
+  font-size: 0.75rem; letter-spacing: 0.12em; font-weight: 600; color: var(--slate);
+}
+

@@ -1,0 +1,56 @@
+/* ============================================================
+   3. BASE TYPOGRAPHY
+   ============================================================ */
+body {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--canvas);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+::selection { background: var(--orange); color: var(--white); }
+
+h1, h2, h3 { font-family: var(--font-display); }
+
+.display-h1 {
+  /* min(design size, --h1-max) — --h1-max is opt-in per context and is set
+     only by .hero-copy (hero.css), where the headline's hand-broken lines
+     must never re-wrap and so have to be capped against the column width.
+     The 1000px fallback is a no-op for anything that doesn't set it. */
+  font-size: min(clamp(2.75rem, 5vw, 4.5rem), var(--h1-max, 1000px));
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  color: var(--navy);
+  max-width: 95%;
+}
+.section-title {
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--navy);
+}
+/* index.html's own :root eyebrow rule says --slate; all five subpages say
+   --orange instead (about/contact/why-us/inventory/logistics, verified by
+   grep — index.html is the lone dissenter). Neither is used as-is: raw
+   --orange text on canvas/white is 2.55:1 and fails AA (rule 4), so this
+   takes the subpages' orange intent through --color-orange-text (4.67:1)
+   instead. Dark-ground sections override color locally (.architecture
+   .eyebrow, .trust-eyebrow) same as before. */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-orange-text);
+}
+.lede { font-size: 1.125rem; line-height: 1.7; color: var(--slate); }
+.label { font-size: 14px; line-height: 1.4; font-weight: 500; }
+
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; border-radius: 2px; }
+

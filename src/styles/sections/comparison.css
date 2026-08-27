@@ -1,0 +1,260 @@
+/* ============================================================
+   8. COMPARISON — legacy/comparison.html port (2026-08-26)
+
+   User-directed revert from the v2 lane rebuild (BackupComparison.astro)
+   back to the original mockup: two independently-scaled panels — a
+   container-query-fluid collage of scattered documents (WITHOUT) beside a
+   dark order-record card (WITH) — rather than one shared lane grid.
+
+   The WITHOUT stage uses `.cmp-stage`'s own cqw-based --u unit (see
+   comment at .cmp-canvas) so the whole collage scales with its own box,
+   not the viewport — that's what keeps it legible from 320px to 1920px
+   with no per-element breakpoints. Values below are the mockup's own
+   design-grid numbers (404x499 units), unchanged from legacy/comparison.html.
+   ============================================================ */
+.comparison { background: var(--warm-tint); }
+
+.cmp-head { max-width: 42rem; margin: 0 auto; text-align: center; }
+
+.cmp-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  max-width: 1020px;
+  margin: 36px auto 0;
+}
+
+/* --- left icon rail — decorative, matches the "app nav" framing device
+   the mockup uses to suggest the WITH/WITHOUT panels sit inside one real
+   product. Hidden below the two-column breakpoint, same as legacy's
+   `hidden md:block`. */
+.cmp-rail {
+  flex: none;
+  width: 86px;
+  padding-top: 112px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 58px;
+}
+.cmp-rail-item { display: flex; flex-direction: column; align-items: center; }
+.cmp-rail-icon {
+  width: 42px; height: 42px;
+  border-radius: 11px;
+  background: var(--peach);
+  color: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 1px 2px rgba(20, 41, 63, 0.06);
+}
+.cmp-rail-label { margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--navy); }
+
+.cmp-panels {
+  width: 100%;
+  max-width: 830px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.cmp-panel-label {
+  display: table;
+  margin: 0 auto;
+  padding: 10px 20px;
+  border-radius: var(--r-pill);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.cmp-panel-label--without { background: var(--chrome-fill); color: var(--slate); }
+.cmp-panel-label--with { background: var(--navy); color: var(--white); }
+
+/* --- WITHOUT: fluid collage stage ----------------------------------- */
+.cmp-stage {
+  container-type: inline-size;
+  position: relative;
+  margin-top: 24px;
+  aspect-ratio: 404 / 499;
+  border-radius: var(--r-card);
+  overflow: hidden;
+  background: linear-gradient(155deg, var(--canvas) 0%, var(--warm-tint) 100%);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+}
+/* --u is 1 design px against the mockup's 404x499 grid: 100/404cqw, so
+   every --x/--y/--w coordinate below scales with the stage's own inline
+   size instead of the viewport. */
+.cmp-canvas { position: absolute; inset: 0; --u: 0.247525cqw; }
+.cmp-wires { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cmp-wires-line { stroke: var(--slate); }
+.cmp-wires-arrow { fill: var(--slate); }
+
+.cmp-note, .cmp-doc, .cmp-chat {
+  position: absolute;
+  left: calc(var(--x) * var(--u));
+  top: calc(var(--y) * var(--u));
+  width: calc(var(--w) * var(--u));
+  transform: rotate(var(--r));
+  border-radius: calc(8 * var(--u));
+  background: var(--white);
+  box-shadow:
+    0 calc(1 * var(--u)) calc(2 * var(--u)) rgba(20, 41, 63, 0.06),
+    0 calc(8 * var(--u)) calc(18 * var(--u)) calc(-10 * var(--u)) rgba(20, 41, 63, 0.22),
+    0 0 0 1px rgba(20, 41, 63, 0.05);
+}
+
+.cmp-note-band {
+  display: flex; align-items: center; gap: calc(5 * var(--u));
+  height: calc(25 * var(--u));
+  padding: 0 calc(9 * var(--u));
+  background: var(--cmp-paper-wash);
+  border-radius: calc(8 * var(--u)) calc(8 * var(--u)) 0 0;
+  color: var(--navy);
+}
+.cmp-note-band span {
+  font-size: calc(8.6 * var(--u)); font-weight: 500;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cmp-note-band .icon { width: calc(11 * var(--u)); height: calc(11 * var(--u)); flex: none; }
+.cmp-note-body { padding: calc(9 * var(--u)); }
+.cmp-note-bar { height: calc(4 * var(--u)); width: 76%; border-radius: var(--r-pill); background: var(--chrome-line); }
+.cmp-note-kv { margin-top: calc(9 * var(--u)); display: flex; align-items: center; justify-content: space-between; }
+.cmp-note-k { font-size: calc(8.4 * var(--u)); color: var(--slate); }
+.cmp-note-figure {
+  width: calc(31 * var(--u)); height: calc(25 * var(--u));
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--r-pill);
+  border: calc(1.9 * var(--u)) solid var(--error);
+  font-size: calc(12 * var(--u)); font-weight: 700; color: var(--navy);
+}
+
+.cmp-doc {
+  padding: calc(11 * var(--u)) calc(11 * var(--u)) calc(9 * var(--u));
+  font-family: ui-monospace, monospace;
+}
+.cmp-doc-title { font-size: calc(8.8 * var(--u)); font-weight: 700; color: var(--navy); line-height: 1.35; letter-spacing: calc(-0.15 * var(--u)); }
+.cmp-doc-line { font-size: calc(8.2 * var(--u)); color: var(--slate); line-height: 1.6; letter-spacing: calc(-0.15 * var(--u)); }
+.cmp-doc-line b { font-weight: 400; color: var(--navy); }
+.cmp-doc-rule { padding-bottom: calc(5 * var(--u)); margin-bottom: calc(5 * var(--u)); border-bottom: 1px solid var(--hairline); }
+.cmp-doc-red { color: var(--error); font-weight: 700; }
+.cmp-doc-ghost { color: var(--chrome-line); }
+
+.cmp-chat { display: flex; flex-direction: column; overflow: hidden; }
+.cmp-chat-head {
+  display: flex; align-items: center; gap: calc(7 * var(--u));
+  height: calc(28 * var(--u));
+  padding: 0 calc(11 * var(--u));
+  background: var(--ink);
+  border-radius: calc(8 * var(--u)) calc(8 * var(--u)) 0 0;
+  font-size: calc(9 * var(--u)); font-weight: 600; color: var(--white);
+}
+.cmp-chat-avatar { width: calc(12 * var(--u)); height: calc(12 * var(--u)); border-radius: 50%; background: var(--slate); flex: none; }
+.cmp-chat-body { display: flex; flex-direction: column; padding: calc(11 * var(--u)); }
+.cmp-chat-body p { font-size: calc(9 * var(--u)); line-height: 1.5; color: var(--navy); margin: 0; }
+.cmp-chat-status {
+  align-self: flex-end;
+  display: inline-block; margin-top: calc(9 * var(--u));
+  background: var(--chrome-fill); border-radius: calc(5 * var(--u));
+  padding: calc(4 * var(--u)) calc(8 * var(--u));
+  font-size: calc(8.6 * var(--u)); color: var(--navy);
+}
+
+/* per-band coordinates come from each element's own inline --x/--y/--w/--r
+   custom properties in Comparison.astro, verbatim from the mockup's
+   404x499 design grid — do not re-derive them, they're tuned against the
+   .cmp-stage aspect-ratio. */
+
+/* --- WITH: dark record card ------------------------------------------ */
+/* locked to the stage's own natural height at the two-column breakpoint
+   (830px column width at 404:499 -> ~499px) so both panels line up
+   exactly, same as legacy's `lg:h-[499px]` */
+@media (min-width: 1024px) {
+  .cmp-dark { height: 499px; }
+}
+.cmp-dark {
+  margin-top: 24px;
+  border-radius: var(--r-card);
+  padding: 22px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display);
+  background:
+    radial-gradient(60% 26% at 84% 32%, color-mix(in srgb, var(--orange) 13%, transparent) 0%, transparent 70%),
+    radial-gradient(125% 95% at 50% 22%, var(--cmp-dark-1) 0%, var(--cmp-dark-2) 42%, var(--cmp-dark-3) 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07), 0 24px 48px -18px rgba(20, 41, 63, 0.5);
+}
+
+.cmp-dark-head { display: flex; align-items: center; gap: 14px; }
+.cmp-dark-pill { border-radius: var(--r-pill); height: 26px; display: flex; align-items: center; justify-content: center; font-size: 12.5px; font-weight: 600; color: var(--white); }
+.cmp-dark-pill--so {
+  padding: 0 13px;
+  background: linear-gradient(135deg, var(--cmp-amber-1) 0%, var(--cmp-amber-2) 52%, var(--cmp-amber-3) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+.cmp-dark-customer { font-size: 13.5px; color: var(--mist); }
+.cmp-dark-pill--done {
+  margin-left: auto; padding: 0 12px; font-size: 12px; letter-spacing: 0.04em;
+  background: linear-gradient(100deg, var(--cmp-teal-1) 0%, var(--cmp-teal-2) 55%, var(--cmp-teal-3) 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.cmp-dark-headline { margin-top: 19px; display: flex; align-items: flex-end; gap: 10px; }
+.cmp-dark-figure { font-size: 36px; font-weight: 700; line-height: 0.9; letter-spacing: -0.02em; color: var(--white); }
+.cmp-dark-figure-label { padding-bottom: 2px; font-size: 13.5px; color: var(--mist); }
+
+.cmp-dark-location { margin-top: 10px; display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--mist); }
+.cmp-dark-location .icon { color: var(--slate); }
+
+.cmp-stepper {
+  position: relative;
+  list-style: none;
+  margin: 30px 0 0;
+  padding: 0 34px;
+  display: flex;
+  justify-content: space-between;
+}
+.cmp-stepper::before {
+  content: '';
+  position: absolute; left: 34px; right: 34px; top: 6px;
+  height: 2px;
+  background: var(--orange);
+}
+.cmp-stepper li {
+  position: relative; z-index: 1;
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center;
+  font-size: 12px; font-weight: 500; color: var(--white);
+  white-space: nowrap;
+}
+.cmp-stepper li::before {
+  content: ''; display: block;
+  width: 11px; height: 11px; margin-bottom: 9px;
+  border-radius: 50%; background: var(--orange);
+}
+.cmp-stepper li.is-live::before {
+  width: 14px; height: 14px; margin-top: -1.5px; margin-bottom: 7.5px;
+  background: var(--cmp-amber-1);
+  box-shadow: 0 0 0 3px rgba(250, 123, 13, 0.28), 0 0 26px 8px rgba(250, 123, 13, 0.42);
+}
+
+.cmp-dark-rows { margin-top: 29px; display: flex; flex-direction: column; gap: 11px; }
+.cmp-dark-row {
+  display: flex; align-items: center;
+  height: 38px; padding: 0 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.075);
+}
+.cmp-dark-row .icon { color: var(--white); flex: none; }
+.cmp-dark-row-label { margin-left: 18px; width: 100px; font-size: 13.5px; font-weight: 500; color: var(--white); }
+.cmp-dark-row-detail { font-size: 12.5px; color: var(--mist); }
+
+.cmp-dark-foot {
+  margin-top: auto; padding-top: 18px;
+  display: flex; align-items: center; gap: 14px;
+  border-radius: 12px; padding-left: 18px; padding-right: 18px;
+  height: 49px;
+  background: linear-gradient(100deg, var(--cmp-footbar-1) 0%, var(--cmp-footbar-2) 45%, var(--cmp-footbar-3) 100%);
+}
+.cmp-dark-foot .icon { color: var(--orange); flex: none; filter: drop-shadow(0 0 7px rgba(250, 123, 13, 0.65)); }
+.cmp-dark-foot span { font-size: 14.5px; font-weight: 500; color: var(--navy); }

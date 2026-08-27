@@ -1,0 +1,58 @@
+---
+// legacy/index.html:3798 (+ identical copy on about/contact/why-us; inventory
+// and logistics override the title/sub for their module). Homepage's own copy
+// sits behind <button type="button"> with no destination — every other page
+// already uses a real <a href="contact.html">, so that's the shape ported
+// here (rule 6: no dead CTAs).
+//
+// Background photo (factory.jpg + black scrim) is a user-directed
+// departure from legacy's flat --canvas band — see the 2026-08-26
+// mistake log entry. The image is cropped to the section's existing
+// height, not allowed to set it.
+//
+// `image` prop lets module pages swap in their own erp-modules/ photo;
+// defaults to factory.jpg so every other page keeps the original background.
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import factory from "@/assets/factory.jpg";
+import { withBase } from "@/lib/base";
+
+interface Props {
+  sub?: string;
+  href?: string;
+  label?: string;
+  image?: ImageMetadata;
+}
+const {
+  sub = "A 30-minute demo using your own products and your own setup. No slides.",
+  href = withBase("/contact"),
+  label = "BOOK A FREE DEMO",
+  image = factory,
+} = Astro.props;
+---
+
+<section class="closing-cta" id="closing-cta">
+  <div class="closing-cta-media" aria-hidden="true">
+    <!-- width caps the plain `src` fallback: without it astro:assets
+         emits the 5943px original (1.4 MB) alongside the srcset. -->
+    <Image
+      src={image}
+      alt=""
+      width={1920}
+      widths={[640, 960, 1440, 1920]}
+      sizes="100vw"
+      quality={50}
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+  <div class="closing-cta-scrim" aria-hidden="true"></div>
+  <div class="closing-cta-glow" aria-hidden="true"></div>
+  <div class="container closing-cta-inner" data-anim="scale-in">
+    <h2 class="closing-cta-title">
+      <slot name="title">See NexOne running<br />your kind of operation.</slot>
+    </h2>
+    <p class="closing-cta-sub">{sub}</p>
+    <a class="closing-cta-btn" href={href}>{label}</a>
+  </div>
+</section>

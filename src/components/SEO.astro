@@ -1,0 +1,69 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const { title, description, ogImage = `${import.meta.env.BASE_URL}og/default.png`, noindex = false } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const image = new URL(ogImage, Astro.site);
+const isHome = Astro.url.pathname === "/";
+
+const organization = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "NexOne World",
+  url: Astro.site?.toString(),
+  foundingDate: "2000",
+  address: [
+    {
+      "@type": "PostalAddress",
+      addressLocality: "Negombo",
+      addressCountry: "LK",
+    },
+    {
+      "@type": "PostalAddress",
+      addressLocality: "Malé",
+      addressCountry: "MV",
+    },
+  ],
+};
+
+// Homepage only. No `offers` block — no public pricing exists,
+// and inventing one is a content-integrity violation.
+const software = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "NexOne",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  description:
+    "An ERP that connects your whole operation — from sales order to delivery — into one system.",
+};
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="NexOne World" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={image} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_LK" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+
+<script type="application/ld+json" set:html={JSON.stringify(organization)} />
+{isHome && <script type="application/ld+json" set:html={JSON.stringify(software)} />}

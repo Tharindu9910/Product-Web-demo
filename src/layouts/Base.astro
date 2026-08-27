@@ -1,0 +1,78 @@
+---
+import SEO from "@/components/SEO.astro";
+import { withBase } from "@/lib/base";
+import "@/styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const { title, description, ogImage, noindex } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href={withBase("/favicon.svg")} type="image/svg+xml" />
+
+    <!-- Sets js-ready before first paint, so [data-anim] elements go straight
+         to their hidden pre-animation state instead of flashing visible then
+         hiding. initAnimations() (deferred, end of body) still does the actual
+         tween setup — this only owns the class, and only when JS can act on
+         it: reduced-motion users never get it, so CSS's own !important block
+         in animation.css stays the only thing governing their [data-anim]
+         elements, and nothing here fights it. -->
+    <script is:inline>
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("js-ready");
+      }
+    </script>
+
+    <link rel="preload" href={withBase("/fonts/sora-variable.woff2")} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={withBase("/fonts/hanken-variable.woff2")} as="font" type="font/woff2" crossorigin />
+
+    <SEO title={title} description={description} ogImage={ogImage} noindex={noindex} />
+  </head>
+
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <slot name="nav" />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <slot name="footer" />
+
+    <script>
+      import { boot } from "@/lib/boot";
+      boot();
+    </script>
+
+    <style is:global>
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        z-index: 999;
+        padding: 12px 20px;
+        background: var(--color-navy);
+        color: var(--color-white);
+        font-weight: 600;
+      }
+      .skip-link:focus {
+        left: 0;
+      }
+      :focus-visible {
+        outline: 2px solid var(--color-orange);
+        outline-offset: 3px;
+      }
+    </style>
+  </body>
+</html>

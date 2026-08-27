@@ -1,0 +1,214 @@
+/* ============================================================
+   8a. CONNECTED FLOW — var(--canvas), client note 3. Ported from
+   blooming-icons.html (2026-08-16): the static line-draw-in was first
+   replaced with a looping bloom sequence, then (2026-08-27) with a
+   scroll-scrubbed one — 7 independent rail segments (one per gap
+   between the 8 nodes) light up in the order the reader scrolls past
+   them, each with a travelling head, and the next node blooms the
+   instant its segment's fill arrives (see animations.ts's
+   buildFlowScroll()). Tokens ported 1:1 onto this file's system:
+   source --line -> --hairline-2 (identical rgba), --icon-dim/
+   --label-dim -> --slate, --ease-out-quart -> --ease (byte-identical
+   cubic-bezier) — no new tokens needed.
+
+   .flow-diagram is the plain .reveal-group wrapper (fades up once,
+   like every other section); .flow-stage is the single .reveal child
+   that actually gets positioned/animated, so — unlike the old
+   .flow-line — nothing here needs to out-specificity the generic
+   .reveal-group > .reveal rule.
+   ============================================================ */
+.flow { background: var(--canvas); border-top: 1px solid rgba(140, 156, 180, 0.15); }
+.flow-head { max-width: 46rem; margin: 0 auto 56px; text-align: center; }
+.flow-head .section-title { margin: 16px 0 16px; }
+.flow-head .lede { margin: 0 auto; }
+
+.flow-diagram { margin-bottom: 40px; }
+.flow-stage {
+  --ring: 52px;
+  --travel: 460ms;   /* overwritten by JS */
+  --fade: 480ms;     /* overwritten by JS */
+  position: relative;
+}
+
+/* rail: 7 segments, one per gap. Spans centre-of-node-1 to
+   centre-of-node-8 (6.25% = 1/16 of the 8-column node grid). */
+.flow-rail {
+  position: absolute;
+  left: 6.25%; right: 6.25%;
+  top: calc(var(--ring) / 2 - 1px);
+  height: 2px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  z-index: 0;
+}
+.flow-seg { position: relative; margin: 0 calc(var(--ring) / 2 + 9px); }
+.flow-seg-track {
+  position: absolute; left: 0; right: 0; top: 50%;
+  height: 1px; transform: translateY(-.5px);
+  background: var(--hairline-2);
+}
+.flow-seg-glow, .flow-seg-fill {
+  position: absolute; left: 0; right: 0; top: 50%;
+  transform-origin: left center;
+  border-radius: 2px;
+}
+.flow-seg-glow {
+  height: 12px;
+  transform: translateY(-6px) scaleX(0);
+  background: linear-gradient(90deg, rgba(250, 123, 13, 0.25), rgba(250, 123, 13, 0.6));
+  filter: blur(7px);
+  transition: transform var(--travel) linear, opacity 220ms ease;
+}
+.flow-seg-fill {
+  height: 2px;
+  transform: translateY(-1px) scaleX(0);
+  background: linear-gradient(90deg, var(--orange-glow), var(--orange));
+  box-shadow: 0 0 10px rgba(250, 123, 13, 0.5);
+  transition: transform var(--travel) linear, opacity 220ms ease;
+}
+.flow-seg.is-on .flow-seg-glow { transform: translateY(-6px) scaleX(1); }
+.flow-seg.is-on .flow-seg-fill { transform: translateY(-1px) scaleX(1); }
+
+/* the travelling head — rides the leading edge, absorbed on arrival */
+.flow-seg-head {
+  position: absolute; top: 50%; left: 0;
+  width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px;
+  border-radius: 50%;
+  background: var(--orange-light);
+  box-shadow: 0 0 6px 2px rgba(250, 123, 13, 0.9), 0 0 18px 7px rgba(250, 123, 13, 0.4);
+  opacity: 0;
+  transition: left var(--travel) linear, top var(--travel) linear, opacity 180ms ease;
+}
+.flow-seg.is-on .flow-seg-head { left: 100%; opacity: 1; }
+.flow-seg.is-arrived .flow-seg-head { opacity: 0; }
+
+.flow-node-list {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  list-style: none; margin: 0; padding: 0;
+}
+.flow-node { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+.flow-node-mark { position: relative; width: var(--ring); height: var(--ring); flex: none; }
+
+/* steady bloom, held for as long as the node is lit */
+.flow-node-aura {
+  position: absolute; inset: -20px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(250, 123, 13, 0.32) 0%, rgba(250, 123, 13, 0.11) 46%, rgba(250, 123, 13, 0) 72%);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--fade) ease;
+}
+.flow-node.is-lit .flow-node-aura { opacity: 1; transition: opacity 260ms ease; }
+
+/* single-shot ripple at the instant of ignition */
+.flow-node-halo {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 1.5px solid rgba(250, 123, 13, 0.55);
+  opacity: 0; transform: scale(.82); pointer-events: none;
+}
+.flow-node.is-lit .flow-node-halo { animation: flow-haloBloom 900ms var(--ease); }
+
+.flow-node-ring {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  background: var(--white);
+  border: 1.5px solid var(--hairline-2);
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(20, 41, 63, 0.05);
+  transition: transform var(--fade) ease, border-color var(--fade) ease, box-shadow var(--fade) ease;
+}
+.flow-node.is-lit .flow-node-ring {
+  transform: scale(1.045);
+  border-color: rgba(250, 123, 13, 0.8);
+  box-shadow: 0 0 0 4px rgba(250, 123, 13, 0.09), 0 9px 22px -10px rgba(250, 123, 13, 0.5);
+  animation: flow-ringBloom 760ms var(--ease);
+}
+
+.flow-node-mark .icon { width: 22px; height: 22px; color: var(--slate); transition: color var(--fade) ease; }
+.flow-node.is-lit .flow-node-mark .icon { color: var(--orange); transition: color 200ms ease; }
+
+.flow-node-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--slate);
+  white-space: nowrap;
+  line-height: 1.3;
+  transition: color var(--fade) ease;
+}
+.flow-node.is-lit .flow-node-label { color: var(--navy); transition: color 220ms ease; }
+
+@keyframes flow-ringBloom {
+  0%   { transform: scale(1); }
+  24%  { transform: scale(1.10); }
+  100% { transform: scale(1.045); }   /* lands exactly on the lit resting state */
+}
+@keyframes flow-haloBloom {
+  0%   { transform: scale(.82); opacity: 0; }
+  8%   { transform: scale(.95); opacity: .75; }
+  100% { transform: scale(2.15); opacity: 0; }
+}
+
+.flow-caption {
+  text-align: center;
+  font-size: 14px;
+  color: var(--slate);
+  padding-top: 24px;
+  border-top: 1px solid var(--hairline);
+}
+
+@media (max-width: 1120px) {
+  .flow-stage { --ring: 46px; }
+  .flow-node { gap: 10px; }
+  .flow-node-label { font-size: 11px; }
+}
+
+/* Below 767px (site's own mobile breakpoint) the strip runs
+   top-to-bottom instead of shrinking further — same loop, same sync,
+   only the axis changes. The label drops white-space:nowrap and
+   flexes to fill the row, so a longer name (e.g. "Sales Order") wraps
+   to a second line instead of overflowing; grid-auto-rows: 1fr keeps
+   every row equal to whichever one needs the extra line, so the
+   absolutely-positioned rail's evenly-spaced segments stay aligned
+   with the node centres regardless of which label wraps. */
+@media (max-width: 767px) {
+  /* fit-content + auto margins centre the whole strip — rail included,
+     since it's absolutely positioned against .flow-stage and rides with
+     it. Sizing to content (rather than a fixed max-width) keeps the gap
+     between ring and label tight, so the group reads as centred instead
+     of a centred box with a left-hugging column inside it. */
+  .flow-stage { --ring: 46px; width: fit-content; margin-inline: auto; max-width: 100%; }
+  .flow-node-list { grid-template-columns: 1fr; grid-auto-rows: 1fr; row-gap: 4px; }
+  .flow-node {
+    flex-direction: row; justify-content: flex-start;
+    gap: 16px; min-height: 72px; text-align: left;
+  }
+  .flow-node-label { white-space: normal; flex: 1; min-width: 0; }
+
+  .flow-rail {
+    left: calc(var(--ring) / 2 - 1px); right: auto;
+    top: 6.5%; bottom: 6.5%;
+    width: 2px; height: auto;
+    grid-template-columns: none;
+    grid-template-rows: repeat(7, 1fr);
+  }
+  .flow-seg { margin: calc(var(--ring) / 2 + 9px) 0; }
+
+  .flow-seg-track {
+    left: 50%; right: auto; top: 0; bottom: 0;
+    width: 1px; height: auto; transform: translateX(-.5px);
+  }
+  .flow-seg-glow, .flow-seg-fill {
+    left: 50%; right: auto; top: 0; bottom: 0;
+    height: auto; transform-origin: center top;
+  }
+  .flow-seg-glow { width: 12px; transform: translateX(-6px) scaleY(0); }
+  .flow-seg-fill { width: 2px; transform: translateX(-1px) scaleY(0); }
+  .flow-seg.is-on .flow-seg-glow { transform: translateX(-6px) scaleY(1); }
+  .flow-seg.is-on .flow-seg-fill { transform: translateX(-1px) scaleY(1); }
+
+  .flow-seg-head { top: 0; left: 50%; }
+  .flow-seg.is-on .flow-seg-head { top: 100%; left: 50%; }
+}
+

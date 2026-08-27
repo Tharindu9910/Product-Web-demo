@@ -1,0 +1,112 @@
+---
+// legacy/logistics.html — still the lean version (no FAQ/dark band/engine
+// diagram, confirmed by reading the current file rather than trusting the
+// stale "still the old lean 371-line version" note in legacy/CLAUDE.md).
+import { Image } from "astro:assets";
+import Base from "@/layouts/Base.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import { withBase } from "@/lib/base";
+import ClosingCTA from "@/components/ClosingCTA.astro";
+import Eyebrow from "@/components/Eyebrow.astro";
+import logisticsPhoto from "@/assets/card/Logistics.jpg";
+import logisticsCtaPhoto from "@/assets/erp-modules/pexels-tobiandchris-9222605.jpg";
+import "@/styles/pages/module-page.css";
+---
+
+<Base
+  title="Logistics | NexOne"
+  description="From the moment an order leaves the warehouse to the moment it's signed for, Logistics keeps dispatch, transport and delivery on one shared record."
+>
+  <Fragment slot="nav">
+    <Nav variant="page" current="modules" />
+  </Fragment>
+
+  <section class="mod-hero section">
+    <div class="container">
+      <p class="mod-breadcrumb">
+        <a href={withBase("/#platform")}>ERP Modules</a>
+        <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+        <span>Logistics</span>
+      </p>
+      <div class="mod-hero-grid">
+        <div data-anim="fade-up">
+          <Eyebrow>Core module</Eyebrow>
+          <h1 class="mod-title">Logistics</h1>
+          <p class="lede mod-lede">
+            From the moment an order leaves the warehouse to the moment it's signed for, Logistics keeps dispatch,
+            transport and delivery on one shared record — no re-entry, no separate spreadsheet.
+          </p>
+          <div class="mod-cta-row">
+            <a class="mod-btn-primary" href={withBase("/contact")}>Request a demo</a>
+          </div>
+        </div>
+        <div class="mod-hero-media" data-anim="fade-up" data-anim-delay="0.15">
+          <Image src={logisticsPhoto} alt="Logistics module interface"
+            width={1200}
+            widths={[420, 640, 900, 1200]}
+            sizes="(max-width: 1023px) calc(100vw - 48px), 600px"
+            quality={68}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mod-benefits section">
+    <div class="container">
+      <div class="mod-benefits-head" data-anim="fade-up">
+        <Eyebrow>What it does</Eyebrow>
+        <h2>Dispatch to doorstep, on one record.</h2>
+      </div>
+      <div class="mod-benefits-grid" data-anim="stagger">
+        <div class="mod-benefit-card">
+          <div class="mod-benefit-head">
+            <span class="mod-benefit-icon"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg></span>
+            <h3>Dispatch scheduling</h3>
+          </div>
+          <p>Plan and assign deliveries from one calendar, matched to driver and vehicle availability.</p>
+        </div>
+        <div class="mod-benefit-card">
+          <div class="mod-benefit-head">
+            <span class="mod-benefit-icon"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg></span>
+            <h3>Route &amp; fleet tracking</h3>
+          </div>
+          <p>Know where every vehicle and delivery is, in real time, without a phone call.</p>
+        </div>
+        <div class="mod-benefit-card">
+          <div class="mod-benefit-head">
+            <span class="mod-benefit-icon"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg></span>
+            <h3>Proof-of-delivery capture</h3>
+          </div>
+          <p>Signatures, photos and timestamps are captured on delivery and attached to the order automatically.</p>
+        </div>
+        <div class="mod-benefit-card">
+          <div class="mod-benefit-head">
+            <span class="mod-benefit-icon"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg></span>
+            <h3>Real-time ETA visibility</h3>
+          </div>
+          <p>Customers and dispatch see the same live arrival estimate, updated as the route changes.</p>
+        </div>
+        <div class="mod-benefit-card">
+          <div class="mod-benefit-head">
+            <span class="mod-benefit-icon"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg></span>
+            <h3>Warehouse-to-door handoff</h3>
+          </div>
+          <p>One record follows the order from picking to sign-off — no re-entry between systems.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ClosingCTA image={logisticsCtaPhoto}>
+    <Fragment slot="title">See Logistics running<br />your kind of delivery.</Fragment>
+  </ClosingCTA>
+
+  <Fragment slot="footer">
+    <Footer />
+  </Fragment>
+</Base>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tharindu9910.github.io/Product-Web-demo/sitemap-index.xml

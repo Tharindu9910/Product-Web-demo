@@ -1,0 +1,59 @@
+/* ============================================================
+   global.css — IMPORTS ONLY. Add no rules to this file.
+
+   CSS requires @import to precede every other rule, so a single
+   rule here would strand every import below it. The cascade is
+   this list's order, so the order is the design:
+
+     tailwindcss   preflight first, so the legacy reset can win
+     theme         @theme: colours, fonts, spacing
+     fonts         @font-face, incl. metric-matched fallbacks
+     reset         legacy block 1 — overrides preflight
+     tokens        legacy block 2 — aliases + non-@theme tokens
+     typography    legacy block 3
+     layout        legacy block 4
+     animation     scaffold pre-animation state (GSAP, step 6)
+     sections/*    legacy blocks 5-14, one file each
+     shared/*      cross-subpage patterns (step 5) — not part of
+                   index.html's numbering, but explicitly called
+                   out by legacy/CLAUDE.md as shared/kept-in-sync
+                   across why-us/inventory/logistics
+     responsive    legacy block 15 — ALL sections' media queries,
+                   kept whole, so it must import AFTER sections
+     motion        legacy block 16 — last word on motion
+   ============================================================ */
+
+@import "tailwindcss";
+
+/* --- base ------------------------------------------------- */
+@import "./base/theme.css";
+@import "./base/fonts.css";
+@import "./base/reset.css";
+@import "./base/tokens.css";
+@import "./base/typography.css";
+@import "./base/layout.css";
+@import "./base/animation.css";
+
+/* --- sections, in legacy source order ---------------------- */
+/* 5. NAV lives here, not in Nav.astro. Step 3 decides what moves
+   into the component and what stays global. */
+@import "./sections/nav.css";          /*  5   */
+@import "./sections/hero.css";         /*  6   */
+@import "./sections/trust.css";        /*  7   */
+@import "./sections/pain.css";         /*  7b  */
+@import "./sections/comparison.css";   /*  8   */
+@import "./sections/flow.css";         /*  8a  */
+@import "./sections/video.css";        /*  8b  */
+@import "./sections/platform.css";     /*  9   */
+@import "./sections/industry.css";     /* 10   */
+@import "./sections/architecture.css"; /* 11   */
+@import "./sections/testimonials.css"; /* 12   */
+@import "./sections/closing-cta.css";  /* 13   */
+@import "./sections/footer.css";       /* 14   */
+
+/* --- shared subpage patterns -------------------------------- */
+@import "./shared/module-page.css";
+
+/* --- overrides, after every section ------------------------ */
+@import "./base/responsive.css";       /* 15   */
+@import "./base/motion.css";           /* 16   */

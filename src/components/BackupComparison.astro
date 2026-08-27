@@ -1,0 +1,140 @@
+---
+// legacy/index.html:2674. Two static lanes (v2 rebuild, see comparison.css)
+// — no JS toggle. Record IDs (SO-9021/WH-4471/DN-773/INV-2208) are legacy's
+// own placeholders, not invented here.
+import Section from "@/components/Section.astro";
+---
+
+<Section name="comparison">
+  <div class="cmp-head">
+    <h2 class="section-title">Follow a single order through your business.</h2>
+  </div>
+
+  <div class="cmp-stage">
+    <div class="cmp-panel-bg cmp-panel-bg--without" aria-hidden="true" data-anim="fade-up"></div>
+    <div class="cmp-panel-bg cmp-panel-bg--with" aria-hidden="true" data-anim="fade-up" data-anim-delay="0.15"></div>
+
+    <p class="cmp-state-label cmp-state-label--without">Without NexOne</p>
+    <p class="cmp-state-label cmp-state-label--with">With NexOne</p>
+
+    <span class="cmp-lane-label cmp-lane-label--stock">Stock</span>
+    <div class="cmp-band cmp-band--stock">
+      <span class="cmp-mobile-tag">Without NexOne</span>
+      <div class="cmp-win cmp-win--sheet1">
+        <div class="cmp-win-head">
+          <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1.5"></rect><path d="M3 9h18M9 9v11"></path></svg>
+          <span class="cmp-win-name">stock_export_final.xlsx</span>
+        </div>
+        <div class="cmp-win-body">
+          <div class="cmp-stack">
+            <div class="cmp-skel cmp-skel--w75"></div>
+            <div class="cmp-row-line">
+              <span class="cmp-row-label">Cases on hand</span>
+              <span class="cmp-figure cmp-circled">244</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cmp-win cmp-win--wms">
+        <div class="cmp-win-head">
+          <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="12" rx="1.5"></rect><path d="M8 21h8M12 15v6"></path></svg>
+          <span class="cmp-win-name">Negombo WMS — WH-4471</span>
+        </div>
+        <div class="cmp-win-body">
+          <div class="cmp-stack">
+            <div class="cmp-skel cmp-skel--w100"></div>
+            <div class="cmp-row-line">
+              <span class="cmp-row-label">Available</span>
+              <span class="cmp-figure cmp-circled">190</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cmp-record-head">
+      <span class="cmp-card-id">SO-9021</span>
+      <span class="cmp-record-customer">Customer name</span>
+      <span class="cmp-record-status">Fulfilled</span>
+    </div>
+    <div class="cmp-row cmp-row--stock">
+      <span class="cmp-mobile-tag">With NexOne</span>
+      <p class="cmp-row-figure">212 <span>cases available</span></p>
+      <p class="cmp-row-detail">Negombo 140 &middot; Colombo 72<span class="cmp-row-dot" aria-hidden="true"></span></p>
+    </div>
+
+    <span class="cmp-lane-label cmp-lane-label--orders">Orders</span>
+    <div class="cmp-band cmp-band--orders">
+      <span class="cmp-mobile-tag">Without NexOne</span>
+      <div class="cmp-win cmp-win--picklist">
+        <p class="cmp-doc-head">PICK LIST — SO-9021</p>
+        <div class="cmp-doc-lines">
+          <p>Ordered..... 40 cases</p>
+          <p>Picked...... <s>40</s> 36 cases</p>
+        </div>
+      </div>
+    </div>
+    <div class="cmp-row cmp-row--orders">
+      <span class="cmp-mobile-tag">With NexOne</span>
+      <ol class="cmp-progress">
+        <li class="is-done">Ordered</li>
+        <li class="is-done">Picked</li>
+        <li class="is-done">Dispatched</li>
+        <li class="is-done">Delivered</li>
+      </ol>
+      <p class="cmp-row-detail">40 cases, order to delivery</p>
+    </div>
+
+    <span class="cmp-lane-label cmp-lane-label--numbers">Numbers</span>
+    <div class="cmp-band cmp-band--numbers">
+      <span class="cmp-mobile-tag">Without NexOne</span>
+      <div class="cmp-win cmp-win--delivery">
+        <p class="cmp-doc-head">DELIVERY NOTE — DN-773</p>
+        <div class="cmp-doc-lines">
+          <p>Dispatched... 36 cases</p>
+          <p>Received..... <s>36</s> 32 cases</p>
+        </div>
+      </div>
+      <div class="cmp-win cmp-win--invoice">
+        <p class="cmp-doc-head">INVOICE — INV-2208</p>
+        <div class="cmp-doc-lines">
+          <p>Sales order, in full</p>
+        </div>
+        <p class="cmp-doc-total">Invoiced..... 40 cases</p>
+      </div>
+    </div>
+    <div class="cmp-row cmp-row--numbers">
+      <span class="cmp-mobile-tag">With NexOne</span>
+      <p class="cmp-row-match">
+        <span>Delivered <b>40</b></span>
+        <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>
+        <span>Invoiced <b>40</b></span>
+      </p>
+    </div>
+
+    <span class="cmp-lane-label cmp-lane-label--decisions">Decisions</span>
+    <div class="cmp-band cmp-band--decisions">
+      <span class="cmp-mobile-tag">Without NexOne</span>
+      <div class="cmp-win cmp-win--chat">
+        <div class="cmp-chat-head">
+          <span class="cmp-chat-avatar"></span>
+          Warehouse Team
+        </div>
+        <div class="cmp-chat-body">
+          <p class="cmp-bubble cmp-bubble--in">Customer's asking where the rest is. What do I say?</p>
+          <p class="cmp-bubble cmp-bubble--out">Checking.</p>
+        </div>
+      </div>
+    </div>
+    <div class="cmp-row cmp-row--decisions">
+      <span class="cmp-mobile-tag">With NexOne</span>
+      <p class="cmp-row-status">Updated 2 minutes ago</p>
+      <p class="cmp-row-detail">No one has to ask</p>
+    </div>
+  </div>
+
+  <div class="cmp-captions">
+    <p class="cmp-caption cmp-caption--without">"One order. Nobody agrees how many."</p>
+    <p class="cmp-caption cmp-caption--with">"One record. Everyone sees 40."</p>
+  </div>
+</Section>

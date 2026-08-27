@@ -1,0 +1,46 @@
+---
+// legacy/index.html. Twelve sections (step 2's inventory) as one component
+// per section, matching the CSS split in src/styles/sections/. Testimonials,
+// ClosingCTA and Footer sit outside <main> in legacy (it closes right after
+// Architecture) — Base.astro puts them inside <main>, which is more
+// correct; that DOM diff is intended, not a porting error (step 5 note).
+import Base from "@/layouts/Base.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import ClosingCTA from "@/components/ClosingCTA.astro";
+import Hero from "@/components/Hero.astro";
+import Trust from "@/components/Trust.astro";
+import Pain from "@/components/Pain.astro";
+import Comparison from "@/components/Comparison.astro";
+import Flow from "@/components/Flow.astro";
+import Video from "@/components/Video.astro";
+import Platform from "@/components/Platform.astro";
+import Industry from "@/components/Industry.astro";
+import Architecture from "@/components/Architecture.astro";
+import Testimonials from "@/components/Testimonials.astro";
+---
+
+<Base
+  title="NexOne | ERP for Distributors, Wholesalers & Multi-Outlet Retailers"
+  description="NexOne connects sales orders, stock, warehousing, dispatch, delivery and invoicing into one system — so sales, warehouse and finance stop arguing about the numbers."
+>
+  <Fragment slot="nav">
+    <Nav variant="home" />
+  </Fragment>
+
+  <Hero />
+  <Trust />
+  <Pain />
+  <Comparison />
+  <Flow />
+  <Video />
+  <Platform />
+  <Industry />
+  <Architecture />
+  <Testimonials />
+  <ClosingCTA />
+
+  <Fragment slot="footer">
+    <Footer />
+  </Fragment>
+</Base>

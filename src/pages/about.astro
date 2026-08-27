@@ -1,0 +1,158 @@
+---
+// legacy/about.html. Smallest page (rule of thumb from CLAUDE.md step 5) —
+// built first to surface porting problems before the 4,244-line homepage.
+import { Image } from "astro:assets";
+import Base from "@/layouts/Base.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import Section from "@/components/Section.astro";
+import Eyebrow from "@/components/Eyebrow.astro";
+import ClosingCTA from "@/components/ClosingCTA.astro";
+import aboutPhoto from "@/assets/aboutus.jpeg";
+import "@/styles/pages/about.css";
+---
+
+<Base
+  title="About | NexOne"
+  description="Nexone World has spent 25+ years building software for distributors, wholesalers and multi-outlet retailers. Meet the team behind NexOne."
+>
+  <Fragment slot="nav">
+    <Nav variant="page" current="about" />
+  </Fragment>
+
+  <section class="page-hero">
+    <div class="container page-hero-inner">
+      <div class="page-hero-copy" data-anim="fade-up">
+        <Eyebrow>About Nexone World</Eyebrow>
+        <h1 class="page-hero-title">Two decades of getting<br />complex operations <span class="accent">right.</span></h1>
+        <p class="lede page-hero-lede">
+          Nexone World has spent 25+ years building software for distributors, wholesalers and multi-outlet
+          retailers. NexOne — our ERP platform — is what that experience became: one connected system for sales,
+          stock, warehousing, dispatch and finance.
+        </p>
+      </div>
+    </div>
+    <!-- Sibling of .page-hero-inner, NOT a child: it is absolutely positioned
+         against .page-hero so it can bleed to the viewport edge. Inside the
+         container it would resolve against .container's 1280px box instead. -->
+    <div class="page-hero-media" data-anim="fade-up" data-anim-delay="0.15">
+      <Image
+        src={aboutPhoto}
+        alt="The Nexone World team reviewing an operation together, with the values that guide the work: innovation, collaboration, excellence and customer first."
+        width={1376}
+        height={768}
+        widths={[480, 768, 1100, 1376]}
+        sizes="(max-width: 1023px) 100vw, 55vw"
+        quality={68}
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </div>
+  </section>
+
+  <Section name="story">
+    <div class="story-grid">
+      <div class="story-copy" data-anim="fade-up">
+        <Eyebrow>How we got here</Eyebrow>
+        <h2 class="section-title">Built by people who've run the floor.</h2>
+        <p>
+          NexOne didn't start as software. It started as the same spreadsheet problem every distributor and
+          multi-outlet retailer eventually hits — stock counts that disagree between the warehouse and the shop,
+          orders re-typed three times before they're fulfilled, and a finance team that closes the month a week
+          later than everyone else.
+        </p>
+        <p>
+          We built the system we wished existed: one record that follows a product from the moment it lands in the
+          warehouse to the moment it's invoiced, so sales, warehouse and finance stop arguing about the numbers.
+        </p>
+        <p>
+          Today that system runs live across the Maldives and Sri Lanka, and it's still built the same way — close
+          to the businesses that use it, by people who understand what actually breaks on a busy warehouse floor.
+        </p>
+      </div>
+      <div class="stat-grid" aria-label="Nexone World at a glance" data-anim="stagger">
+        <div class="stat-tile"><strong>25<em>+</em></strong><span>Years in business</span></div>
+        <div class="stat-tile"><strong>4</strong><span>Countries served</span></div>
+        <div class="stat-tile"><strong>11</strong><span>Connected modules</span></div>
+        <div class="stat-tile"><strong>4.8<em>/5</em></strong><span>Customer rating</span></div>
+      </div>
+    </div>
+  </Section>
+
+  <Section name="values">
+    <div class="values-head" data-anim="fade-up">
+      <Eyebrow>What we believe</Eyebrow>
+      <h2 class="section-title">The principles behind every release.</h2>
+      <p class="lede">None of these are slogans — they're the reasons NexOne is built the way it is.</p>
+    </div>
+    <div class="values-grid" data-anim="stagger">
+      <div class="value-card">
+        <span class="value-icon">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z"></path><path d="M9 12l2 2 4-4"></path></svg>
+        </span>
+        <h3>Reliability first</h3>
+        <p>Warehouses don't stop for a bad deploy. Uptime and data integrity come before any new feature.</p>
+      </div>
+      <div class="value-card">
+        <span class="value-icon">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l8 4-8 4-8-4 8-4z"></path><path d="M4 12l8 4 8-4"></path><path d="M4 16l8 4 8-4"></path></svg>
+        </span>
+        <h3>One connected system</h3>
+        <p>Sales, stock, dispatch and finance share one record — no exports, no reconciliation between departments.</p>
+      </div>
+      <div class="value-card">
+        <span class="value-icon">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M4 20c0-3 2-5 5-5s5 2 5 5"></path><circle cx="17" cy="8" r="2.5"></circle><path d="M15 12c2.5 0 4.5 2 4.8 5"></path></svg>
+        </span>
+        <h3>Local, hands-on support</h3>
+        <p>Our team is based where our clients operate — the Maldives and Sri Lanka — not a support queue in another time zone.</p>
+      </div>
+      <div class="value-card">
+        <span class="value-icon">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3L4 14h6l-1 7 9-11h-6l1-7z"></path></svg>
+        </span>
+        <h3>Built for operators</h3>
+        <p>Every module is shaped by feedback from the people actually using it — warehouse leads, cashiers, finance teams.</p>
+      </div>
+    </div>
+  </Section>
+
+  <Section name="team">
+    <div class="team-head" data-anim="fade-up">
+      <Eyebrow>The people behind NexOne</Eyebrow>
+      <h2 class="section-title">Meet the team.</h2>
+      <p class="lede">We're adding photos and bios one by one as the team page comes together — check back soon.</p>
+    </div>
+    <div class="team-grid" data-anim="stagger">
+      <!-- Six placeholder slots (rule 7 — no real team roster exists yet).
+           To fill one in: swap the icon/badge for a real photo import,
+           set .team-role/.team-name and drop the pending badge. -->
+      {[
+        { role: "Founder & CEO" },
+        { role: "Head of Operations" },
+        { role: "Head of Engineering" },
+        { role: "Head of Customer Success" },
+        { role: "Head of Sales & Partnerships" },
+        { role: "Head of Finance" },
+      ].map(({ role }) => (
+        <div class="team-card">
+          <div class="team-photo">
+            <svg class="icon icon--lg team-photo-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4.5 3.5-7 8-7s8 2.5 8 7"></path>
+            </svg>
+            <span class="team-photo-pending">Photo coming</span>
+          </div>
+          <p class="team-role">{role}</p>
+          <p class="team-name">Name to be added</p>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <!-- <ClosingCTA /> -->
+
+  <Fragment slot="footer">
+    <Footer />
+  </Fragment>
+</Base>

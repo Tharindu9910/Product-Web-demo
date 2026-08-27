@@ -1,0 +1,208 @@
+---
+// legacy/index.html:2393. The "BOOK A FREE DEMO" / "EXPLORE MODULES" pair
+// were <button type="button"> with no handler in legacy — real hrefs here
+// per rule 6. The dashboard mock below is decorative (aria-hidden) and
+// keeps its real USD figures per rule 8 — that's design, not prose.
+import { Image } from "astro:assets";
+import heroImage from "@/assets/hero-image.png";
+import { withBase } from "@/lib/base";
+---
+
+<section class="hero" id="hero">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="hero-eyebrow-market">INVENTORY, WAREHOUSING & DISTRIBUTION</span>
+        <h1 class="display-h1 hero-title" aria-label="One connected flow. From order to delivery.">
+          <span class="h-line" aria-hidden="true">One connected flow.</span>
+          <span class="h-line hero-title-accent" aria-hidden="true">From order</span>
+          <span class="h-line" aria-hidden="true">to delivery.</span>
+        </h1>
+        <p class="hero-lede">
+          NexOne is an ERP for distributors, wholesalers and multi-outlet retailers. It connects sales orders, stock,
+          warehousing, dispatch, delivery and invoicing into one system — so sales, warehouse and finance stop
+          arguing about the numbers.
+        </p>
+        <div class="hero-actions">
+          <a class="hero-btn-primary" href={withBase("/contact")}>
+            BOOK A FREE DEMO
+            <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg>
+          </a>
+          <a class="hero-btn-secondary" href="#platform">EXPLORE MODULES</a>
+        </div>
+        <div class="hero-proof">
+          <div class="hero-rating">
+            <div class="hero-stars" aria-hidden="true">
+              <svg class="icon icon--solid" viewBox="0 0 24 24"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.6 1.1 6.5L12 17.4l-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z"></path></svg>
+              <svg class="icon icon--solid" viewBox="0 0 24 24"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.6 1.1 6.5L12 17.4l-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z"></path></svg>
+              <svg class="icon icon--solid" viewBox="0 0 24 24"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.6 1.1 6.5L12 17.4l-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z"></path></svg>
+              <svg class="icon icon--solid" viewBox="0 0 24 24"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.6 1.1 6.5L12 17.4l-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z"></path></svg>
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.6 1.1 6.5L12 17.4l-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z"></path><path d="M12 2.5v14.9l-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z" fill="currentColor" stroke="none"></path></svg>
+            </div>
+            <span class="hero-rating-text"><strong>4.8/5</strong> customer rating</span>
+          </div>
+          <div class="hero-proof-divider" aria-hidden="true"></div>
+          <div class="hero-trusted">
+            <span>Trusted By</span>
+            <strong>Chicking</strong>
+            <strong>Bakers Basket</strong>
+            <strong>Maakin</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- hero image -->
+      <div class="hero-visual" aria-hidden="true">
+        <!-- `sizes` starts at 1px on purpose, and that bound is exactly
+             responsive.css's `.hero-visual { display: none }` breakpoint.
+             Below 1024px this image is never shown — but a hidden <img> is
+             still fetched, so every phone was downloading ~160 KB of a
+             picture it would never paint. Asking for 1px makes the browser
+             pick the smallest candidate in the srcset instead. Above the
+             breakpoint it is a real half-width hero image and an LCP
+             candidate, hence eager + high priority. -->
+        <Image
+          src={heroImage}
+          alt=""
+          class="hero-image"
+          width={1536}
+          height={1024}
+          widths={[320, 560, 960, 1100]}
+          sizes="(max-width: 1023px) 1px, 480px"
+          quality={72}
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+
+      <!--
+      2026-08-26: replaced by the hero-image.png import above. Kept here
+      commented out in case the decorative dashboard mock needs to come
+      back — see @/assets/hero-image.png and Hero.astro's frontmatter.
+
+      <div class="hero-visual" aria-hidden="true" data-anim="fade-up">
+        <div class="hero-stack">
+          <div class="mock-window">
+            <div class="mock-bar">
+              <div class="mock-dots"><span></span><span></span><span></span></div>
+              <p class="mock-bar-title">NexOne ERP — Sales Order SO-9021</p>
+              <div class="mock-avatars">
+                <span class="mock-avatar"></span>
+                <span class="mock-avatar"></span>
+              </div>
+            </div>
+            <div class="mock-body">
+              <div class="mock-rail">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="1"></rect><rect x="13.5" y="3" width="7.5" height="7.5" rx="1"></rect><rect x="3" y="13.5" width="7.5" height="7.5" rx="1"></rect><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1"></rect></svg>
+                <svg class="icon mock-rail-item is-active" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="1.5"></rect><path d="M3 7l2-4h14l2 4M9.5 12h5"></path></svg>
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"></circle><circle cx="18" cy="20" r="1.4"></circle><path d="M2 3h3l2.6 12h11L21 7H6"></path></svg>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M5 3h14v18l-2.3-1.5L14.4 21l-2.4-1.5L9.6 21l-2.3-1.5L5 21z"></path><path d="M8.5 8h7M8.5 12h7"></path></svg>
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.2"></circle><path d="M3 19a6 6 0 0 1 12 0"></path><path d="M16 6.5a3 3 0 0 1 0 5.6M17 14a5.5 5.5 0 0 1 4 5"></path></svg>
+                <svg class="icon mock-rail-spacer" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M12 2.8l1.3 2.4 2.7-.5.5 2.7 2.4 1.3-1.3 2.4 1.3 2.4-2.4 1.3-.5 2.7-2.7-.5L12 21.2l-1.3-2.4-2.7.5-.5-2.7-2.4-1.3 1.3-2.4-1.3-2.4 2.4-1.3.5-2.7 2.7.5z"></path></svg>
+              </div>
+              <div class="mock-main">
+                <div class="mock-head">
+                  <div>
+                    <p class="mock-label">Revenue this month</p>
+                    <div class="mock-metric-row">
+                      <span class="mock-metric">USD 1.24M</span>
+                      <span class="mock-delta">
+                        <svg class="icon icon--xs" viewBox="0 0 24 24"><path d="M12 20V5M6 11l6-6 6 6"></path></svg>
+                        12.4%
+                      </span>
+                    </div>
+                  </div>
+                  <div class="mock-head-actions">
+                    <span class="mock-btn">Export</span>
+                    <span class="mock-btn mock-btn--solid">New Order</span>
+                  </div>
+                </div>
+                <div class="mock-chart">
+                  <svg viewBox="0 0 100 40" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="hero-chart-gradient" x1="0" x2="0" y1="0" y2="1">
+                        <stop offset="0%" style="stop-color: var(--color-orange); stop-opacity: 0.3"></stop>
+                        <stop offset="100%" style="stop-color: var(--color-orange); stop-opacity: 0"></stop>
+                      </linearGradient>
+                    </defs>
+                    <path d="M0,40 L0,20 Q10,15 20,25 T40,10 T60,25 T80,5 T100,15 L100,40 Z" fill="url(#hero-chart-gradient)"></path>
+                    <path d="M0,20 Q10,15 20,25 T40,10 T60,25 T80,5 T100,15" fill="none" style="stroke: var(--color-orange)" stroke-width="2"></path>
+                  </svg>
+                </div>
+                <div class="mock-stats">
+                  <div class="mock-stat">
+                    <p class="mock-stat-label">Stock Value</p>
+                    <p class="mock-stat-value">USD 340K</p>
+                  </div>
+                  <div class="mock-stat">
+                    <p class="mock-stat-label">Orders Today</p>
+                    <p class="mock-stat-value">89</p>
+                  </div>
+                  <div class="mock-stat mock-stat--alert">
+                    <p class="mock-stat-label">Low Stock Alerts</p>
+                    <p class="mock-stat-value">3
+                      <svg class="icon icon--xs" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"></path><path d="M12 10v4M12 17h.01"></path></svg>
+                    </p>
+                  </div>
+                </div>
+                <div class="mock-table">
+                  <div class="mock-tr mock-tr--head">
+                    <span>Product</span><span>SKU</span><span>Stock</span><span>Status</span>
+                  </div>
+                  <div class="mock-tr">
+                    <span class="mock-td--name">Premium Flour 50kg</span>
+                    <span class="mock-td--muted">SKU-FL-001</span>
+                    <span>42 units</span>
+                    <span><i class="mock-pip mock-pip--ok"></i>In Stock</span>
+                  </div>
+                  <div class="mock-tr">
+                    <span class="mock-td--name">Yeast Bulk Pack</span>
+                    <span class="mock-td--muted">SKU-YS-104</span>
+                    <span>12 units</span>
+                    <span><i class="mock-pip mock-pip--low"></i>Low</span>
+                  </div>
+                  <div class="mock-tr">
+                    <span class="mock-td--name">Sugar Refined 25kg</span>
+                    <span class="mock-td--muted">SKU-SG-022</span>
+                    <span>0 units</span>
+                    <span><i class="mock-pip mock-pip--out"></i>Out</span>
+                  </div>
+                  <div class="mock-tr">
+                    <span class="mock-td--name">Butter Block 10kg</span>
+                    <span class="mock-td--muted">SKU-BT-005</span>
+                    <span>85 units</span>
+                    <span><i class="mock-pip mock-pip--ok"></i>In Stock</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mock-receipt">
+            <p class="mock-receipt-head">DISPATCH NOTE</p>
+            <p class="mock-receipt-row"><span>SO-9021</span><span>14:32</span></p>
+            <p class="mock-receipt-row"><span>Carton A x12</span><span>12</span></p>
+            <p class="mock-receipt-row"><span>Pallet Wrap x4</span><span>4</span></p>
+            <p class="mock-receipt-total"><span>TOTAL UNITS</span><span>16</span></p>
+            <p class="mock-receipt-foot">DISPATCHED</p>
+          </div>
+
+          <div class="mock-chip">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M7 19h10a4 4 0 0 0 .5-8 6 6 0 0 0-11.4 1.5A3.5 3.5 0 0 0 7 19z"></path><path d="M9.5 13.5l2 2 3.5-3.5"></path></svg>
+            <span>
+              <span class="mock-chip-title">Stock synced</span><br />
+              <span class="mock-chip-sub">Malé & Negombo</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      -->
+    </div>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">
+    <span>SCROLL</span>
+    <svg class="icon icon--sm" viewBox="0 0 24 24"><path d="M12 4v15M6 13l6 6 6-6"></path></svg>
+  </div>
+</section>

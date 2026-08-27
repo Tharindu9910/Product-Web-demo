@@ -1,0 +1,11 @@
+---
+// Rule 7 placeholder — the dashed "PENDING" box legacy uses wherever content
+// hasn't been supplied yet (industry cards' "who already runs this",
+// unapproved testimonial stories). `.ind-placeholder` (industry.css).
+interface Props {
+  label?: string;
+}
+const { label = "PENDING" } = Astro.props;
+---
+
+<div class="ind-placeholder">{label}</div>

@@ -1,0 +1,113 @@
+---
+// No legacy source — custom.html never existed. Lean template, same
+// structure as modules/logistics.astro. Hero lede and benefit titles are
+// modules.json's existing approved panelText/benefits for "custom"; the
+// per-benefit sentences below are new copy written to expand those titles.
+import { Image } from "astro:assets";
+import Base from "@/layouts/Base.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import { withBase } from "@/lib/base";
+import ClosingCTA from "@/components/ClosingCTA.astro";
+import Eyebrow from "@/components/Eyebrow.astro";
+import customPhoto from "@/assets/card/CustomModules.jpg";
+import customCtaPhoto from "@/assets/erp-modules/custom_modules.jpg";
+import "@/styles/pages/module-page.css";
+---
+
+<Base
+  title="Custom Modules | NexOne"
+  description="When none of the standard modules quite fit, we build the piece that does — designed to sit inside NexOne and share the same data as everything else."
+>
+  <Fragment slot="nav">
+    <Nav variant="page" current="modules" />
+  </Fragment>
+
+  <section class="mod-hero section">
+    <div class="container">
+      <p class="mod-breadcrumb">
+        <a href={withBase("/#platform")}>ERP Modules</a>
+        <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+        <span>Custom Modules</span>
+      </p>
+      <div class="mod-hero-grid">
+        <div data-anim="fade-up">
+          <Eyebrow>Core module</Eyebrow>
+          <h1 class="mod-title">Custom Modules</h1>
+          <p class="lede mod-lede">
+            When none of the standard modules quite fit, we build the piece that does — designed to sit
+            inside NexOne and share the same data as everything else.
+          </p>
+          <div class="mod-cta-row">
+            <a class="mod-btn-primary" href={withBase("/contact")}>Request a demo</a>
+          </div>
+        </div>
+        <div class="mod-hero-media" data-anim="fade-up" data-anim-delay="0.15">
+          <Image src={customPhoto} alt="Custom module interface"
+            width={1200}
+            widths={[420, 640, 900, 1200]}
+            sizes="(max-width: 1023px) calc(100vw - 48px), 600px"
+            quality={68}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mod-benefits section">
+    <div class="container">
+      <div class="mod-benefits-head" data-anim="fade-up">
+        <Eyebrow>What it does</Eyebrow>
+        <h2>Built for the part nobody else covers.</h2>
+      </div>
+      <div class="mod-benefits-grid" data-anim="stagger">
+        <div class="mod-benefit-card">
+          <div class="mod-benefit-head">
+            <span class="mod-benefit-icon"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg></span>
+            <h3>Built to your exact workflow</h3>
+          </div>
+          <p>Designed around the process you actually run, not adapted from a generic template.</p>
+        </div>
+        <div class="mod-benefit-card">
+          <div class="mod-benefit-head">
+            <span class="mod-benefit-icon"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg></span>
+            <h3>Shares one database with core modules</h3>
+          </div>
+          <p>Reads and writes to the same record as Inventory, Logistics, Finance and every other module — no separate database.</p>
+        </div>
+        <div class="mod-benefit-card">
+          <div class="mod-benefit-head">
+            <span class="mod-benefit-icon"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg></span>
+            <h3>No third-party integration needed</h3>
+          </div>
+          <p>Built inside NexOne itself, so there's no external system to connect, maintain or lose sync with.</p>
+        </div>
+        <div class="mod-benefit-card">
+          <div class="mod-benefit-head">
+            <span class="mod-benefit-icon"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg></span>
+            <h3>Scoped and estimated up front</h3>
+          </div>
+          <p>Scope and cost are agreed before work starts, with no open-ended build.</p>
+        </div>
+        <div class="mod-benefit-card">
+          <div class="mod-benefit-head">
+            <span class="mod-benefit-icon"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg></span>
+            <h3>Supported like any other module</h3>
+          </div>
+          <p>Once live, it's maintained and supported the same way as every standard module — not treated as a one-off.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ClosingCTA image={customCtaPhoto}>
+    <Fragment slot="title">See what we'd build<br />for your operation.</Fragment>
+  </ClosingCTA>
+
+  <Fragment slot="footer">
+    <Footer />
+  </Fragment>
+</Base>

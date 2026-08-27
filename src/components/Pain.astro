@@ -1,0 +1,86 @@
+---
+// legacy/index.html:2626 has no icons, illustration, arrows or boxed quote
+// for this section — it's a plain static 4-card grid (client note 2). This
+// redesign has no legacy source; it's a deliberate, client-approved
+// departure from rule 1, and from rule 5 (one orange element per
+// viewport — the eyebrow AND the headline/item underlines are orange here
+// by explicit sign-off). Don't "fix" this back toward legacy or one orange.
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import illustration from "@/assets/pain-illustration.png";
+
+const points = (await getCollection("painPoints")).sort((a, b) => a.data.order - b.data.order);
+
+// Per-item icon, hardcoded here rather than in pain-points.json — same
+// precedent as Flow.astro/Nav/Footer: no per-item icon exists in legacy,
+// content.config.ts's schema only ever needed title/items.
+const corner = ["tl", "tr", "bl", "br"];
+const icon: Record<string, string> = {
+  "cant-see-stock":
+    '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/>',
+  "orders-too-slow": '<circle cx="12" cy="12" r="9"/><path d="M12 7.5v4.8l3.2 2"/>',
+  "cant-trust-numbers":
+    '<rect x="5" y="3" width="14" height="18" rx="2.4"/><path d="M8 7.2h8"/><path d="M8.4 12h.01"/><path d="M12 12h.01"/><path d="M15.6 12h.01"/><path d="M8.4 16h.01"/><path d="M12 16h.01"/><path d="M15.6 16h.01"/>',
+  "deciding-blind":
+    '<circle cx="12" cy="12" r="9"/><path d="M9.4 9.3a2.6 2.6 0 0 1 5 1c0 1.8-2.5 2.1-2.5 3.9"/><path d="M12 17h.01"/>',
+};
+
+const arrowPath = '<path d="M3 25 Q 24 5 45 11" fill="none"/><path d="M35 6.5 L45 11 L41 20" fill="none"/>';
+---
+
+<!-- Not using Section.astro: legacy's id is "pain-points", not "pain". -->
+<section class="section pain" id="pain-points">
+  <div class="container">
+    <div class="pain-head">
+      <span class="eyebrow">SOUND FAMILIAR?</span>
+      <h2 class="section-title">
+       If any three of these are true, you've outgrown your spreadsheets.
+        <!-- If any three of these are true, you've <span class="pain-underline">outgrown</span> your spreadsheets. -->
+      </h2>
+    </div>
+
+    <div class="pain-diagram">
+      <div class="pain-image" data-anim="fade-in">
+        <Image
+          src={illustration}
+          alt=""
+          width={840}
+          widths={[360, 560, 700, 840]}
+          sizes="(max-width: 1023px) min(calc(100vw - 48px), 420px), 400px"
+          quality={68}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+      {corner.map((c) => (
+        <span class={`pain-arrow pain-arrow--${c}`} aria-hidden="true">
+          <svg viewBox="0 0 48 32" set:html={arrowPath} />
+        </span>
+      ))}
+
+      <div class="pain-grid" data-anim="stagger">
+        {points.map(({ data }, i) => {
+          const [line1, line2] = data.title.split("\n");
+          return (
+            <div class={`pain-item pain-item--${corner[i]}`}>
+              <span class="pain-item-icon">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon[data.id]} />
+              </span>
+              <h3 class="pain-item-title">
+                {line1}<br /><span class="pain-underline">{line2}</span>
+              </h3>
+              <ul class="pain-list">
+                {data.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+    <p class="pain-close">"NexOne was built to fix exactly these."</p>
+  </div>
+</section>

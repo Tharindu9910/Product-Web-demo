@@ -1,0 +1,15 @@
+---
+// Every numbered section in legacy is the same shell:
+// <section class="section {name}" id="{name}"><div class="container">...
+interface Props {
+  name: string;
+  ariaLabel?: string;
+}
+const { name, ariaLabel } = Astro.props;
+---
+
+<section class={`section ${name}`} id={name} aria-label={ariaLabel}>
+  <div class="container">
+    <slot />
+  </div>
+</section>

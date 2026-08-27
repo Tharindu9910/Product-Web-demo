@@ -1,0 +1,239 @@
+/* ============================================================
+   15. RESPONSIVE
+   ============================================================ */
+@media (max-width: 1199px) {
+  .platform-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .platform-tile-media { height: 160px; }
+}
+/* below 5-up the cards are wide enough that a full 12% growth would run past
+   .container's padding — ease it off as the columns drop, and give the row a
+   little more height since the copy has more room to breathe */
+@media (hover: hover) and (pointer: fine) and (max-width: 1199px) {
+  .platform-grid { --tile-h: 379px; --tile-zoom: 108%; }
+  .platform-tile-media { height: auto; }
+}
+@media (max-width: 1023px) {
+  .hero-visual { display: none; }
+  .hero-grid { grid-template-columns: 1fr; }
+  /* copy-only hero: let it size to content instead of forcing a full viewport */
+  .hero { min-height: 0; padding: 64px 0 88px; }
+  .nav-links {
+    display: flex;
+    position: absolute; top: 80px; left: 0; right: 0;
+    flex-direction: column; align-items: flex-start; gap: 4px;
+    padding: 16px 40px 24px;
+    background: var(--canvas);
+    border-bottom: 1px solid var(--hairline);
+    /* closed state. The ease between this and .is-open is now the
+       transition below rather than animateNavToggle()'s GSAP autoAlpha:
+       Nav.astro's script is on every page, so importing GSAP for a
+       220 ms fade put the whole engine on every page's critical path.
+
+       Doing it in CSS also structurally rules out the 2026-08-27 bug in
+       the mistake log, where the close handler firing on desktop applied
+       GSAP's INLINE opacity/visibility — which of course ignored the
+       media query this menu is scoped to and hid the entire desktop nav.
+       A transition declared inside this block cannot leak out of it. */
+    opacity: 0;
+    visibility: hidden;
+    translate: 0 -8px;
+    transition: opacity 220ms var(--anim-ease), translate 220ms var(--anim-ease),
+      visibility 0s linear 220ms;
+  }
+  .nav-links.is-open {
+    opacity: 1;
+    visibility: visible;
+    translate: none;
+    transition: opacity 220ms var(--anim-ease), translate 220ms var(--anim-ease),
+      visibility 0s;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nav-links, .nav-links.is-open { transition: none; translate: none; }
+  }
+  .nav-links a { padding: 8px 0; }
+  .nav-toggle { display: block; }
+  .nav-cta { display: none; }
+  /* ERP Modules dropdown becomes an inline accordion — no hover here, so
+     the floating panel from nav.css is overridden to sit in-flow and open
+     purely off .is-open (tap on .nav-dropdown-toggle, see Nav.astro script).
+     nav.css's hover hit-box (the padding-top bridge over the visual gap)
+     has no purpose without hover — collapsed back to a plain wrapper whose
+     own max-height drives the accordion. */
+  .nav-item.has-dropdown { width: 100%; }
+  .nav-item-row { width: 100%; justify-content: space-between; }
+  .nav-dropdown-hitbox {
+    position: static;
+    /* nav.css centres this under the link with left:50% + translateX(-50%).
+       Going position:static makes the `left` inert, but NOT the transform —
+       transforms apply to static boxes too, so the accordion kept sliding
+       half its own width (171px of 342px at 390px wide) off the left edge
+       and every module label rendered off-screen. Reset both explicitly. */
+    left: auto;
+    transform: none;
+    padding-top: 0;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 250ms var(--ease);
+  }
+  .nav-item.has-dropdown.is-open .nav-dropdown-hitbox { max-height: 320px; }
+  .nav-dropdown {
+    min-width: 0;
+    width: 100%;
+    margin-top: 4px;
+    padding: 0 0 0 12px;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    transform: none;
+  }
+  .nav-dropdown a { padding: 8px 0; }
+  .platform-panel { grid-template-columns: 1fr; padding: 32px; }
+  .ind-cols { grid-template-columns: 1fr; gap: 40px; }
+  .ind-panel-art { display: none; }
+  .arch-top { flex-direction: column; gap: 48px; }
+  .arch-copy-col, .arch-diagram { flex: none; width: 100%; }
+  .arch-principles { grid-template-columns: 1fr; gap: 24px; }
+  .testi-grid { flex-direction: column; }
+  .testi-featured, .testi-stories { flex: none; width: 100%; }
+  /* comparison (legacy/comparison.html port, 2026-08-26): below the
+     two-column breakpoint, stack WITHOUT above WITH and drop the
+     decorative app-nav rail — .cmp-stage's own container-query --u unit
+     already rescales the whole collage to its narrower column, so it
+     needs no per-prop breakpoint handling here. */
+  .cmp-rail { display: none; }
+  .cmp-panels { grid-template-columns: 1fr; gap: 40px; }
+  .video-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 0; }
+  .video-stats li:nth-child(3) { border-left: 0; }
+  /* padding stays keyed to --trust-edge (see trust.css) so the head never
+     lands in the brush fray — only the clearance above it tightens */
+  .trust {
+    --trust-logo: 80px; --trust-zoom: 1.6; --trust-gap: 36px;
+    padding: calc(var(--trust-edge) + 32px) 0 calc(var(--trust-edge) + 24px);
+  }
+  .mod-footer-grid { grid-template-columns: 1fr 1fr; gap: 32px 24px; }
+  /* pain: the corner-arrow layout needs real width either side of the
+     centre illustration — below tablet width, stack image then items. */
+  .pain-diagram { display: flex; flex-direction: column; align-items: center; gap: 32px; }
+  .pain-arrow { display: none; }
+  .pain-grid { display: flex; flex-direction: column; gap: 32px; width: 100%; }
+  .pain-item { max-width: 100%; }
+  .pain-image { width: 100%; max-width: 420px; }
+}
+@media (max-width: 899px) {
+  .platform-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .platform-shell.is-expanded { grid-template-columns: 1fr; gap: 24px; }
+  .platform-shell.is-expanded .platform-grid {
+    grid-auto-flow: column;
+    grid-auto-columns: 48px;
+    grid-template-columns: none;
+    overflow-x: auto;
+    padding: 0 0 16px;
+    border-right: 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+}
+@media (hover: hover) and (pointer: fine) and (max-width: 899px) {
+  .platform-grid { --tile-zoom: 106%; }
+}
+@media (max-width: 767px) {
+  .section, .hero, .closing-cta { padding: 88px 0; }
+  .container, .nav-inner { padding: 0 24px; }
+  .nav-brand img { height: 32px; }
+  .nav-links { padding: 16px 24px 24px; }
+  .display-h1 { max-width: 100%; }
+
+  /* --- hero, phone (2026-08-27, user-directed departure from legacy) ---
+     Legacy gives .hero the same flat 88px 0 as every mid-page .section
+     above, which on a phone is wrong twice over: the hero sits directly
+     under an 80px sticky nav (so it needs no clearance of its own), and
+     the 88px lands on top of .hero-eyebrow-market's own 14px margin —
+     measured 102px of empty canvas between the nav and the first word at
+     390px. It also read as MORE top space than the <=1023px rule's 64px,
+     i.e. the padding grew as the screen shrank. These overrides follow the
+     legacy line rather than editing it, so the ported value stays visible. */
+  .hero { padding: 28px 0 56px; }
+  .hero-eyebrow-market { margin-top: 0; margin-bottom: 12px; }
+  /* .display-h1's clamp floors at 2.75rem, so the headline never scales
+     below 44px — 4 lines at 390px, 5 at 320px, ~240px of the fold spent on
+     three short sentences. */
+  .display-h1 { font-size: min(2.125rem, var(--h1-max, 1000px)); line-height: 1.12; }
+  .hero-lede { margin-top: 16px; font-size: 16px; line-height: 1.6; }
+  /* the two CTAs wrap to a ragged two-row stack at their intrinsic widths;
+     full-bleed and equal is the only arrangement that reads deliberate */
+  .hero-actions { flex-direction: column; align-items: stretch; gap: 12px; margin-top: 24px; }
+  .hero-btn-primary, .hero-btn-secondary { padding: 15px 24px; text-align: center; }
+  .hero-btn-primary { justify-content: center; }
+  /* .hero-proof wraps to two rows here, which orphans the divider at the
+     end of row one — stack it explicitly and drop the rule instead */
+  .hero-proof { flex-direction: column; align-items: flex-start; gap: 14px; margin-top: 24px; }
+  .hero-proof-divider { display: none; }
+  .hero-trusted { flex-wrap: wrap; gap: 12px; }
+  /* rotated 19px strip pinned 5px off the screen edge — reads as an
+     accident at this width, and scroll needs no affordance on touch */
+  .hero-scroll { display: none; }
+  .section-title { font-size: 26px; }
+  .platform-grid { grid-template-columns: 1fr; }
+  .platform-tile-media { height: 160px; }
+  .platform-tile-body { padding: 16px 24px 28px; }
+  .platform-icon { margin-bottom: 12px; }
+  .platform-tile-title { font-size: 19px; }
+  .platform-tile-text { font-size: 14px; }
+  .ind-panel { padding: 28px; }
+  .platform-panel { padding: 24px; }
+  .pain-diagram { gap: 24px; }
+  /* .section's 88px above would override .trust's own budgeted padding */
+  .trust {
+    --trust-logo: 64px; --trust-zoom: 1.55; --trust-gap: 28px;
+    padding: calc(var(--trust-edge) + 24px) 0 calc(var(--trust-edge) + 18px);
+  }
+  /* four stats won't fit one row here — let them wrap to 2x2, centred */
+  .trust-stats { gap: 12px 32px; margin-top: 20px; }
+  .trust-stat { min-width: 0; flex: 0 0 calc(50% - 16px); }
+  .trust-stat b { font-size: 21px; }
+  .trust-caption { letter-spacing: 0.16em; }
+
+  .arch-diagram-frame { transform: scale(0.85); }
+  .arch-cta { flex-direction: column; align-items: flex-start; }
+  .arch-cta-form { width: 100%; }
+  .arch-cta-form input { min-width: 0; flex: 1 1 auto; }
+  .arch-cta-form button { width: 100%; }
+  .testi-featured { padding: 32px; }
+  .testi-story { padding: 24px; }
+  .testi-trust-bar { flex-direction: column; align-items: flex-start; }
+  .closing-cta-title { font-size: 30px; }
+  .closing-cta-glow { width: 360px; height: 360px; }
+  .closing-cta-btn { padding: 18px 32px; }
+  .video-play { width: 64px; height: 64px; }
+  .video-play .icon { width: 24px; height: 24px; }
+  .video-caption { bottom: 12px; font-size: 12px; padding: 6px 14px; }
+  .video-stats { margin-top: 40px; }
+  .video-stats strong { font-size: 30px; }
+  .mod-footer-grid { grid-template-columns: 1fr; gap: 28px; }
+  .mod-footer-bottom { flex-direction: column; align-items: flex-start; }
+}
+/* Single column (a narrow desktop window): the card is already full-bleed, so
+   drop the growth *and* the reveal — with nothing to grow into, hiding the
+   button would just make the card twitch on hover. Back to the touch layout. */
+@media (hover: hover) and (pointer: fine) and (max-width: 767px) {
+  .platform-grid { grid-auto-rows: auto; }
+  .platform-tile,
+  .platform-tile:hover,
+  .platform-tile:focus-visible {
+    width: 100%; height: auto;
+    justify-self: stretch; align-self: stretch;
+    grid-template-rows: auto 1fr;
+  }
+  .platform-tile-media { height: 160px; min-height: 0; }
+  .platform-tile-cta,
+  .platform-tile:hover .platform-tile-cta {
+    max-height: none; overflow: visible; opacity: 1;
+    transform: none; padding: 10px 18px;
+  }
+}
+@media (max-width: 479px) {
+  .nav-descriptor { display: none; }
+}
+

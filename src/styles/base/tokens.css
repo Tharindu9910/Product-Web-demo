@@ -1,0 +1,122 @@
+/* ============================================================
+   2. DESIGN TOKENS  (legacy index.html:142-208)
+
+   Everything from legacy block 2 that is NOT a colour, font or
+   spacing value — shadows, radii, hairlines, washes, glows,
+   easings — kept as plain custom properties so Tailwind does not
+   mint utilities for them. Colours/fonts/spacing are in
+   base/theme.css.
+
+   The alias block below is the reconcile: legacy names point at
+   the @theme values, so pasted section CSS runs verbatim against
+   one source of truth. Change a colour in theme.css only.
+
+   Legacy's original header, kept for the mapping note:
+     The seven brand tokens are the single source of truth.
+     Values that appeared in the source files but have no token
+     are mapped here once and noted:
+       #072c53 ("primary")            -> --navy
+       #fc7d10 ("secondary-container")-> --orange
+       #f9f9f9 ("surface")            -> --canvas
+       #1a1c1c ("on-surface")         -> --ink
+       #984700 ("secondary")          -> --ink (wash 5 only)
+   ============================================================ */
+
+:root {
+  /* --- aliases onto @theme; no values of their own --- */
+  --canvas:     var(--color-canvas);
+  --navy:       var(--color-navy);
+  --orange:     var(--color-orange);
+  --slate:      var(--color-slate);
+  --ink:        var(--color-ink);
+  --warm-tint:  var(--color-warm-tint);
+  --white:      var(--color-white);
+
+  --orange-hover: var(--color-orange-hover);
+  --peach:        var(--color-peach);
+  --error:        var(--color-error);
+  --ok:           var(--color-ok);
+  --navy-glow:    var(--color-navy-glow);
+
+  --section-y:       var(--spacing-section-y);
+  --section-y-tight: var(--spacing-section-y-tight);
+  --head-gap:        var(--spacing-head-gap);
+  --stack-6:         var(--spacing-stack-6);
+  --stack-4:         var(--spacing-stack-4);
+  --stack-3:         var(--spacing-stack-3);
+
+  /* legacy also declared --font-display / --font-body here with a
+     bare 'Sora', system-ui stack. @theme's versions carry the
+     metric-matched fallback faces, so they are not redeclared. */
+
+  /* --- derived alpha values: one-offs, no utilities wanted --- */
+
+  /* token-derived surface washes (platform tile icon wells) */
+  --wash-navy:   rgba(36, 67, 107, 0.05);
+  --wash-orange: rgba(250, 123, 13, 0.05);
+  --wash-slate:  rgba(140, 156, 180, 0.10);
+  --wash-ink:    rgba(20, 41, 63, 0.05);
+
+  /* dimmed text on --navy/--ink; tokenizes the literal
+     `.architecture .eyebrow` already uses. --slate is the
+     light-ground equivalent. */
+  --mist:       rgba(147, 176, 222, 0.7);
+
+  /* architecture backdrop: 48px slate grid + orange radial glow */
+  --grid-line:   rgba(140, 156, 180, 0.05);
+  --glow-orange: rgba(250, 123, 13, 0.10);
+  --glow-fade:   rgba(20, 41, 63, 0);
+
+  --hairline:  rgba(140, 156, 180, 0.20);
+  --hairline-2: rgba(140, 156, 180, 0.30);
+
+  /* closing CTA photo band: black scrim over factory.jpg, plus the
+     dimmed body colour that rides on top of it. --mist is tuned for
+     --navy/--ink grounds, not for a photograph, hence a white alpha. */
+  --scrim-strong: rgba(0, 0, 0, 0.82);
+  --scrim-soft:   rgba(0, 0, 0, 0.62);
+  --on-photo:     rgba(255, 255, 255, 0.88);
+
+  /* off-palette hex from the step 2 sweep (mistake log 2026-08-23)
+     that isn't part of the hero mock's status set above: the flow
+     diagram's travelling dot/glow, and the comparison section's
+     neutral "chrome" greys (skeleton line, pill/bubble fill, paper
+     mock surface). Plain custom properties, not @theme — nothing
+     here should mint a bg-orange-light / bg-chrome-fill utility. */
+  --orange-light:   #FFD9B0;  /* flow.css: .flow-dot fill */
+  --orange-glow:    #F79A3E;  /* flow.css: .flow-seg-fill gradient stop */
+  --chrome-line:    #e2e2e2;  /* comparison.css: .cmp-skel */
+  --chrome-fill:    #e8e8e8;  /* comparison.css: state pill / chat bubble */
+  --chrome-surface: #FDFFFC;  /* comparison.css: paper mock background */
+
+  /* comparison.css (legacy/comparison.html port, 2026-08-26): a few
+     decorative gradient stops with no equivalent brand token — the dark
+     "with" panel's navy gradient, and the two status-pill gradients (order
+     pill / fulfilled pill). Everything else in that section re-expresses
+     onto the existing navy/slate/ink/orange/chrome/peach/error tokens
+     above rather than adding more one-offs. */
+  --cmp-paper-wash: #EFDCC7;  /* .cmp-note-band / file-tab header fill */
+  --cmp-dark-1: #17395D;
+  --cmp-dark-2: #122E4D;
+  --cmp-dark-3: #0D2340;
+  --cmp-amber-1: #F8AC5E;
+  --cmp-amber-2: #F0902F;
+  --cmp-amber-3: #E37E1F;
+  --cmp-teal-1: #22606F;
+  --cmp-teal-2: #1B4E68;
+  --cmp-teal-3: #173F5D;
+  --cmp-footbar-1: #F7DBAF;
+  --cmp-footbar-2: #FBEBD1;
+  --cmp-footbar-3: #FDF4E7;
+
+  --r-card: 20px;
+  --r-panel: 12px;
+  --r-sm: 8px;
+  --r-pill: 999px;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-lift: 0 20px 40px rgba(20, 41, 63, 0.08);
+  --shadow-soft: 0 20px 40px rgba(20, 41, 63, 0.05);
+
+  color-scheme: light;
+}

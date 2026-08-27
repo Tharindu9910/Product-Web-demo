@@ -1,0 +1,92 @@
+---
+// legacy/why-us.html:724 — native <details> accordion, one per faqs.json entry.
+interface Props {
+  question: string;
+  answer: string;
+}
+const { question, answer } = Astro.props;
+---
+
+<details class="faq-item">
+  <summary>
+    {question}
+    <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+  </summary>
+  <p>{answer}</p>
+</details>
+
+<script>
+  // Native <details> toggles display instantly with no way to transition it in
+  // CSS, so the reveal is driven by WAAPI instead — cancel-safe against rapid
+  // toggling, unlike a keyframe animation. The icon's rotation stays a plain
+  // CSS transition in why-us.css/inventory.css; this only owns the row height
+  // and answer opacity. Skipped entirely under reduced motion rather than
+  // slowed down, since the native instant toggle is already the sensible
+  // reduced-motion fallback for an accordion.
+  const EASE = "cubic-bezier(0.16, 1, 0.3, 1)"; // matches --ease in tokens.css
+  const DURATION = 200;
+
+  function setupFaqAccordion(details: HTMLDetailsElement) {
+    const summary = details.querySelector("summary");
+    const content = details.querySelector("p");
+    if (!summary || !content) return;
+
+    let heightAnim: Animation | null = null;
+    let isClosing = false;
+    let isExpanding = false;
+
+    // Arrow expressions, not function declarations — TS's non-null narrowing
+    // on summary/content above doesn't survive into a hoisted function
+    // declaration, only into a closure created after the guard.
+    const finish = (open: boolean) => {
+      details.open = open;
+      heightAnim = null;
+      isClosing = false;
+      isExpanding = false;
+      details.style.height = details.style.overflow = "";
+    };
+
+    const shrink = () => {
+      isClosing = true;
+      details.style.overflow = "hidden";
+      const startHeight = `${details.offsetHeight}px`;
+      const endHeight = `${summary.offsetHeight}px`;
+      heightAnim?.cancel();
+      heightAnim = details.animate({ height: [startHeight, endHeight] }, { duration: DURATION, easing: EASE });
+      content.animate({ opacity: [1, 0] }, { duration: DURATION * 0.6, easing: EASE });
+      heightAnim.onfinish = () => finish(false);
+      heightAnim.oncancel = () => { isClosing = false; };
+    };
+
+    const expand = () => {
+      isExpanding = true;
+      details.style.overflow = "hidden";
+      const startHeight = `${details.offsetHeight}px`;
+      const endHeight = `${summary.offsetHeight + content.offsetHeight}px`;
+      heightAnim?.cancel();
+      heightAnim = details.animate({ height: [startHeight, endHeight] }, { duration: DURATION, easing: EASE });
+      content.animate({ opacity: [0, 1] }, { duration: DURATION, delay: DURATION * 0.2, easing: EASE });
+      heightAnim.onfinish = () => finish(true);
+      heightAnim.oncancel = () => { isExpanding = false; };
+    };
+
+    const open = () => {
+      details.style.height = `${details.offsetHeight}px`;
+      details.open = true;
+      requestAnimationFrame(expand);
+    };
+
+    summary.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (isClosing || !details.open) {
+        open();
+      } else if (isExpanding || details.open) {
+        shrink();
+      }
+    });
+  }
+
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll<HTMLDetailsElement>(".faq-item").forEach(setupFaqAccordion);
+  }
+</script>

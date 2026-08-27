@@ -1,0 +1,109 @@
+/* ============================================================
+   7b. PAIN POINTS — redesigned around a central illustration with
+   arrow callouts. No legacy source exists for this layout (the old
+   4-card grid, "client note 2", was the entire historical design —
+   see Pain.astro's header comment). Client-approved departure from
+   rule 5 too: eyebrow AND the headline/item underlines are both
+   orange here by explicit sign-off — don't reduce to one accent.
+   ============================================================ */
+/* No border-top, unlike the other --canvas sections (.flow, .platform,
+   .testimonials all keep the 1px divider). Pain is the section directly under
+   Trust, and Trust is a brush-painted band — a ruled hairline immediately
+   below a torn, bristled edge reads as the section's real boundary showing
+   through the paint. Both grounds are --canvas, so with the rule gone the
+   join is genuinely seamless and the brush edge is the only thing there. */
+.pain { background: var(--canvas); }
+.pain-head { max-width: 42rem; margin: 0 auto 56px; text-align: center; }
+.pain-head .section-title { margin: 16px 0 0; }
+
+.pain-underline { position: relative; display: inline-block; }
+.pain-underline::after {
+  content: "";
+  position: absolute;
+  left: 1px;
+  right: 1px;
+  bottom: -6px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--orange);
+}
+.pain-item-title .pain-underline::after { bottom: -3px; height: 2px; }
+
+.pain-diagram {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 48px minmax(260px, 400px) 48px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 16px;
+  row-gap: 48px;
+  align-items: center;
+  margin-bottom: 56px;
+}
+
+.pain-image { grid-column: 3; grid-row: 1 / 3; place-self: center; width: 100%; }
+.pain-image img { display: block; width: 100%; height: auto; }
+
+.pain-arrow { display: flex; color: var(--slate); }
+.pain-arrow svg { width: 48px; height: 32px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.pain-arrow--tl { grid-column: 2; grid-row: 1; justify-self: center; }
+.pain-arrow--tr { grid-column: 4; grid-row: 1; justify-self: center; transform: scaleX(-1); }
+.pain-arrow--bl { grid-column: 2; grid-row: 2; justify-self: center; transform: scaleY(-1); }
+.pain-arrow--br { grid-column: 4; grid-row: 2; justify-self: center; transform: scaleX(-1) scaleY(-1); }
+
+/* .pain-grid stays `contents` so its 4 .pain-item children place directly
+   into .pain-diagram's grid, while data-anim="stagger" (targeting this
+   element's real DOM children) still animates exactly those 4 items. */
+.pain-grid { display: contents; }
+
+.pain-item { display: grid; grid-template-columns: auto 1fr; column-gap: 14px; row-gap: 10px; align-items: start; max-width: 260px; }
+.pain-item--tl { grid-column: 1; grid-row: 1; justify-self: start; }
+.pain-item--tr { grid-column: 5; grid-row: 1; justify-self: start; }
+.pain-item--bl { grid-column: 1; grid-row: 2; justify-self: start; }
+.pain-item--br { grid-column: 5; grid-row: 2; justify-self: start; }
+
+.pain-item-icon {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--peach);
+  color: var(--navy);
+  flex-shrink: 0;
+}
+.pain-item-icon .icon { width: 20px; height: 20px; }
+
+.pain-item-title {
+  grid-column: 2;
+  grid-row: 1;
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--navy);
+}
+
+.pain-list { grid-column: 2; grid-row: 2; display: flex; flex-direction: column; gap: 8px; }
+.pain-list li { position: relative; padding-left: 14px; font-size: 14px; line-height: 1.5; color: var(--slate); }
+.pain-list li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 5px; height: 5px; border-radius: 50%; background: var(--orange); }
+
+.pain-close {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: fit-content;
+  max-width: 30rem;
+  margin: 0 auto;
+  padding: 16px 28px;
+  background: var(--wash-navy);
+  border-radius: var(--r-panel);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--navy);
+}
+.pain-close::before { content: ""; flex-shrink: 0; width: 3px; align-self: stretch; border-radius: 999px; background: var(--navy); }

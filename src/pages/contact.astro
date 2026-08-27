@@ -1,0 +1,115 @@
+---
+// legacy/contact.html. The only real <form> in the whole build (per this
+// file's own "Sources that no longer exist" note). ContactForm.tsx's
+// fields are now reconciled against this page (step 7 mistake log) and
+// wired up as the island; legacy's own submit handler was a fake
+// preventDefault()-and-swap-to-#formSuccess with no real backend — the
+// island does a real Web3Forms POST + redirect to /thank-you instead
+// (step 8 sets PUBLIC_WEB3FORMS_KEY), so that in-page success panel has
+// no reason to exist here and isn't ported.
+import { Image } from "astro:assets";
+import Base from "@/layouts/Base.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import ClosingCTA from "@/components/ClosingCTA.astro";
+import ContactForm from "@/islands/ContactForm";
+import contactPhoto from "@/assets/contactus.jpeg";
+import "@/styles/pages/contact.css";
+---
+
+<Base
+  title="Contact | NexOne"
+  description="Tell us what you're running today and where it's breaking. We'll show you what NexOne looks like for your business — no generic demo, no slides."
+>
+  <Fragment slot="nav">
+    <Nav variant="page" current="contact" />
+  </Fragment>
+
+  <section class="page-hero">
+    <div class="container page-hero-inner">
+      <div class="hero-copy" data-anim="fade-up">
+        <p class="eyebrow hero-eyebrow"><span class="hero-eyebrow-mark" aria-hidden="true"></span>Get in touch</p>
+        <h1 class="page-hero-title">Let's talk about<br />your <span class="accent">operation.</span></h1>
+        <p class="lede page-hero-lede">
+          Tell us what you're running today and where it's breaking. We'll show you what NexOne looks like for your
+          business — no generic demo, no slides.
+        </p>
+        <div class="hero-chips">
+          <span class="hero-chip">
+            <svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg>
+            We usually reply within one business day
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="page-hero-media" data-anim="fade-up" data-anim-delay="0.15">
+      <Image
+        src={contactPhoto}
+        alt="The NexOne dashboard open on a laptop, on a desk with a NexOne mug, in front of a window overlooking the city."
+        width={1376}
+        height={768}
+        widths={[480, 768, 1100, 1376]}
+        sizes="(max-width: 1023px) 100vw, 55vw"
+        quality={68}
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </div>
+  </section>
+
+  <section class="contact section">
+    <div class="container contact-grid">
+      <div class="contact-form-panel" id="contact-form" data-anim="fade-up">
+        <div class="panel-head">
+          <span class="panel-head-icon">
+            <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l9 6 9-6M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"></path></svg>
+          </span>
+          <div>
+            <h2>Send us a message</h2>
+            <p>Tell us about your business and what you need, We'll get back to you with the right solution and next steps.</p>
+          </div>
+        </div>
+
+        <ContactForm client:visible />
+      </div>
+
+      <div class="reach-panel" data-anim="fade-up" data-anim-delay="0.1">
+        <div class="reach-head">
+          <h2>Other Ways To Reach Us</h2>
+        </div>
+
+        <div class="reach-rows">
+          <a class="reach-row" href="mailto:info@superbizworld.com">
+            <span class="info-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6l9 6 9-6M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"></path></svg></span>
+            <span class="reach-row-text">
+              <h3>Email</h3>
+              <p>info@superbizworld.com</p>
+            </span>
+            <svg class="icon icon--sm reach-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+          </a>
+
+          <div class="reach-row">
+            <span class="info-icon"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 14l5 2v4a2 2 0 0 1-2 2C10 22 2 14 2 7a2 2 0 0 1 2-2z"></path></svg></span>
+            <span class="reach-row-text">
+              <h3>Phone &amp; WhatsApp</h3>
+              <p>Mon&ndash;Sat, 9am&ndash;6pm</p>
+              <!-- No real WhatsApp number exists yet — fabricating a wa.me
+                   link would violate rule 7, same as legacy's own note here. -->
+              <a class="whatsapp-link" href="#" aria-label="Chat on WhatsApp">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.42-1.42a9.87 9.87 0 0 0 4.62 1.18h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.64-1.03-5.13-2.9-7C16.99 3.03 14.68 2 12.04 2zm0 18.02h-.01a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.55-3.7 8.2-8.25 8.2z"></path></svg>
+                Chat on WhatsApp
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- <ClosingCTA /> -->
+
+  <Fragment slot="footer">
+    <Footer />
+  </Fragment>
+</Base>

@@ -1,0 +1,101 @@
+/* ============================================================
+   8b. VIDEO — pattern interrupt after the problem/solution pair.
+   Canvas section, ink 16:9 screen (same grid + glow language as
+   the hero and architecture), orange play affordance, stats band.
+   ============================================================ */
+.video { background: var(--canvas); }
+.video-head { max-width: 44rem; margin: 0 auto 56px; text-align: center; }
+.video-head .section-title { margin: 16px 0 16px; }
+
+.video-frame { position: relative; max-width: 960px; margin: 0 auto; }
+.video-screen {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: var(--ink);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  border-radius: var(--r-card);
+  box-shadow: 0 30px 60px rgba(20, 41, 63, 0.25);
+}
+.video-screen::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 60%; height: 60%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, var(--glow-orange) 0%, var(--glow-fade) 70%);
+  pointer-events: none;
+}
+.video-play {
+  position: relative;
+  z-index: 1;
+  width: 88px; height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--orange);
+  color: var(--white);
+  box-shadow: 0 12px 32px rgba(250, 123, 13, 0.35);
+  transition: transform 300ms var(--ease), background-color 300ms var(--ease);
+}
+.video-play::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 1px solid rgba(250, 123, 13, 0.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+.video-play:hover { transform: scale(1.06); background: var(--orange-hover); }
+.video-play .icon { width: 32px; height: 32px; margin-left: 4px; }
+.video-caption {
+  position: absolute;
+  z-index: 1;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 20px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--hairline-2);
+  font-size: 14px; font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+}
+
+/* stats band — the credibility numbers, on the same hairline system */
+.video-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 960px;
+  margin: 56px auto 0;
+  border-top: 1px solid var(--hairline);
+}
+.video-stats li {
+  padding: 32px 16px 0;
+  text-align: center;
+}
+.video-stats li + li { border-left: 1px solid var(--hairline); }
+.video-stats strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: var(--navy);
+}
+.video-stats strong em { font-style: normal; color: var(--orange); }
+.video-stats span {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--slate);
+}
+

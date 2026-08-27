@@ -1,0 +1,150 @@
+/* ============================================================
+   5. NAV (4d)
+   ============================================================ */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background-color 300ms var(--ease), border-color 300ms var(--ease), box-shadow 300ms var(--ease);
+}
+.site-nav.is-scrolled {
+  background: var(--canvas);
+  border-bottom-color: var(--hairline);
+  box-shadow: 0 1px 12px rgba(20, 41, 63, 0.05);
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.nav-brand {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.nav-brand img { height: 40px; width: auto; }
+.nav-descriptor {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate);
+  padding-left: 10px;
+  margin-left: 10px;
+  border-left: 1px solid var(--slate);
+  line-height: 1;
+}
+.nav-links { display: flex; align-items: center; gap: 32px; }
+.nav-links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--navy);
+  transition: color 300ms var(--ease);
+}
+.nav-links a:hover { color: var(--orange); }
+.nav-links a[aria-current="true"] { color: var(--orange); }
+
+/* ERP Modules dropdown — hover on desktop (below, gated to real hover
+   devices), tap-to-toggle everywhere else via .is-open (Nav.astro script). */
+.nav-item { position: relative; }
+.nav-item-row { display: inline-flex; align-items: center; gap: 2px; }
+.nav-dropdown-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  color: var(--navy);
+  transition: color 300ms var(--ease), transform 200ms var(--ease);
+}
+.nav-item.has-dropdown:hover .nav-dropdown-toggle,
+.nav-item.has-dropdown.is-open .nav-dropdown-toggle {
+  color: var(--orange);
+  transform: rotate(180deg);
+}
+
+/* .nav-dropdown-hitbox is the thing that's actually positioned/shown or
+   hidden — its padding-top stands in for the visual 16px gap, so the
+   :hover-able area is continuous from the link down into the menu with no
+   dead zone the pointer can slip through on the way (that gap was exactly
+   what closed the menu before a click could land — user caught it live).
+   .nav-dropdown (the card: background/border/shadow) sits after the
+   padding, so the visible gap looks identical to the first version. */
+.nav-dropdown-hitbox {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-top: 16px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 200ms var(--ease), visibility 200ms;
+  z-index: 110;
+}
+.nav-dropdown {
+  min-width: 220px;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-panel);
+  box-shadow: var(--shadow-lift);
+  transform: translateY(6px);
+  transition: transform 200ms var(--ease);
+}
+.nav-dropdown a {
+  display: block;
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--navy);
+  white-space: nowrap;
+  transition: background-color 200ms var(--ease), color 200ms var(--ease);
+}
+.nav-dropdown a:hover,
+.nav-dropdown a:focus-visible { background: var(--wash-orange); color: var(--orange); }
+
+.nav-item.has-dropdown.is-open .nav-dropdown-hitbox {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.nav-item.has-dropdown.is-open .nav-dropdown { transform: translateY(0); }
+/* (hover: hover) and (pointer: fine), not a width query — a tablet at
+   nav-breakpoint width still isn't a hover device (see this file's traps). */
+@media (hover: hover) and (pointer: fine) {
+  .nav-item.has-dropdown:hover .nav-dropdown-hitbox,
+  .nav-item.has-dropdown:focus-within .nav-dropdown-hitbox {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .nav-item.has-dropdown:hover .nav-dropdown,
+  .nav-item.has-dropdown:focus-within .nav-dropdown {
+    transform: translateY(0);
+  }
+}
+.nav-cta {
+  background: var(--orange);
+  color: var(--white);
+  padding: 12px 24px;
+  border-radius: var(--r-sm);
+  font-size: 14px;
+  font-weight: 500;
+  transition: opacity 200ms var(--ease), transform 200ms var(--ease);
+}
+.nav-cta:hover { opacity: 0.9; }
+.nav-cta:active { transform: scale(0.95); }
+.nav-toggle { display: none; color: var(--navy); padding: 8px; }
+

@@ -1,0 +1,47 @@
+---
+// legacy/index.html:2571. Marquee clone/proximity-zoom/caption JS lives in
+// animations.ts (marquee()), wired up centrally by initAnimations() off the
+// #trust-marquee/#trust-track/#trust-caption ids below — nothing to import
+// here. Markup below renders the 8 original logos; JS clones them to fill.
+// .trust-lede and .trust-stats stay commented out per Approved content
+// (contradicts the live .video-stats band — reconcile with client first).
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import Eyebrow from "@/components/Eyebrow.astro";
+import { assetMap } from "@/lib/asset-map";
+
+const clients = await getCollection("clients");
+---
+
+<!-- Not using Section.astro here: .trust-stage is a full-bleed sibling of
+     .container (the marquee's edge fades need to reach the viewport), not
+     nested inside it — the same "sibling, not child" shape as .page-hero-media. -->
+<section class="section trust" id="trust" aria-label="Trusted across the world">
+  <!-- The navy is a painted band, not a full-bleed fill: a masked layer, sibling
+       of .container (bleeding elements can't be children of it), carrying the
+       navy + its gradients + the grid/grain so all four get the brush edge. -->
+  <div class="trust-band" aria-hidden="true"></div>
+
+  <div class="container trust-head">
+    <div>
+      <Eyebrow class="trust-eyebrow">Our Clients</Eyebrow>
+      <h2 class="section-title trust-title">Trusted across the <span class="trust-shine">world</span></h2>
+    </div>
+  </div>
+
+  <div class="trust-stage">
+    <div class="trust-spotlight" aria-hidden="true"></div>
+
+    <div class="trust-marquee" id="trust-marquee">
+      <div class="trust-track" id="trust-track">
+        {clients.map(({ data }) => (
+          <span class="trust-logo" data-name={data.name}>
+            <span class="trust-disc"><Image src={assetMap[data.logo]} alt={data.name} width={180} quality={70} loading="lazy" decoding="async" /></span>
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <p class="trust-caption" id="trust-caption" aria-hidden="true">&nbsp;</p>
+  </div>
+</section>

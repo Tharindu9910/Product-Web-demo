@@ -1,0 +1,30 @@
+/* ============================================================
+   Shared across why-us.html, inventory.html and logistics.html —
+   only `.band-dark` actually checked out byte-identical (diffed,
+   not assumed — mistake log 2026-08-20 warns the "kept in sync"
+   comment covers tokens, not necessarily every rule built on them).
+   `.section-head` and `.faq-item`/`.faq-list` looked shared at a
+   glance but their actual values diverge per page (why-us: 42rem/
+   48px margin, faq-list 800px/12px gap; inventory: 38rem/40px,
+   faq-list 760px/10px) — those stay in each page's own CSS file
+   instead of being forced identical here.
+   ============================================================ */
+
+.band-dark { background: var(--ink); overflow: hidden; position: relative; }
+.band-dark::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.band-dark::after {
+  content: ""; position: absolute; z-index: 0; pointer-events: none;
+  right: 0; top: 50%; transform: translateY(-50%);
+  width: 50%; height: 800px;
+  background: radial-gradient(circle, var(--glow-orange) 0%, var(--glow-fade) 70%);
+}
+.band-dark > .container { position: relative; z-index: 1; }
+.band-dark .section-title { color: var(--white); }
+.band-dark .section-head .lede { color: var(--mist); }
+.band-dark .kicker { color: var(--mist); }

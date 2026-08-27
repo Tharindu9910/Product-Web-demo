@@ -1,0 +1,24 @@
+/* ============================================================
+   16. REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal-group > .reveal { opacity: 1; transform: none; transition: none; }
+  /* CONNECTED FLOW — resting state is the CONNECTED one (JS sets every
+     node/segment lit+arrived immediately, no timer chain); kill the two
+     ignition keyframes, which transition-duration doesn't touch, and
+     hide the travelling head. */
+  .flow-node.is-lit .flow-node-ring,
+  .flow-node.is-lit .flow-node-halo { animation: none; }
+  .flow-seg-head { display: none; }
+  /* the marquee JS already stops scrolling; kill the decorative loops too */
+  .trust-eyebrow .trust-dot,
+  .trust-spotlight::after { animation: none; }
+  .hero-scroll { animation: none; }
+  .video-play::before { animation: none; }
+  .hero-stack { transform: translateY(-50%); }
+  /* the card holds its size — the Explore button's room comes out of the photo
+     instead, so hovering changes nothing outside the card's own border */
+  .platform-tile:hover, .platform-tile:focus-visible { width: 100%; height: 100%; }
+  *, *::before, *::after { transition-duration: 1ms !important; }
+}

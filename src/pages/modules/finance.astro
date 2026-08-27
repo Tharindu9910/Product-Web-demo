@@ -1,0 +1,113 @@
+---
+// No legacy source — finance.html never existed. Lean template, same
+// structure as modules/logistics.astro. Hero lede and benefit titles are
+// modules.json's existing approved panelText/benefits for "finance"; the
+// per-benefit sentences below are new copy written to expand those titles.
+import { Image } from "astro:assets";
+import Base from "@/layouts/Base.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import { withBase } from "@/lib/base";
+import ClosingCTA from "@/components/ClosingCTA.astro";
+import Eyebrow from "@/components/Eyebrow.astro";
+import financePhoto from "@/assets/card/IntegratedFinance.jpg";
+import financeCtaPhoto from "@/assets/erp-modules/finace_module.jpg";
+import "@/styles/pages/module-page.css";
+---
+
+<Base
+  title="Integrated Finance | NexOne"
+  description="One ledger for every transaction — sales, purchases, payroll and stock movements post straight into the books, so your financial picture is never a day behind the business."
+>
+  <Fragment slot="nav">
+    <Nav variant="page" current="modules" />
+  </Fragment>
+
+  <section class="mod-hero section">
+    <div class="container">
+      <p class="mod-breadcrumb">
+        <a href={withBase("/#platform")}>ERP Modules</a>
+        <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+        <span>Integrated Finance</span>
+      </p>
+      <div class="mod-hero-grid">
+        <div data-anim="fade-up">
+          <Eyebrow>Core module</Eyebrow>
+          <h1 class="mod-title">Integrated Finance</h1>
+          <p class="lede mod-lede">
+            One ledger for every transaction — sales, purchases, payroll and stock movements post straight
+            into the books, so your financial picture is never a day behind the business.
+          </p>
+          <div class="mod-cta-row">
+            <a class="mod-btn-primary" href={withBase("/contact")}>Request a demo</a>
+          </div>
+        </div>
+        <div class="mod-hero-media" data-anim="fade-up" data-anim-delay="0.15">
+          <Image src={financePhoto} alt="Integrated Finance module interface"
+            width={1200}
+            widths={[420, 640, 900, 1200]}
+            sizes="(max-width: 1023px) calc(100vw - 48px), 600px"
+            quality={68}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mod-benefits section">
+    <div class="container">
+      <div class="mod-benefits-head" data-anim="fade-up">
+        <Eyebrow>What it does</Eyebrow>
+        <h2>Books that stay current on their own.</h2>
+      </div>
+      <div class="mod-benefits-grid" data-anim="stagger">
+        <div class="mod-benefit-card">
+          <div class="mod-benefit-head">
+            <span class="mod-benefit-icon"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg></span>
+            <h3>Real-time general ledger</h3>
+          </div>
+          <p>Every sale, purchase and stock movement posts to the ledger the moment it happens, not at month-end close.</p>
+        </div>
+        <div class="mod-benefit-card">
+          <div class="mod-benefit-head">
+            <span class="mod-benefit-icon"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg></span>
+            <h3>Multi-currency support</h3>
+          </div>
+          <p>Transact and report in multiple currencies, with conversion handled automatically at the transaction level.</p>
+        </div>
+        <div class="mod-benefit-card">
+          <div class="mod-benefit-head">
+            <span class="mod-benefit-icon"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg></span>
+            <h3>Automated bank reconciliation</h3>
+          </div>
+          <p>Bank feeds match against ledger entries automatically, so reconciliation is a review, not a re-entry.</p>
+        </div>
+        <div class="mod-benefit-card">
+          <div class="mod-benefit-head">
+            <span class="mod-benefit-icon"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg></span>
+            <h3>Consolidated financial reporting</h3>
+          </div>
+          <p>Pull profit &amp; loss, balance sheet and cash flow from one source, across every branch or location.</p>
+        </div>
+        <div class="mod-benefit-card">
+          <div class="mod-benefit-head">
+            <span class="mod-benefit-icon"><svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg></span>
+            <h3>Audit-ready trail</h3>
+          </div>
+          <p>Every entry keeps its origin, timestamp and author, so an audit never means reconstructing what happened.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ClosingCTA image={financeCtaPhoto}>
+    <Fragment slot="title">See Finance running<br />on your own numbers.</Fragment>
+  </ClosingCTA>
+
+  <Fragment slot="footer">
+    <Footer />
+  </Fragment>
+</Base>

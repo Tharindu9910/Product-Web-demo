@@ -1,0 +1,211 @@
+---
+// Ported straight from legacy/comparison.html (the design-source mockup,
+// not the v2 lane rebuild it previously held — see BackupComparison.astro
+// for that). Two independently-scaled panels: a fluid cqw-unit collage of
+// scattered documents (WITHOUT) beside a dark order-record card (WITH).
+// Record IDs (SO-9021/WH-4471/DN-773/INV-2208) are legacy's own
+// placeholders, not invented here.
+import Section from "@/components/Section.astro";
+---
+
+<Section name="comparison">
+  <div class="cmp-head">
+    <h2 class="section-title">Follow a single order through your business.</h2>
+  </div>
+
+  <div class="cmp-layout">
+    <aside class="cmp-rail" aria-hidden="true">
+      <div class="cmp-rail-item">
+        <span class="cmp-rail-icon">
+          <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 21V9l9-5 9 5v12"></path><path d="M9 21v-6h6v6"></path><path d="M3 21h18"></path>
+          </svg>
+        </span>
+        <span class="cmp-rail-label">Stock</span>
+      </div>
+      <div class="cmp-rail-item">
+        <span class="cmp-rail-icon">
+          <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3.5" y="3.5" width="17" height="17" rx="4"></rect><path d="M8.5 12.2l2.6 2.6 4.6-5.4"></path>
+          </svg>
+        </span>
+        <span class="cmp-rail-label">Orders</span>
+      </div>
+      <div class="cmp-rail-item">
+        <span class="cmp-rail-icon">
+          <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 20V13"></path><path d="M12 20V4"></path><path d="M19 20v-9"></path>
+          </svg>
+        </span>
+        <span class="cmp-rail-label">Numbers</span>
+      </div>
+      <div class="cmp-rail-item">
+        <span class="cmp-rail-icon">
+          <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9.9 5.1A9.4 9.4 0 0112 4.9c6.5 0 9.4 7.1 9.4 7.1a17.6 17.6 0 01-2.3 3.4"></path>
+            <path d="M6.4 6.6A17.3 17.3 0 002.6 12s2.9 7.1 9.4 7.1a9 9 0 004.9-1.4"></path><path d="M3 3l18 18"></path>
+          </svg>
+        </span>
+        <span class="cmp-rail-label">Decisions</span>
+      </div>
+    </aside>
+
+    <div class="cmp-panels">
+      <!-- ══ WITHOUT ══════════════════════════════════════════ -->
+      <div class="cmp-panel" data-anim="fade-up">
+        <p class="cmp-panel-label cmp-panel-label--without">Without NexOne</p>
+
+        <div class="cmp-stage">
+          <div class="cmp-canvas">
+            <svg class="cmp-wires" viewBox="0 0 404 499" fill="none" aria-hidden="true">
+              <defs>
+                <marker id="cmp-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path class="cmp-wires-arrow" d="M0.5 0.6 L9 5 L0.5 9.4 Z"></path>
+                </marker>
+              </defs>
+              <g class="cmp-wires-line" stroke-width="1.6" stroke-dasharray="5 6" stroke-linecap="round">
+                <path d="M82 138 C 90 154, 100 162, 116 166" marker-end="url(#cmp-arrow)"></path>
+                <path d="M358 128 C 356 148, 330 170, 300 188" marker-end="url(#cmp-arrow)"></path>
+                <path d="M332 172 C 322 198, 316 228, 320 252"></path>
+                <path d="M210 246 C 196 244, 190 258, 200 272 C 214 292, 186 312, 190 342 C 194 366, 204 375, 214 382"></path>
+              </g>
+            </svg>
+
+            <article class="cmp-note" style="--x:24;--y:49;--w:150;--r:-4deg">
+              <div class="cmp-note-band">
+                <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="3.5" width="18" height="17" rx="2.5"></rect><path d="M3 9.5h18M9.5 9.5v11M3 15h18"></path>
+                </svg>
+                <span>stock_export_final.xlsx</span>
+              </div>
+              <div class="cmp-note-body">
+                <div class="cmp-note-bar"></div>
+                <div class="cmp-note-kv"><span class="cmp-note-k">Cases on hand</span><span class="cmp-note-figure">244</span></div>
+              </div>
+            </article>
+
+            <article class="cmp-note" style="--x:223;--y:41;--w:152;--r:4deg">
+              <div class="cmp-note-band">
+                <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="2.5" y="4" width="19" height="12.5" rx="2"></rect><path d="M8 20.5h8M12 16.5v4"></path>
+                </svg>
+                <span>Negombo WMS — WH-4471</span>
+              </div>
+              <div class="cmp-note-body">
+                <div class="cmp-note-bar"></div>
+                <div class="cmp-note-kv"><span class="cmp-note-k">Available</span><span class="cmp-note-figure">190</span></div>
+              </div>
+            </article>
+
+            <article class="cmp-doc" style="--x:137;--y:149;--w:140;--r:-3deg">
+              <p class="cmp-doc-title cmp-doc-rule">PICK LIST — SO-9021</p>
+              <p class="cmp-doc-line cmp-doc-rule">Ordered ··· <b>40 cases</b></p>
+              <p class="cmp-doc-line">Picked····· <span class="cmp-doc-red">36</span></p>
+            </article>
+
+            <article class="cmp-doc" style="--x:21;--y:250;--w:142;--r:-5deg">
+              <p class="cmp-doc-title cmp-doc-rule">DELIVERY NOTE — DN-773</p>
+              <p class="cmp-doc-line cmp-doc-rule">Dispatched··· <b>36 cases</b></p>
+              <p class="cmp-doc-line">Received····· <span class="cmp-doc-red">32</span> <span class="cmp-doc-ghost">32</span> cases</p>
+            </article>
+
+            <article class="cmp-doc" style="--x:245;--y:261;--w:134;--r:-3deg">
+              <p class="cmp-doc-title cmp-doc-rule">INVOICE — INV-2208</p>
+              <p class="cmp-doc-line cmp-doc-rule">Sales order, in full</p>
+              <p class="cmp-doc-line"><b>Invoiced···· 40 cases</b></p>
+            </article>
+
+            <article class="cmp-chat" style="--x:101;--y:382;--w:208;--r:0deg">
+              <div class="cmp-chat-head">
+                <span class="cmp-chat-avatar" aria-hidden="true"></span>
+                <span>Warehouse Team</span>
+              </div>
+              <div class="cmp-chat-body">
+                <p>Customer's asking where the rest is. What do I say?</p>
+                <p class="cmp-chat-status">Checking…</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ WITH ═════════════════════════════════════════════ -->
+      <div class="cmp-panel" data-anim="fade-up" data-anim-delay="0.15">
+        <p class="cmp-panel-label cmp-panel-label--with">With NexOne</p>
+
+        <div class="cmp-dark">
+          <div class="cmp-dark-head">
+            <span class="cmp-dark-pill cmp-dark-pill--so">SO-9021</span>
+            <span class="cmp-dark-customer">Customer name</span>
+            <span class="cmp-dark-pill cmp-dark-pill--done">Fulfilled</span>
+          </div>
+
+          <div class="cmp-dark-headline">
+            <span class="cmp-dark-figure">212</span>
+            <span class="cmp-dark-figure-label">cases available</span>
+          </div>
+
+          <p class="cmp-dark-location">
+            <span>Negombo 140 &middot; Colombo 72</span>
+            <svg class="icon icon--xs" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0116 0z"></path><circle cx="12" cy="10" r="2.6"></circle>
+            </svg>
+          </p>
+
+          <ol class="cmp-stepper">
+            <li>Ordered</li>
+            <li>Picked</li>
+            <li>Dispatched</li>
+            <li class="is-live">Delivered</li>
+          </ol>
+
+          <div class="cmp-dark-rows">
+            <div class="cmp-dark-row">
+              <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M16.5 9.4 7.5 4.2"></path>
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+                <path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path>
+              </svg>
+              <span class="cmp-dark-row-label">Stock</span>
+              <span class="cmp-dark-row-detail">212 cases in stock</span>
+            </div>
+
+            <div class="cmp-dark-row">
+              <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path>
+                <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path>
+                <circle cx="7" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle>
+              </svg>
+              <span class="cmp-dark-row-label">Orders</span>
+              <span class="cmp-dark-row-detail">40 cases on the way</span>
+            </div>
+
+            <div class="cmp-dark-row">
+              <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M8 17v-3"></path><path d="M13 17V9"></path><path d="M18 17V5"></path>
+              </svg>
+              <span class="cmp-dark-row-label">Numbers</span>
+              <span class="cmp-dark-row-detail">Sales &amp; stock in sync</span>
+            </div>
+
+            <div class="cmp-dark-row">
+              <svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21.8 10A10 10 0 1 1 17 3.3"></path><path d="m9 11 3 3L22 4"></path>
+              </svg>
+              <span class="cmp-dark-row-label">Decisions</span>
+              <span class="cmp-dark-row-detail">Live insights &amp; alerts</span>
+            </div>
+          </div>
+
+          <div class="cmp-dark-foot">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path>
+              <path d="M9 18h6"></path><path d="M10 22h4"></path>
+            </svg>
+            <span>Everything you need — in one place.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Section>
