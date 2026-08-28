@@ -13,16 +13,12 @@
   .platform-tile-media { height: auto; }
 }
 @media (max-width: 1023px) {
-  /* Tablet only. This used to be an unqualified `.hero-visual { display: none }`
-     for the whole <=1023 range, i.e. the dashboard mock was invisible to every
-     phone — and rule 9 says most traffic is a WhatsApp link opened on one, so
-     the site's only product visual was hidden from most of its visitors.
-     Phones now get it back as a scaled overlay (see the <=767 block below);
-     768-1023 keeps the copy-only hero, because at that width the copy column
-     is full-bleed and the headline leaves no ragged-right gap to sit in. */
-  @media (min-width: 768px) {
-    .hero-visual { display: none; }
-  }
+  /* Copy-only hero below 1024px, tablet and phone alike. 2026-08-27 briefly
+     rescoped this to `@media (min-width: 768px)` so phones could show the
+     dashboard mock as a scaled overlay; the user asked for that to be
+     commented out on 2026-08-28, so the hide is unqualified again and the
+     overlay block in the <=767 section below is parked in a comment. */
+  .hero-visual { display: none; }
   .hero-grid { grid-template-columns: 1fr; }
   /* copy-only hero: let it size to content instead of forcing a full viewport */
   .hero { min-height: 0; padding: 64px 0 88px; }
@@ -200,62 +196,62 @@
      accident at this width, and scroll needs no affordance on touch */
   .hero-scroll { display: none; }
 
-  /* --- hero dashboard mock on phones (2026-08-27, user-directed) ---
-     Reference: the mock shrunk to ~36% of the viewport, bleeding off the right
-     edge, sitting in the ragged-right whitespace beside "flow." / "From order".
+  /* --- hero dashboard mock on phones — COMMENTED OUT 2026-08-28 (user-directed) ---
+     Built 2026-08-27 to the user's reference screenshot: the mock shrunk to ~36%
+     of the viewport, bleeding off the right edge, sitting in the ragged-right
+     whitespace beside "flow." / "From order". The user asked for it to come back
+     out the next day, so phones are copy-only again via the unqualified
+     `.hero-visual { display: none }` in the <=1023 block above. Kept here rather
+     than deleted — it never got its visual tuning pass, so if it returns, the
+     scale bands and `top` still need calibrating against real renders.
 
-     Absolutely positioned against .hero-grid so it contributes ZERO height.
-     That is the whole safety property here: the 2026-08-26 log entry reverted an
-     entire fix chain because growing .hero-visual's height re-centred
-     .hero-grid's align-items:center row and pushed the CTAs below the fold. An
-     out-of-flow overlay cannot do that — the copy column's rhythm is untouched.
+     Inner comments are stripped of their delimiters below, because CSS comments
+     don't nest — the first inner `*` `/` would end this block early.
 
-     Scaled as one composition rather than restyled internally, so every
-     proportion (rail width, 30px metric, 3 stat columns, 4 table rows, the
-     receipt's -6deg) stays exactly the desktop render, just smaller. */
-  .hero-visual {
-    display: block;
-    position: absolute;
-    /* % of .hero-grid, not a fixed offset: the H1 wraps to a different number
-       of rows across 320-767, so a px `top` would drift off the headline. */
-    top: 30%;
-    /* cancels .container's 24px gutter above — the composition bleeds to the
-       true viewport edge, and .hero { overflow: hidden } clips it there. */
-    right: -24px;
-    /* the box the mock is authored against; --hero-mock-scale does the sizing */
-    width: 420px;
-    height: 300px;
-    transform: scale(var(--hero-mock-scale, 0.42));
-    transform-origin: top right;
-    /* flat, not the desktop 3D tilt — the reference card reads straight-on,
-       and an 8deg rotateY on a 160px-wide card just smears the type */
-    perspective: none;
-    /* under .hero-copy. Both z-indexes are load-bearing: .hero-copy already
+     .hero-visual {
+       display: block;
+       position: absolute;
+       % of .hero-grid, not a fixed offset: the H1 wraps to a different number
+       of rows across 320-767, so a px `top` would drift off the headline.
+       top: 30%;
+       cancels .container's 24px gutter above — the composition bleeds to the
+       true viewport edge, and .hero { overflow: hidden } clips it there.
+       right: -24px;
+       the box the mock is authored against; --hero-mock-scale does the sizing
+       width: 420px;
+       height: 300px;
+       transform: scale(var(--hero-mock-scale, 0.42));
+       transform-origin: top right;
+       flat, not the desktop 3D tilt — the reference card reads straight-on,
+       and an 8deg rotateY on a 160px-wide card just smears the type
+       perspective: none;
+       under .hero-copy. Both z-indexes are load-bearing: .hero-copy already
        establishes a stacking context (container-type: inline-size implies
        contain: layout) and comes FIRST in the DOM, so without these the later
-       .hero-visual paints on top of the headline. */
-    z-index: 0;
-    pointer-events: none;
-  }
-  .hero-copy { position: relative; z-index: 2; }
-  .hero-stack {
-    width: 100%;
-    height: 100%;
-    transform: translateY(-50%);
-    /* the fade goes HERE, not on .hero-visual, whose opacity is already driven
+       .hero-visual paints on top of the headline.
+       z-index: 0;
+       pointer-events: none;
+     }
+     .hero-copy { position: relative; z-index: 2; }
+     .hero-stack {
+       width: 100%;
+       height: 100%;
+       transform: translateY(-50%);
+       the fade goes HERE, not on .hero-visual, whose opacity is already driven
        by two systems that would fight a declared value — hero.css's
        @keyframes hero-enter (forwards fill) and animation.css's
        .js-ready [data-anim="fade-up"].is-in { opacity: 1 }. Nothing animates
        .hero-stack's opacity, so this is the one stable place to put it.
        0.9 is the concession for <=360px, where the headline's longer lines
-       genuinely cross the card and have to stay the readable layer. */
-    opacity: 0.9;
-  }
-  /* scale()'s argument must be unitless, and there is no way to derive a number
+       genuinely cross the card and have to stay the readable layer.
+       opacity: 0.9;
+     }
+     scale()'s argument must be unitless, and there is no way to derive a number
      from vw in calc() — so the fluid-across-the-range version of this doesn't
-     exist in CSS. Three bands, matching how the rest of this file works. */
-  @media (max-width: 359px) { .hero-visual { --hero-mock-scale: 0.34; } }
-  @media (min-width: 360px) and (max-width: 413px) { .hero-visual { --hero-mock-scale: 0.38; } }
+     exist in CSS. Three bands, matching how the rest of this file works.
+     @media (max-width: 359px) { .hero-visual { --hero-mock-scale: 0.34; } }
+     @media (min-width: 360px) and (max-width: 413px) { .hero-visual { --hero-mock-scale: 0.38; } }
+  */
   .section-title { font-size: 26px; }
   .platform-grid { grid-template-columns: 1fr; }
   .platform-tile-media { height: 160px; }
