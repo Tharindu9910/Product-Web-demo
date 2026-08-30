@@ -37,20 +37,29 @@
 .arch-diagram { flex: 0 0 45%; display: flex; align-items: center; justify-content: center; }
 .arch-diagram-frame { position: relative; width: 360px; height: 360px; }
 .arch-node-center {
-  position: absolute; inset: 0; margin: auto;
-  width: 140px; height: 140px;
-  display: flex; align-items: center; justify-content: center;
-  text-align: center;
-  padding: 0 12px;
-  background: var(--orange);
+  position: absolute;
+  inset: 0;
+  margin: auto;
+
+  width: 140px;
+  height: 140px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--color-white);
   border-radius: var(--r-panel);
   box-shadow: 0 0 40px rgba(250, 123, 13, 0.2);
-  color: var(--white);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 22px;
-  letter-spacing: -0.01em;
+
   z-index: 2;
+}
+
+.arch-node-center img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  display: block;
 }
 .arch-diagram-lines { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
 .arch-diagram-lines line { stroke: var(--slate); stroke-opacity: 0.35; stroke-width: 1; }

@@ -5,6 +5,8 @@
 // legacy, same category as the video-tour play button.
 import Section from "@/components/Section.astro";
 import Eyebrow from "@/components/Eyebrow.astro";
+import { Image } from "astro:assets";
+import logo from "@/assets/nexone-logo.png";
 ---
 
 <Section name="architecture">
@@ -20,7 +22,9 @@ import Eyebrow from "@/components/Eyebrow.astro";
 
     <div class="arch-diagram" aria-hidden="true" data-anim="parallax" data-speed="0.1">
       <div class="arch-diagram-frame">
-        <div class="arch-node-center">NexOne</div>
+        <div class="arch-node-center">
+  <Image src={logo} alt="Nexone World" />
+</div>
         <svg class="arch-diagram-lines" viewBox="0 0 360 360">
           <line x1="180" y1="180" x2="70" y2="70" data-anim="draw"></line>
           <line x1="180" y1="180" x2="290" y2="70" data-anim="draw" data-anim-delay="0.05"></line>
