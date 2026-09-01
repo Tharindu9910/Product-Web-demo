@@ -53,6 +53,9 @@
 
   /* token-derived surface washes (platform tile icon wells) */
   --wash-navy:   rgba(36, 67, 107, 0.05);
+  /* one step up from --wash-navy, for an icon well that has to read
+     against a --wash-navy panel (about.css .purpose-card--vision) */
+  --wash-navy-2: rgba(36, 67, 107, 0.10);
   --wash-orange: rgba(250, 123, 13, 0.05);
   --wash-slate:  rgba(140, 156, 180, 0.10);
   --wash-ink:    rgba(20, 41, 63, 0.05);

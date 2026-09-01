@@ -103,15 +103,6 @@ export default function IndustryTabs({ industries }: Props) {
           tabIndex={0}
           hidden={selected !== ind.id}
         >
-          <img
-            className="ind-panel-art"
-            src={ind.image.src}
-            width={ind.image.width}
-            height={ind.image.height}
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
-          />
           <div
             className="ind-cols"
             ref={(el) => {
@@ -150,7 +141,19 @@ export default function IndustryTabs({ industries }: Props) {
                 ))}
               </ul>
             </div>
-            <div>
+            {/* Third .ind-cols column. The commented-out "who already runs
+                this" list below used to hold this slot; if it ever comes back,
+                .ind-cols needs a fourth track or this moves out again. */}
+            <img
+              className="ind-panel-art"
+              src={ind.image.src}
+              width={ind.image.width}
+              height={ind.image.height}
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            {/* <div>
               <h3 className="ind-col-title">Who already runs this</h3>
               {ind.clients ? (
                 <div className="ind-clients">
@@ -168,7 +171,7 @@ export default function IndustryTabs({ industries }: Props) {
               ) : (
                 <div className="ind-placeholder">PENDING</div>
               )}
-            </div>
+            </div> */}
           </div>
           <div className="ind-cta">
             <a href={withBase("/contact")}>{ind.cta}</a>

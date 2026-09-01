@@ -169,6 +169,107 @@
 .team-name { font-size: 14px; color: var(--slate); margin-top: 2px; }
 
 /* ============================================================
+   PURPOSE — mission / vision pair + closing purpose band
+   Not in legacy/about.html: added 2026-09-01 from a user-supplied
+   reference image. New markup, so utilities would have been allowed
+   here (rule 2), but it sits inside this page's own CSS file so the
+   whole page reads as one system.
+   ============================================================ */
+.purpose { background: var(--canvas); border-top: 1px solid var(--hairline); }
+
+/* One rounded shell split into two halves — the hairline between them is a
+   border on the second card, not a gap, so the pair reads as a single object
+   the way the reference does. overflow: hidden clips the two tints to the
+   shell's radius; no radius is needed on the cards themselves. */
+.purpose-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid var(--hairline-2);
+  border-radius: var(--r-card);
+  overflow: hidden;
+  background: var(--white);
+}
+.purpose-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  padding: 40px;
+}
+.purpose-card--mission { background: var(--warm-tint); }
+/* An alpha of navy over the white shell, not a solid: it stays a tint of the
+   brand rather than a new colour, and it is the cool counterweight to
+   --warm-tint on the left. */
+.purpose-card--vision {
+  background: var(--wash-navy);
+  border-left: 1px solid var(--hairline-2);
+}
+.purpose-icon {
+  width: 68px; height: 68px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.purpose-card--mission .purpose-icon { background: var(--peach); color: var(--orange); }
+.purpose-card--vision .purpose-icon { background: var(--wash-navy-2); color: var(--navy); }
+/* .eyebrow defaults to --color-orange-text (rule 4). The vision half is the
+   cool side of the pair, so it takes navy instead — no contrast concern,
+   the rule only governs orange. */
+/* .purpose-copy is scoped past .eyebrow deliberately: Eyebrow.astro renders a
+   <p class="eyebrow">, so a bare `.purpose-copy p` rule (0,1,1) outranks
+   `.eyebrow` (0,1,0) and silently repaints both eyebrows --slate. */
+.purpose-copy .eyebrow.purpose-eyebrow--vision { color: var(--navy); }
+.purpose-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.28;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12px 0 14px;
+}
+.purpose-copy p:not(.eyebrow) { font-size: 15px; line-height: 1.65; color: var(--slate); }
+
+.purpose-band {
+  margin-top: 24px;
+  padding: 36px 40px;
+  border-radius: var(--r-card);
+  background: var(--navy);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 28px;
+  align-items: center;
+}
+.purpose-band-icon { color: var(--white); display: flex; }
+.purpose-band-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+/* --mist is the tuned dimmed-body colour for copy on --navy grounds
+   (--slate is its light-ground equivalent). */
+.purpose-band-copy p { font-size: 15px; line-height: 1.6; color: var(--mist); max-width: 34rem; }
+.purpose-band-btn {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  padding: 16px 28px;
+  border-radius: var(--r-sm);
+  background: var(--orange);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 10px 24px rgba(250, 123, 13, 0.2);
+  transition: background-color 200ms var(--ease), transform 150ms var(--ease);
+}
+.purpose-band-btn:hover { background: var(--orange-hover); }
+.purpose-band-btn:active { transform: scale(0.98); }
+
+/* ============================================================
    RESPONSIVE — this page's own rules only (nav/footer/closing-cta
    responsive rules already ship globally, see step 2/3)
    ============================================================ */
@@ -189,6 +290,14 @@
   }
   .page-hero-media img { -webkit-mask-image: none; mask-image: none; }
   .story-grid { grid-template-columns: 1fr; gap: 40px; }
+  /* The vertical divider becomes a horizontal one once the pair stacks. */
+  .purpose-grid { grid-template-columns: 1fr; }
+  .purpose-card--vision { border-left: 0; border-top: 1px solid var(--hairline-2); }
+  .purpose-card { padding: 32px; }
+  .purpose-band { grid-template-columns: auto minmax(0, 1fr); row-gap: 24px; padding: 32px; }
+  /* Spans both tracks so it sits under the icon+copy row rather than
+     squeezing the copy into a narrow column. */
+  .purpose-band-btn { grid-column: 1 / -1; justify-self: start; }
   .team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 767px) {
@@ -199,4 +308,11 @@
   .stat-tile { padding: 20px 16px; }
   .stat-tile strong { font-size: 26px; }
   .team-grid { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; }
+  /* Icon over copy instead of beside it — a 68px well plus a 24px gap
+     leaves too little for the title at 320px. */
+  .purpose-card { grid-template-columns: 1fr; gap: 20px; padding: 28px 22px; }
+  .purpose-icon { width: 56px; height: 56px; }
+  .purpose-title { font-size: 20px; }
+  .purpose-band { grid-template-columns: 1fr; padding: 28px 22px; row-gap: 20px; }
+  .purpose-band-btn { justify-self: stretch; justify-content: center; }
 }

@@ -97,7 +97,11 @@
   .nav-dropdown a { padding: 8px 0; }
   .platform-panel { grid-template-columns: 1fr; padding: 32px; }
   .ind-cols { grid-template-columns: 1fr; gap: 40px; }
-  .ind-panel-art { display: none; }
+  /* was display:none. One column at this breakpoint, so the art stacks under
+     "what changes" and above the CTA rule — a visual close to the panel
+     rather than a corner ornament. Centring comes from its own
+     justify-self. */
+  .ind-panel-art { width: 200px; height: auto; }
   .arch-top { flex-direction: column; gap: 48px; }
   .arch-copy-col, .arch-diagram { flex: none; width: 100%; }
   .arch-principles { grid-template-columns: 1fr; gap: 24px; }
@@ -260,6 +264,7 @@
   .platform-tile-title { font-size: 19px; }
   .platform-tile-text { font-size: 14px; }
   .ind-panel { padding: 28px; }
+  .ind-panel-art { width: 156px; }
   .platform-panel { padding: 24px; }
   .pain-diagram { gap: 24px; }
   /* .section's 88px above would override .trust's own budgeted padding */

@@ -8,6 +8,7 @@ import Footer from "@/components/Footer.astro";
 import Section from "@/components/Section.astro";
 import Eyebrow from "@/components/Eyebrow.astro";
 import ClosingCTA from "@/components/ClosingCTA.astro";
+import { withBase } from "@/lib/base";
 import aboutPhoto from "@/assets/aboutus.jpeg";
 import "@/styles/pages/about.css";
 ---
@@ -118,16 +119,13 @@ import "@/styles/pages/about.css";
     </div>
   </Section>
 
-  <Section name="team">
+  <!-- <Section name="team">
     <div class="team-head" data-anim="fade-up">
       <Eyebrow>The people behind NexOne</Eyebrow>
       <h2 class="section-title">Meet the team.</h2>
       <p class="lede">We're adding photos and bios one by one as the team page comes together — check back soon.</p>
     </div>
     <div class="team-grid" data-anim="stagger">
-      <!-- Six placeholder slots (rule 7 — no real team roster exists yet).
-           To fill one in: swap the icon/badge for a real photo import,
-           set .team-role/.team-name and drop the pending badge. -->
       {[
         { role: "Founder & CEO" },
         { role: "Head of Operations" },
@@ -147,6 +145,54 @@ import "@/styles/pages/about.css";
           <p class="team-name">Name to be added</p>
         </div>
       ))}
+    </div>
+  </Section> -->
+
+  <!-- Mission / Vision / purpose band. Added 2026-09-01 from a user-supplied
+       reference image, not from legacy/about.html — see the Mistake log entry
+       for the rule 5 (one orange element per viewport) tension it carries. -->
+  <Section name="purpose">
+    <div class="purpose-grid" data-anim="stagger">
+      <article class="purpose-card purpose-card--mission">
+        <span class="purpose-icon">
+          <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="13" r="8"></circle><circle cx="11" cy="13" r="4"></circle><path d="M11 13l8-8"></path><path d="M16 5h4v4"></path></svg>
+        </span>
+        <div class="purpose-copy">
+          <Eyebrow>Our mission</Eyebrow>
+          <h2 class="purpose-title">Empower businesses with connected solutions.</h2>
+          <p>
+            We deliver practical, reliable and easy-to-use ERP solutions that help businesses streamline
+            operations, reduce costs and achieve sustainable growth.
+          </p>
+        </div>
+      </article>
+      <article class="purpose-card purpose-card--vision">
+        <span class="purpose-icon">
+          <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </span>
+        <div class="purpose-copy">
+          <Eyebrow class="purpose-eyebrow--vision">Our vision</Eyebrow>
+          <h2 class="purpose-title">To be the most trusted business platform for growing companies.</h2>
+          <p>
+            We envision a world where every business, regardless of size, can access enterprise-grade
+            technology to compete and succeed on a global scale.
+          </p>
+        </div>
+      </article>
+    </div>
+
+    <div class="purpose-band" data-anim="fade-up">
+      <span class="purpose-band-icon">
+        <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z"></path><path d="M12 15c-2-1.4-3-2.6-3-4a1.8 1.8 0 013-1.2A1.8 1.8 0 0115 11c0 1.4-1 2.6-3 4z"></path></svg>
+      </span>
+      <div class="purpose-band-copy">
+        <h2 class="purpose-band-title">Your success is our purpose.</h2>
+        <p>
+          We are committed to long-term partnerships, continuous innovation and delivering real value to
+          every business we serve.
+        </p>
+      </div>
+      <a class="purpose-band-btn" href={withBase("/contact")}>Let's Work Together</a>
     </div>
   </Section>
 

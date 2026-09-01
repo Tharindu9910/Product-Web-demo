@@ -25,18 +25,23 @@
   border-radius: var(--r-card);
   box-shadow: 0 1px 2px rgba(20, 41, 63, 0.05);
 }
-/* restaurant-panel corner art: "who already runs this" is the shortest of
-   the three ind-cols and grid's default align-items: stretch pads its column
-   out to match "recommended stack" anyway, so this sits in that already-empty
-   pocket under the client list rather than adding any new height, and peeks
-   slightly past the card's bottom-right corner. */
+/* Panel art. Legacy sat this absolutely at the card's bottom-right corner,
+   tucked under the "who already runs this" client list; that list is
+   commented out in IndustryTabs.tsx, which left the third .ind-cols column
+   empty and the art marooned below it. User-directed change 2026-09-01: it
+   is a real grid item in that third column now, centred on both axes against
+   the two copy columns, and it renders at every width (it used to be
+   display:none below 1024px — see responsive.css).
+   240px, not larger: step 1b caps these source PNGs at 440px, so this is the
+   biggest box that still has a 2x image behind it. */
 .ind-panel-art {
-  position: absolute;
-  bottom: 10px;
-  right: 24px;
-  width: 220px;
-  height: 220px;
+  width: 250px;
+  height: 250px;
+  max-width: 100%;
+  margin-top: 60px;
   object-fit: contain;
+  justify-self: center;
+  align-self: center;
   pointer-events: none;
   user-select: none;
 }
